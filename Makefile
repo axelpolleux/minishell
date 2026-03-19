@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: apolleux <apolleux@student.42.fr>          +#+  +:+       +#+         #
+#    By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/17 10:24:21 by apolleux          #+#    #+#              #
-#    Updated: 2026/03/17 10:57:29 by apolleux         ###   ########.fr        #
+#    Updated: 2026/03/19 10:41:10 by ethutin-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,8 +15,8 @@ NAME		:= minishell
 CC			:= cc
 CFLAGS		:= -Wall -Wextra -Werror
 CPPFLAGS	:= -Iincludes -MMD -MP
-LDFLAGS		:=
-LDLIBS		:=
+LDFLAGS		:=   
+LDLIBS		:= -lreadline
 
 SRC_DIR		:= src
 BUILD_DIR	:= build

@@ -1,33 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/17 10:54:27 by apolleux          #+#    #+#             */
-/*   Updated: 2026/03/19 11:46:06 by ethutin-         ###   ########.fr       */
+/*   Created: 2025/10/31 09:01:29 by ethutin-          #+#    #+#             */
+/*   Updated: 2026/03/12 11:40:25 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "pipex_bonus.h"
 
-int	main(int ac, char **av, char **env)
+void	free_line(char **line, char *new_line)
 {
-	char *line;
+	if (*line && *line != new_line)
+		free (*line);
+	*line = new_line;
+}
 
-	(void)env;
-	(void)av;
-	if (ac < 2)
-		return (0);
-	while ((line = readline("minishell> ")) != NULL) 
+void	buffer_left(char *buffer, size_t start)
+{
+	size_t	left;
+	size_t	j;
+
+	left = ft_strlen(buffer + start);
+	j = 0;
+	while (j <= left)
 	{
-    if (strlen(line) > 0) 
-	{
-        add_history(line);
-    }
-    free(line);
+		buffer[j] = buffer[start + j];
+		j++;
 	}
-	printf("Hello, world !\n");
-	return (0);
+}
+
+char	*clean_buff(char *buffer)
+{
+	free(buffer);
+	buffer = NULL;
+	return (NULL);
 }

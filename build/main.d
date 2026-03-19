@@ -1,1 +1,3 @@
-build/main.o: src/main.c
+build/main.o: src/main.c includes/minishell.h
+
+includes/minishell.h:
