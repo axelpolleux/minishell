@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_e.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 15:33:33 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/12 11:40:32 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/20 13:50:13 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex_bonus.h"
+#include "exec.h"
 
 char	*verif_read_line(ssize_t r, char *line, char **buf_ptr)
 {
@@ -100,7 +100,7 @@ int	init_buff(char **buffer)
 	return (1);
 }
 
-char	*get_next_line(int fd, size_t i)
+char	*get_next_line_e(int fd, size_t i)
 {
 	static char	*buffer;
 	char		*line;

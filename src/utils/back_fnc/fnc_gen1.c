@@ -6,11 +6,12 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 11:53:33 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/12 11:32:51 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/20 17:43:01 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex_bonus.h"
+#include"minishell.h"
+#include"exec.h"
 
 size_t	ft_strlen(const char *str)
 {

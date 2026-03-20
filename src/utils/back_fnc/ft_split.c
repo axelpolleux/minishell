@@ -6,11 +6,12 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 12:02:11 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/02/12 15:00:08 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/20 18:00:27 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include"minishell.h"
+#include"exec.h"
 
 void	*free_arr(char **str)
 {
@@ -57,11 +58,13 @@ static int	total_word(char *str, char charset)
 			str++;
 	}
 	return (i);
+	
 }
+
 
 char	**ft_split(char const *s, char c)
 {
-	char	**tab;
+	char	**arr;
 	int		nb_word;
 	int		i;
 
@@ -69,21 +72,21 @@ char	**ft_split(char const *s, char c)
 	if (!s)
 		return (NULL);
 	nb_word = total_word((char *)s, c);
-	tab = malloc(sizeof(char *) * (nb_word + 1));
-	if (!tab)
+	arr = malloc(sizeof(char *) * (nb_word + 1));
+	if (!arr)
 		return (NULL);
-	tab[nb_word] = 0;
+	arr[nb_word] = 0;
 	while (*s)
 	{
 		if (*s != c)
 		{
-			tab[i] = ft_substr((char *)s, 0, word_size((char *)s, c));
-			if (!tab[i++])
-				return (free_arr(tab));
+			arr[i] = ft_substr((char *)s, 0, word_size((char *)s, c));
+			if (!arr[i++])
+				return (free_arr(arr));
 			s += word_size((char *)s, c);
 		}
 		else
 			s++;
 	}
-	return (tab);
+	return (arr);
 }

@@ -1,36 +1,58 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_bonus.h                                      :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/11 18:18:24 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/12 11:33:33 by ethutin-         ###   ########.fr       */
+/*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
+/*   Updated: 2026/03/20 18:21:47 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_BONUS_H
-# define PIPEX_BONUS_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
-# include "libftprintf.h"
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/wait.h>
 # include <sys/types.h>
-# include <errno.h>
 # include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <errno.h>
 # include <string.h>
 # include <stdint.h>
 # include <fcntl.h>
+# include <curses.h>
+# include <term.h>
+# include <signal.h>
+
+//=============<for general utility>=============//
+# define CMD 1
+# define PIPE 2
+# define RED_IN 3
+# define RED_OUT 4
+# define APPEND 5
+# define HEREDOC 6
+# define VOID_CMD 7
+//==============================================//
 
 //====================<for all struct>===================//
+typedef struct s_node
+{
+    char            **cmd_part;
+    char            *cmd;
+
+	int				type;
+	int				pos;
+	struct s_node	*next;
+}	t_node;
 
 typedef struct s_data
 {
-	//utils
+
 	char		**path;
-	char		**cmd_split;
 
 	char		*path_and_cmd;
 	char		*cmd_space_void;
@@ -43,14 +65,19 @@ typedef struct s_data
 	int			last_fd;
 	int			doc;
 	int			start;
-	//flags
+
 	int			cmd_null;
 	int			cmd_invalid;
 	int			path_invalid;
 	int			path_void;
 	int			path_null;
 
+
+	int			executable;
+
 	pid_t		*pid;
+
+    t_node     *node;
 
 }				t_data;
 //=======================================================//
@@ -67,23 +94,6 @@ int				malloc_error(char **path);
 int				data_malloc_error(t_data *data);
 int				open_error(t_data *data, char **av, int cmd);
 //=======================================================//
-
-//========================<for pipex>=========================//
-char			**get_path(char **env, char *motif, t_data *data);
-
-void			verif_command(t_data *d, char **env);
-void			get_cmd_path(char *cmd, char **env, t_data *d);
-void			children(t_data *data, char **av, char **env);
-void			tennage(t_data *data, char **av);
-void			process_manage(t_data *data, char **env, char **av);
-void			cmd_whith_path(t_data *data, char *command);
-void			full_cmd(t_data *data, char *command, int i);
-void			exec_command(char **env, t_data *d);
-void			parent(char **av, char **env, t_data *data);
-void			here_doc_manage(t_data *data);
-
-int				verif_file(char *line, int in, int doc);
-//===========================================================//
 
 //==================<general fonction>====================//
 char			**ft_split(char const *s, char c);
@@ -113,7 +123,7 @@ t_data			*init_data(int ac);
 #  define BUFFER_SIZE 42
 # endif
 
-char			*get_next_line(int fd, size_t i);
+char			*get_next_line_e(int fd, size_t i);
 char			*line_add(char const *s1, char const *s2, size_t size);
 char			*read_line(int fd, char **buffer_ptr, char *line, size_t i);
 char			*verif_read_line(ssize_t r, char *line, char **buf_ptr);
@@ -125,5 +135,6 @@ void			buffer_left(char *buffer, size_t start);
 
 int				init_buff(char **buffer);
 //===========================================================//
+
 
 #endif

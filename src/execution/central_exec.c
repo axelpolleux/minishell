@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   central_pipex.c                                    :+:      :+:    :+:   */
+/*   central_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 11:48:19 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/12 11:52:48 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/20 18:10:24 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "exec.h"
 
 char	**get_path(char **env, char *motif, t_data *data)
 {
@@ -41,12 +41,17 @@ char	**get_path(char **env, char *motif, t_data *data)
 	return (NULL);
 }
 
-int	verif_file(char *file, int in)
+int	verif_file(char *file, int in, int doc)
 {
 	int	fd;
 
 	if (in)
-		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	{
+		if (doc)
+			fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0777);
+		else
+			fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	}
 	if (!in)
 		fd = open(file, O_RDONLY);
 	return (fd);
@@ -65,8 +70,8 @@ void	verif_command(t_data *data, char **env)
 {
 	char	*command;
 
-	command = data->cmd_split[0];
-	if (srch_cmd(data->cmd_split[0], '/'))
+	command = node->cmd_split[0];
+	if (srch_cmd(node->cmd_split[0], '/'))
 	{
 		cmd_whith_path(data, command);
 		return ;
@@ -84,13 +89,13 @@ void	get_cmd_path(char *cmd, char **env, t_data *data)
 		data->cmd_null = 1;
 		return ;
 	}
-	data->cmd_split = ft_split(cmd, ' ');
-	if (!data->cmd_split)
+	node->cmd_split = ft_split(cmd, ' ');
+	if (!node->cmd_split)
 		data_malloc_error(data);
-	if (!data->cmd_split[0])
+	if (!node->cmd_split[0])
 	{
-		free(data->cmd_split);
-		data->cmd_split = NULL;
+		free(node->cmd_split);
+		node->cmd_split = NULL;
 		data->cmd_invalid = 1;
 		data->cmd_space_void = cmd;
 		return ;
