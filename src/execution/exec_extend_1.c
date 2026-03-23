@@ -6,19 +6,17 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/03 21:08:20 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/20 18:13:34 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/23 15:22:58 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#include "minishell.h"
 
-
-
-t_data	*init_data(int ac)
+t_data	*init_data(int ac, char **av)
 {
 	t_data	*data;
 
-	data = ft_calloc(1, sizeof(t_data));
+	data = ft_calloc(sizeof(t_data), 1);
 	if (!data)
 		data_malloc_error(data);
 	data->fd_storage[0] = -1;
@@ -26,6 +24,8 @@ t_data	*init_data(int ac)
 	data->last_fd = -1;
 	data->ac = ac;
 	data->cmd_n = 0;
+	data->st_env = NULL;
+	data->av = av;
 	return (data);
 }
 
@@ -82,7 +82,7 @@ void	here_doc_manage(t_data *data)
 
 void	tennage(t_data *data, char **av)
 {
-	if (data->cmd_n == data->ac - data->start -2)
+	if (data->cmd_n == data->ac - data->start - 2)
 	{
 		data->fd = verif_file(av[data->ac - 1], 1, data->doc);
 		if (data->fd == -1)

@@ -6,11 +6,11 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 15:33:33 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/20 13:50:13 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/23 09:49:15 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#include "minishell.h"
 
 char	*verif_read_line(ssize_t r, char *line, char **buf_ptr)
 {

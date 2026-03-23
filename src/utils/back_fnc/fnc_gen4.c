@@ -1,41 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils_e.c                            :+:      :+:    :+:   */
+/*   fnc_gen4.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/31 09:01:29 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/23 09:49:21 by ethutin-         ###   ########.fr       */
+/*   Created: 2026/03/23 11:02:59 by ethutin-          #+#    #+#             */
+/*   Updated: 2026/03/23 14:32:54 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_line(char **line, char *new_line)
+t_st_env    *last_node(t_st_env *nod)
 {
-	if (*line && *line != new_line)
-		free (*line);
-	*line = new_line;
+	while (nod && nod->next)
+		nod = nod->next;
+	return (nod);
 }
 
-void	buffer_left(char *buffer, size_t start)
+void	add_to_bottom(t_st_env **node, t_st_env *new_bot)
 {
-	size_t	left;
-	size_t	j;
-
-	left = ft_strlen(buffer + start);
-	j = 0;
-	while (j <= left)
+	t_st_env	*end;
+	if (!new_bot)
+		return ;
+	if (!*node)
 	{
-		buffer[j] = buffer[start + j];
-		j++;
+		*node = new_bot;
+		return ;
 	}
-}
-
-char	*clean_buff(char *buffer)
-{
-	free(buffer);
-	buffer = NULL;
-	return (NULL);
+	end = last_node(*node);
+	end->next = new_bot;
 }

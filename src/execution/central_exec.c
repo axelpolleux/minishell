@@ -6,11 +6,11 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 11:48:19 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/20 18:10:24 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/23 13:28:51 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#include "minishell.h"
 
 char	**get_path(char **env, char *motif, t_data *data)
 {
@@ -70,8 +70,8 @@ void	verif_command(t_data *data, char **env)
 {
 	char	*command;
 
-	command = node->cmd_split[0];
-	if (srch_cmd(node->cmd_split[0], '/'))
+	command = data->token->cmd_part[0];
+	if (srch_cmd(data->token->cmd_part[0], '/'))
 	{
 		cmd_whith_path(data, command);
 		return ;
@@ -89,13 +89,13 @@ void	get_cmd_path(char *cmd, char **env, t_data *data)
 		data->cmd_null = 1;
 		return ;
 	}
-	node->cmd_split = ft_split(cmd, ' ');
-	if (!node->cmd_split)
+	data->token->cmd_part = ft_split(cmd, ' ');
+	if (!data->token->cmd_part)
 		data_malloc_error(data);
-	if (!node->cmd_split[0])
+	if (!data->token->cmd_part[0])
 	{
-		free(node->cmd_split);
-		node->cmd_split = NULL;
+		free(data->token->cmd_part);
+		data->token->cmd_part = NULL;
 		data->cmd_invalid = 1;
 		data->cmd_space_void = cmd;
 		return ;

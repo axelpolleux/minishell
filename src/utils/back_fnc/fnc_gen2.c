@@ -6,12 +6,11 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 11:06:25 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/20 17:42:53 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/23 09:46:23 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"minishell.h"
-#include"exec.h"
+#include "minishell.h"
 
 void	*ft_memcpy(void *dest, const void *src, size_t n)
 {

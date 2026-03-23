@@ -6,12 +6,11 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 12:02:11 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/20 18:00:27 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/23 09:48:52 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"minishell.h"
-#include"exec.h"
+#include "minishell.h"
 
 void	*free_arr(char **str)
 {
@@ -58,9 +57,7 @@ static int	total_word(char *str, char charset)
 			str++;
 	}
 	return (i);
-	
 }
-
 
 char	**ft_split(char const *s, char c)
 {

@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/03/20 18:21:47 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/23 15:26:03 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,31 +28,64 @@
 # include <term.h>
 # include <signal.h>
 
+/* repecter l'ordre
+	char
+	void
+	double
+	unsign
+	int
+	long
+	size_t
+	strcut
+*/
+
 //=============<for general utility>=============//
 # define CMD 1
-# define PIPE 2
-# define RED_IN 3
-# define RED_OUT 4
-# define APPEND 5
-# define HEREDOC 6
-# define VOID_CMD 7
+# define PIPE 2 // |
+# define OR 3 // ||
+# define BACK 4 // &
+# define RED_IN 5 // <
+# define RED_OUT 6 // >
+# define APPEND 7 // >>
+# define HEREDOC 8 // <<
 //==============================================//
 
 //====================<for all struct>===================//
-typedef struct s_node
+// typedef struct s_node
+// {
+// 	char			**cmd_part;
+// 	char			*cmd;
+
+// 	int				type;
+// 	int				pos;
+
+// 	struct s_node	*next;
+// 	struct s_node	*prev;
+// }	t_node;
+
+typedef struct s_token
 {
-    char            **cmd_part;
-    char            *cmd;
+	char			**cmd_part;
+	char			*cmd;
 
 	int				type;
 	int				pos;
-	struct s_node	*next;
-}	t_node;
+
+	struct s_token	*next;
+}	t_token;
+
+typedef struct s_st_env
+{
+	char			*var;
+
+	struct s_st_env	*next;
+}	t_st_env;
 
 typedef struct s_data
 {
-
+	char		**av;
 	char		**path;
+	char		**env;
 
 	char		*path_and_cmd;
 	char		*cmd_space_void;
@@ -72,12 +105,11 @@ typedef struct s_data
 	int			path_void;
 	int			path_null;
 
-
 	int			executable;
 
 	pid_t		*pid;
-
-    t_node     *node;
+	t_token		*token;
+	t_st_env	*st_env;
 
 }				t_data;
 //=======================================================//
@@ -108,14 +140,41 @@ void			*ft_memset(void *s, int c, size_t n);
 void			closes(int fd, int *fd_storage);
 void			*ft_calloc(size_t nmemb, size_t size);
 void			free_data(t_data *data);
+void			free_env(t_st_env *node);
+void			free_token(t_token *node);
+void			add_to_bottom(t_st_env **node, t_st_env *new_bot);
 
 int				ft_strncmp(const char *s1, const char *s2, unsigned int n);
 int				word_size(char *str, char charset);
 int				srch_cmd(char *s, char c);
+int				ft_lstsize(t_token *lst);
 
 size_t			ft_strlen(const char *str);
 
-t_data			*init_data(int ac);
+t_data			*init_data(int ac, char **av);
+t_token			*newnode(int i, int type, char **split_cmd);
+t_st_env		*new_env(char *line);
+//======================================================//
+
+//========================<for exec>=========================//
+char			**get_path(char **env, char *motif, t_data *data);
+
+void			verif_command(t_data *d, char **env);
+void			get_cmd_path(char *cmd, char **env, t_data *d);
+void			children(t_data *data, char **av, char **env);
+void			tennage(t_data *data, char **av);
+void			process_manage(t_data *data, char **env, char **av);
+void			cmd_whith_path(t_data *data, char *command);
+void			full_cmd(t_data *data, char *command, int i);
+void			exec_command(char **env, t_data *d);
+void			parent(char **av, char **env, t_data *data);
+void			here_doc_manage(t_data *data);
+
+int				verif_file(char *line, int in, int doc);
+//===========================================================//
+
+//========================<for the parsing>=========================//
+int				get_env(t_data *data, char **env);
 //======================================================//
 
 //==========================<Get Next Line>=====================//
@@ -135,6 +194,5 @@ void			buffer_left(char *buffer, size_t start);
 
 int				init_buff(char **buffer);
 //===========================================================//
-
 
 #endif

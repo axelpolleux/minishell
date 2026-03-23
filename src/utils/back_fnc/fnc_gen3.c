@@ -6,37 +6,41 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 17:42:10 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/20 18:19:46 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/23 15:19:26 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"minishell.h"
-#include"exec.h"
+#include "minishell.h"
 
-t_node	*newnode(int i, int type, char ** split_cmd)
+t_token	*newnode(int i, int type, char **split_cmd)
 {
-	t_node	*new_node;
+	t_token	*new_node;
 
-	new_node = ft_calloc(sizeof(t_node), 1);
+	new_node = ft_calloc(sizeof(t_token), 1);
 	if (new_node == NULL)
 		return (NULL);
-	new_node->type =  type;
+	new_node->type = type;
 	new_node->pos = i;
-    new_node->cmd_part = split_cmd;
-    if (split_cmd)
-        new_node->cmd = split_cmd[0];
-    new_node->next = NULL;
+	new_node->cmd_part = split_cmd;
+	if (split_cmd)
+		new_node->cmd = split_cmd[0];
+	new_node->next = NULL;
 	return (new_node);
 }
 
-t_node	*last_node(t_node *node)
+t_st_env	*new_env(char *line)
 {
-	while (node && node->next)
-		node = node->next;
-	return (node);
+	t_st_env	*new_node;
+
+	new_node = ft_calloc(sizeof(t_st_env), 1);
+	if (new_node == NULL)
+		return (NULL);
+	new_node->var = line;
+	new_node->next = NULL;
+	return (new_node);
 }
 
-int	ft_lstsize(t_node *lst)
+int	ft_lstsize(t_token *lst)
 {
 	size_t	len_lst;
 
@@ -49,30 +53,53 @@ int	ft_lstsize(t_node *lst)
 	return (len_lst);
 }
 
-void	free_data(t_data *data)
+void	free_token(t_token *node)
 {
-	if (data)
-	{
-		if (data->path)
-			free_arr(data->path);
-		if (data->pid)
-			free(data->pid);
-		free(data);
-	}
-}
-
-void	free_stack(t_node *node)
-{
-	t_node	*tmp;
+	t_token	*tmp;
 
 	if (node == NULL)
 		return ;
 	while (node)
 	{
 		tmp = (node)->next;
-        free_arr(node->cmd_part);
+		if (node->cmd_part)
+			free_arr(node->cmd_part);
 		free(node);
 		node = tmp;
 	}
 	node = NULL;
+}
+
+void	free_env(t_st_env *node)
+{
+	t_st_env	*tmp;
+
+	if (node == NULL)
+		return ;
+	while (node)
+	{
+		tmp = (node)->next;
+		free(node->var);
+		free(node);
+		node = tmp;
+	}
+	node = NULL;
+}
+
+void	free_data(t_data *data)
+{
+	if (data)
+	{
+		if (data->path)
+			free_arr(data->path);
+		if (data->env)
+			free_arr(data->env);
+		if (data->pid)
+			free(data->pid);
+		if (data->token)
+			free_token(data->token);
+		if (data->st_env)
+			free_env(data->st_env);
+		free(data);
+	}
 }

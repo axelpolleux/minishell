@@ -6,12 +6,11 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 11:53:33 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/20 17:43:01 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/23 09:46:26 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"minishell.h"
-#include"exec.h"
+#include "minishell.h"
 
 size_t	ft_strlen(const char *str)
 {

@@ -6,11 +6,11 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:43:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/20 17:22:17 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/23 13:27:54 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "exec.h"
+#include "minishell.h"
 
 void	exec_command(char **env, t_data *data)
 {
@@ -22,7 +22,7 @@ void	exec_command(char **env, t_data *data)
 		null_command(data);
 	else if (data->cmd_invalid)
 		command_error(data);
-	if (execve(data->path_and_cmd, node->cmd_split, env) == -1)
+	if (execve(data->path_and_cmd, data->token->cmd_part, env) == -1)
 	{
 		perror("pipex");
 		free_data(data);
@@ -106,4 +106,3 @@ void	process_manage(t_data *data, char **env, char **av)
 	if (WIFEXITED(error))
 		exit(WEXITSTATUS(error));
 }
-
