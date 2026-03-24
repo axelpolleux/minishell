@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 17:42:10 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/23 15:19:26 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/24 12:07:41 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ void	free_data(t_data *data)
 			free_token(data->token);
 		if (data->st_env)
 			free_env(data->st_env);
+		if (data->line)
+			free(data->line);
 		free(data);
 	}
 }

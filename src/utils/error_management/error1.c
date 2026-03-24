@@ -6,17 +6,11 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 09:51:16 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/23 13:48:45 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/24 10:46:27 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	ac_error(void)
-{
-	write(2, "Error : incorrect entry\n", 24);
-	exit (EXIT_FAILURE);
-}
 
 int	malloc_error(char **path)
 {

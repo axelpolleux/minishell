@@ -6,14 +6,14 @@
 #    By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/17 10:24:21 by apolleux          #+#    #+#              #
-#    Updated: 2026/03/20 15:00:52 by ethutin-         ###   ########.fr        #
+#    Updated: 2026/03/24 09:48:52 by ethutin-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		:= minishell
 
 CC			:= cc
-CFLAGS		:= -Wall -Wextra -Werror
+CFLAGS		:= -Wall -Wextra -Werror -fsanitize=address
 CPPFLAGS	:= -Iincludes -Iincludes/lib -MMD -MP
 LDFLAGS		:=   
 LDLIBS		:= -lreadline
@@ -60,7 +60,7 @@ $(NAME):
 else
 $(NAME): $(OBJS)
 	@printf "\n$(PURPLE)↯$(NO_COLOR) $(BOLD)link$(NO_COLOR) $(NAME)\n"
-	$(CC) $(LDFLAGS) $(OBJS) $(LDLIBS) -o $@
+	$(CC) $(LDFLAGS) $(OBJS) $(LDLIBS) -fsanitize=address  -o $@
 	@printf "$(LIME)✓$(NO_COLOR) $(BOLD)built$(NO_COLOR) $(NAME)\n"
 endif
 

@@ -6,7 +6,14 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 10:09:53 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/19 10:09:54 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/24 12:13:59 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
+
+void    tokenization(t_data *data)
+{
+    
+    free(data->line);
+}

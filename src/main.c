@@ -6,21 +6,48 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/23 15:36:06 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/24 12:10:24 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	display(t_st_env *view)
-{
-	int	i;
+// static void	display(t_st_env *view)
+// {
+// 	int	i;
 
-	i = 0;
-	while (view)
+// 	i = 0;
+// 	while (view)
+// 	{
+// 		printf("%s \n", view->var);
+// 		view = view->next;
+// 	}
+// }
+// display(data->st_env);
+
+	// HIST_ENTRY **history;
+	// history = history_list();
+	// int i = -1;
+	// while (history[++i])
+    //     printf("=> %s\n", history[i]->line);
+
+void	get_new(int i, char *line, char **env, t_data *data)
+{
+	t_st_env 	*new;
+
+	while (env[i])
 	{
-		printf("%s \n", view->var);
-		view = view->next;
+		line = ft_strdup(env[i]);
+		if (!line)
+			data_malloc_error(data);
+		new = new_env(line);
+		if (!new)
+		{
+    		free(line);
+    		data_malloc_error(data);
+		}
+		add_to_bottom(&data->st_env, new);
+		i++;
 	}
 }
 
@@ -28,25 +55,23 @@ int	get_env(t_data *data, char **env)
 {
 	t_st_env	*tmp;
 	char		*line;
-	int			i;
 
-	if (!env || !(*env))
-		return (0); // a reconstruire ?
-	i = 0;
-	line = ft_strdup(env[i]);
+	if (!env || !(*env)) // a reconstruire ?
+	{
+		free_data(data);
+		exit (0);
+	} 
+	line = ft_strdup(env[0]);
 	if (!line)
 		data_malloc_error(data);
 	tmp = new_env(line);
-	data->st_env = tmp;
-	i++;
-	while (env[i])
+	if (!tmp)
 	{
-		line = ft_strdup(env[i]);
-		if (!line)
-			data_malloc_error(data);
-		add_to_bottom(&data->st_env, new_env(line));
-		i++;
+    	free(line);
+    	data_malloc_error(data);
 	}
+	data->st_env = tmp;
+	get_new(1, line, env, data);
 	return (1);
 }
 
@@ -54,15 +79,27 @@ int	main(int ac, char **av, char **env)
 {
 	t_data	*data;
 
-	if (ac < 2)
-		ac_error ();
 	data = init_data(ac, av);
-	if (get_env(data, env))
+	get_env(data, env);
+	while (1)
 	{
-		free_data(data);
-		return (0);
+		data->line = readline("mimishell> ");
+		if (!data->line)
+    	{
+        	printf("exit\n");
+        	break;
+    	}
+    	if (data->line && *data->line)
+			add_history(data->line);
+		if (!strcmp(data->line, "exit"))
+		{
+			printf("exit\n");
+			break ;
+		}
+		tokenization(data);
 	}
-	display(data->st_env);
+	rl_clear_history();
 	free_data(data);
 	return (0);
 }
+	

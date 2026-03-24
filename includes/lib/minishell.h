@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/03/23 15:26:03 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/24 12:07:58 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,6 @@
 //==============================================//
 
 //====================<for all struct>===================//
-// typedef struct s_node
-// {
-// 	char			**cmd_part;
-// 	char			*cmd;
-
-// 	int				type;
-// 	int				pos;
-
-// 	struct s_node	*next;
-// 	struct s_node	*prev;
-// }	t_node;
 
 typedef struct s_token
 {
@@ -83,13 +72,13 @@ typedef struct s_st_env
 
 typedef struct s_data
 {
-	char		**av;
 	char		**path;
 	char		**env;
 
 	char		*path_and_cmd;
 	char		*cmd_space_void;
 	char		*limit;
+	char		*line;
 
 	int			ac;
 	int			cmd_n;
@@ -121,7 +110,6 @@ void			null_path(t_data *data);
 void			void_path(t_data *data);
 void			pipe_error(t_data *data);
 
-int				ac_error(void);
 int				malloc_error(char **path);
 int				data_malloc_error(t_data *data);
 int				open_error(t_data *data, char **av, int cmd);
@@ -161,19 +149,22 @@ char			**get_path(char **env, char *motif, t_data *data);
 
 void			verif_command(t_data *d, char **env);
 void			get_cmd_path(char *cmd, char **env, t_data *d);
-void			children(t_data *data, char **av, char **env);
+void			children(char *line , t_data *data);
 void			tennage(t_data *data, char **av);
-void			process_manage(t_data *data, char **env, char **av);
+void			process_manage(char *line, t_data *data);
 void			cmd_whith_path(t_data *data, char *command);
 void			full_cmd(t_data *data, char *command, int i);
 void			exec_command(char **env, t_data *d);
-void			parent(char **av, char **env, t_data *data);
+void			parent(char *line, t_data *data);
 void			here_doc_manage(t_data *data);
 
 int				verif_file(char *line, int in, int doc);
 //===========================================================//
 
 //========================<for the parsing>=========================//
+void			get_new(int i, char *line, char **env, t_data *data);
+void			tokenization(t_data *data);
+
 int				get_env(t_data *data, char **env);
 //======================================================//
 
