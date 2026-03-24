@@ -6,24 +6,24 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/24 12:10:24 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/24 17:17:50 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// static void	display(t_st_env *view)
-// {
-// 	int	i;
+void	display(t_token *view)
+{
+	int	i;
 
-// 	i = 0;
-// 	while (view)
-// 	{
-// 		printf("%s \n", view->var);
-// 		view = view->next;
-// 	}
-// }
-// display(data->st_env);
+	i = 0;
+	while (view)
+	{
+		printf("->%s \n", view->cmd);
+		view = view->next;
+	}
+}
+
 
 	// HIST_ENTRY **history;
 	// history = history_list();
@@ -97,6 +97,8 @@ int	main(int ac, char **av, char **env)
 			break ;
 		}
 		tokenization(data);
+		//exec(data);
+   	 	free(data->line);
 	}
 	rl_clear_history();
 	free_data(data);

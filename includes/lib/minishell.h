@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/03/24 12:07:58 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/24 17:53:12 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # include <term.h>
 # include <signal.h>
 
-/* repecter l'ordre
+/* respecter l'ordre
 	char
 	void
 	double
@@ -51,16 +51,36 @@
 //==============================================//
 
 //====================<for all struct>===================//
+/*
+typedef struct s_part
+{
+	char			**cmd_part;
 
+	int				type;
+
+	struct s_token	*next;
+}	t_part;
+
+typedef struct s_token
+{
+	char			**cmd_part;
+	
+	char			*cmd;
+
+	struct s_part	*part;
+	struct s_token	*next;
+	struct s_token	*prev;
+}	t_token;
+*/
 typedef struct s_token
 {
 	char			**cmd_part;
 	char			*cmd;
 
 	int				type;
-	int				pos;
 
 	struct s_token	*next;
+	struct s_token	*prev;
 }	t_token;
 
 typedef struct s_st_env
@@ -75,26 +95,26 @@ typedef struct s_data
 	char		**path;
 	char		**env;
 
-	char		*path_and_cmd;
-	char		*cmd_space_void;
-	char		*limit;
+	// char		*path_and_cmd;
+	// char		*cmd_space_void;
+	// char		*limit;
 	char		*line;
 
 	int			ac;
-	int			cmd_n;
+	// int			cmd_n;
 	int			fd_storage[2];
 	int			fd;
 	int			last_fd;
-	int			doc;
+	// int			doc;
 	int			start;
 
-	int			cmd_null;
-	int			cmd_invalid;
-	int			path_invalid;
-	int			path_void;
-	int			path_null;
+	// int			cmd_null;
+	// int			cmd_invalid;
+	// int			path_invalid;
+	// int			path_void;
+	// int			path_null;
 
-	int			executable;
+	// int			executable;
 
 	pid_t		*pid;
 	t_token		*token;
@@ -131,6 +151,7 @@ void			free_data(t_data *data);
 void			free_env(t_st_env *node);
 void			free_token(t_token *node);
 void			add_to_bottom(t_st_env **node, t_st_env *new_bot);
+void			display(t_token *view);// a degager a la fin
 
 int				ft_strncmp(const char *s1, const char *s2, unsigned int n);
 int				word_size(char *str, char charset);
@@ -140,7 +161,7 @@ int				ft_lstsize(t_token *lst);
 size_t			ft_strlen(const char *str);
 
 t_data			*init_data(int ac, char **av);
-t_token			*newnode(int i, int type, char **split_cmd);
+t_token			*new_token(t_data *data, t_token *node, char **token_slpit, char *cmd);
 t_st_env		*new_env(char *line);
 //======================================================//
 
@@ -164,6 +185,7 @@ int				verif_file(char *line, int in, int doc);
 //========================<for the parsing>=========================//
 void			get_new(int i, char *line, char **env, t_data *data);
 void			tokenization(t_data *data);
+void			creat_token(t_data *data, char **pipe_split);
 
 int				get_env(t_data *data, char **env);
 //======================================================//

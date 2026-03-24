@@ -6,14 +6,51 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 10:09:53 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/24 12:13:59 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/24 17:46:59 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    tokenization(t_data *data)
+void	creat_token(t_data *data, char **pipe_split)
 {
-    
-    free(data->line);
+	t_token	*last;
+	t_token	*new_node;
+	char	**token_split;
+	int		i;
+
+	i = 0;
+	last = NULL;
+	while (pipe_split[i])
+	{
+		token_split = ft_split(pipe_split[i], ' ');
+		if (!token_split)
+			data_malloc_error(data);
+		new_node = new_token(data, last, token_split, pipe_split[i]);
+		if (!new_node)
+			data_malloc_error(data);
+		if (!data->token)
+			data->token = new_node;
+		else
+			last->next = new_node;
+		last = new_node;
+		i++;
+	}
+}
+
+void tokenization(t_data *data)
+{
+	char	**pipe_split;
+
+	if (data->token)
+	{
+		free_token(data->token);
+		data->token = NULL;
+	}
+	pipe_split = ft_split(data->line, '|');
+	if (!pipe_split)
+		data_malloc_error(data);
+	creat_token(data, pipe_split);
+	display(data->token);
+	free_arr(pipe_split);
 }

@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 09:51:16 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/24 10:46:27 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/24 13:54:03 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,26 +47,26 @@ int	open_error(t_data *data, char **av, int cmd)
 	exit(EXIT_FAILURE);
 }
 
-void	command_error(t_data *data)
-{
-	char	*msg;
-	char	*tmp;
+// void	command_error(t_data *data)
+// {
+// 	char	*msg;
+// 	char	*tmp;
 
-	if (data->cmd_space_void)
-		tmp = ft_strjoin(data->cmd_space_void, "\n");
-	else
-		tmp = ft_strjoin(data->token->cmd_part[0], "\n");
-	if (!tmp)
-		data_malloc_error(data);
-	msg = ft_strjoin("pipex: command not found: ", tmp);
-	free(tmp);
-	if (!msg)
-		data_malloc_error(data);
-	write(2, msg, strlen(msg));
-	free(msg);
-	free_data(data);
-	exit(127);
-}
+// 	if (data->cmd_space_void)
+// 		tmp = ft_strjoin(data->cmd_space_void, "\n");
+// 	else
+// 		tmp = ft_strjoin(data->token->cmd_part[0], "\n");
+// 	if (!tmp)
+// 		data_malloc_error(data);
+// 	msg = ft_strjoin("pipex: command not found: ", tmp);
+// 	free(tmp);
+// 	if (!msg)
+// 		data_malloc_error(data);
+// 	write(2, msg, strlen(msg));
+// 	free(msg);
+// 	free_data(data);
+// 	exit(127);
+// }
 
 void	null_command(t_data *data)
 {

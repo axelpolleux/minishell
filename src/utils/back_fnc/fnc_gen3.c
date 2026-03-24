@@ -6,25 +6,25 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 17:42:10 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/24 12:07:41 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/24 17:15:11 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*newnode(int i, int type, char **split_cmd)
+t_token	*new_token(t_data *data, t_token *prev, char **token_split, char *cmd)
 {
 	t_token	*new_node;
 
+	(void)data;
 	new_node = ft_calloc(sizeof(t_token), 1);
 	if (new_node == NULL)
 		return (NULL);
-	new_node->type = type;
-	new_node->pos = i;
-	new_node->cmd_part = split_cmd;
-	if (split_cmd)
-		new_node->cmd = split_cmd[0];
+	new_node->type = 0;
+	new_node->cmd_part = token_split;
+	new_node->cmd = cmd;
 	new_node->next = NULL;
+	new_node->prev = prev;
 	return (new_node);
 }
 
