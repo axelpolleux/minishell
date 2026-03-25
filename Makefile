@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+         #
+#    By: apolleux <apolleux@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/17 10:24:21 by apolleux          #+#    #+#              #
-#    Updated: 2026/03/24 16:58:24 by ethutin-         ###   ########.fr        #
+#    Updated: 2026/03/25 18:00:22 by apolleux         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		:= minishell
 
 CC			:= cc
-CFLAGS		:= -Wall -Wextra -Werror -fsanitize=address
+CFLAGS		:= -Wall -Wextra -Werror -fsanitize=address -g
 CPPFLAGS	:= -Iincludes -Iincludes/lib -MMD -MP
 LDFLAGS		:=   
 LDLIBS		:= -lreadline
