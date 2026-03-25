@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/03/25 21:13:56 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/03/25 21:28:50 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,15 @@
 */
 
 //=============<for general utility>=============//
-# define CMD 1
-# define PIPE 2 // |
-# define OR 3 // ||
-# define BACK 4 // &
-# define RED_IN 5 // <
-# define RED_OUT 6 // >
-# define APPEND 7 // >>
-# define HEREDOC 8 // <<
+# define CMD		1
+# define PIPE		2 // |
+# define OR			3 // ||
+# define BACK		4 // &
+# define RED_IN		5 // <
+# define RED_OUT	6 // >
+# define APPEND		7 // >>
+# define HEREDOC	8 // <<
+# define OTHER		9
 //==============================================//
 
 //====================<for all struct>===================//
@@ -64,7 +65,7 @@ typedef struct s_part
 typedef struct s_token
 {
 	char			**cmd_part;
-	
+
 	char			*cmd;
 
 	struct s_part	*part;
@@ -75,9 +76,8 @@ typedef struct s_token
 
 typedef struct s_token
 {
-	char			*cmd;
-
 	int				type;
+	char			*content;
 
 	struct s_token	*next;
 	struct s_token	*prev;
