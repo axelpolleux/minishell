@@ -4,6 +4,4 @@
 [submodule "includes/libft"]
 	path = includes/libft
 	url = git@github.com:axelpolleux/libft.git
-[submodule "includes/ft_printf"]
-	path = includes/ft_printf
-	url = git@github.com:axelpolleux/ft_printf.git
+

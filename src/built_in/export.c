@@ -6,16 +6,16 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 09:50:21 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/25 11:37:05 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/25 13:17:51 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char    **tab_env(t_env *env)
+char	**tab_env(t_env *env)
 {
-	t_env   *cop;
-	char    **tab_env;
+	t_env	*cop;
+	char	**tab_env;
 	char	*tmp;
 	int		i;
 
@@ -38,7 +38,7 @@ char    **tab_env(t_env *env)
 	return (tab_env);
 }
 
-char **tri_alpha(t_env *env)
+char	**tri_alpha(t_env *env)
 {
 	char	**arr;
 	char	*tmp;
@@ -66,16 +66,16 @@ char **tri_alpha(t_env *env)
 	return (arr);
 }
 
-void export_central(t_data *data)
+void	export_central(t_data *data)
 {
-    char	**tab_tri_env;
-	int 	i;
-	
+	char	**tab_tri_env;
+	int		i;
+
 	i = -1;
 	tab_tri_env = tri_alpha(data->env);
 	if (!tab_tri_env)
 		data_malloc_error(data);
-    while (tab_tri_env[++i])
+	while (tab_tri_env[++i])
 		printf("declare -x %s\n", tab_tri_env[i]);
 	free_arr(tab_tri_env);
 }

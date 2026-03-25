@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/25 11:43:51 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/25 17:42:03 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,66 +32,79 @@ void	display_token(t_token *view)
 	i = 0;
 	while (view)
 	{
-		printf("->%s \n", view->cmd);
+		printf("============================\n");
+		printf("token => {%s}\n", view->cmd);
 		view = view->next;
 	}
 }
+// void display_cmd(t_token *view)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (view)
+// 	{
+// 		printf("============================\n");
+// 		printf("token => {%s}\n", view->cmd);
+// 		view = view->next;
+// 	}
+// }
+
 //=======================================//
 
+// void	get_new(int i, char *line, char **env, t_data *data)
+// {
+// 	t_env	*new;
 
-void	get_new(int i, char *line, char **env, t_data *data)
-{
-	t_env 	*new;
+// 	while (env[i])
+// 	{
+// 		line = ft_strdup(env[i]);
+// 		if (!line)
+// 			data_malloc_error(data);
+// 		new = new_env(line);
+// 		if (!new)
+// 		{
+// 			free(line);
+// 			data_malloc_error(data);
+// 		}
+// 		add_to_bottom(&data->env, new);
+// 		i++;
+// 	}
+// }
 
-	while (env[i])
-	{
-		line = ft_strdup(env[i]);
-		if (!line)
-			data_malloc_error(data);
-		new = new_env(line);
-		if (!new)
-		{
-    		free(line);
-    		data_malloc_error(data);
-		}
-		add_to_bottom(&data->env, new);
-		i++;
-	}
-}
+// int	get_env(t_data *data, char **env)
+// {
+// 	t_env	*tmp;
+// 	char	*line;
 
-int	get_env(t_data *data, char **env)
-{
-	t_env	*tmp;
-	char		*line;
-
-	if (!env || !(*env)) // a reconstruire ?    oui imperativement
-	{
-		//make_env(t_data *data);
-		free_data(data);
-		exit (0);
-	} 
-	line = ft_strdup(env[0]);
-	if (!line)
-		data_malloc_error(data);
-	tmp = new_env(line);
-	if (!tmp)
-	{
-    	free(line);
-    	data_malloc_error(data);
-	}
-	data->env = tmp;
-	get_new(1, line, env, data);
-	return (1);
-}
+// 	if (!env || !(*env)) // a reconstruire ?    oui imperativement
+// 	{
+// 		//make_env(t_data *data);
+// 		free_data(data);
+// 		exit (0);
+// 	}
+// 	line = ft_strdup(env[0]);
+// 	if (!line)
+// 		data_malloc_error(data);
+// 	tmp = new_env(line);
+// 	if (!tmp)
+// 	{
+// 		free(line);
+// 		data_malloc_error(data);
+// 	}
+// 	data->env = tmp;
+// 	get_new(1, line, env, data);
+// 	return (1);
+// }
 
 int	exit_shell(char *line)
 {
 	if (!line)
-    {
-    	printf("exit\n");
-        return (1);
-    }
-    if (line && *line)
+	{
+		printf("exit\n");
+		return (1);
+	}
+	if (line && *line)
 		add_history(line);
 	if (!strcmp(line, "exit"))
 	{
@@ -101,60 +114,50 @@ int	exit_shell(char *line)
 	return (0);
 }
 
-int	main(int ac, char **av, char **env)
-{
-	t_data	*data;
+// int	main(int ac, char **av, char **env)
+// {
+// 	t_data	*data;
 
-	data = init_data(ac, av);
-	get_env(data, env);
-	//display_env(data->env);
+// 	data = init_data(ac, av);
+// 	get_env(data, env);
+// 	//export_central(data);
+// 	//display_env(data->env);
+// 	while (1)
+// 	{
+// 		data->line = readline("mimishell> ");
+// 		if (exit_shell(data->line))
+// 			break ;
+// 		tokenization(data);
+// 		//exec(data);
+// 	}
+// 	rl_clear_history();
+// 	free_data(data);
+// 	return (0);
+// }
+
+
+
+int	main(void)
+{
+	char *line;
+	char **word;
+    int i;
+
 	while (1)
 	{
-		data->line = readline("mimishell> ");
-		if (exit_shell(data->line))
+		line = readline("mimishell> ");
+		if (exit_shell(line))
 			break ;
-		tokenization(data);
-		//exec(data);
+		word = token_slpit(line);
+		i = -1;
+		while (word[++i])
+			printf("%d -> {%s}\n", i + 1, word[i]);
+    	free_arr(word);
+		free(line);
 	}
 	rl_clear_history();
-	free_data(data);
 	return (0);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

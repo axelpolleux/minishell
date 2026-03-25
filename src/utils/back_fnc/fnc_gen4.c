@@ -6,13 +6,13 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 11:02:59 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/25 10:49:31 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/25 13:16:31 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env    *last_node(t_env *nod)
+t_env	*last_node(t_env *nod)
 {
 	while (nod && nod->next)
 		nod = nod->next;
@@ -30,13 +30,11 @@ void	add_to_bottom(t_env **node, t_env *new_bot)
 		*node = new_bot;
 		return ;
 	}
-	end = *node;//
+	end = *node;
 	while (end->next)
 		end = end->next;
 	end->next = new_bot;
 	new_bot->prev = end;
-	//end = last_node(*node);
-	// end->next = new_bot;
 }
 
 t_data	*init_data(int ac, char **av)
@@ -54,4 +52,21 @@ t_data	*init_data(int ac, char **av)
 	(void)av;
 	(void)ac;
 	return (data);
+}
+
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	void	*mal;
+	size_t	aloc;
+
+	if (size != 0 && nmemb > (size_t)-1 / size)
+		return (NULL);
+	aloc = nmemb * size;
+	if (aloc == 0 || aloc / nmemb != size)
+		return (malloc(0));
+	mal = malloc(nmemb * size);
+	if (!mal)
+		return (NULL);
+	ft_memset(mal, 0, nmemb * size);
+	return (mal);
 }

@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 11:53:33 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/25 11:32:15 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/25 13:14:44 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	ft_strncmp(const char *s1, const char *s2, unsigned int n)
 int	ft_strcmp(char *s1, char *s2)
 {
 	int	i;
-	
+
 	i = 0;
 	while (s1[i] || s2[i])
 	{
@@ -74,21 +74,4 @@ int	srch_cmd(char *s, char c)
 		s++;
 	}
 	return (0);
-}
-
-void	*ft_calloc(size_t nmemb, size_t size)
-{
-	void	*mal;
-	size_t	aloc;
-
-	if (size != 0 && nmemb > (size_t)-1 / size)
-		return (NULL);
-	aloc = nmemb * size;
-	if (aloc == 0 || aloc / nmemb != size)
-		return (malloc(0));
-	mal = malloc(nmemb * size);
-	if (!mal)
-		return (NULL);
-	ft_memset(mal, 0, nmemb * size);
-	return (mal);
 }
