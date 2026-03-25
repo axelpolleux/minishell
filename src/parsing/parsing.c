@@ -6,13 +6,13 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 10:09:53 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/25 21:07:17 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/03/25 21:43:39 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	creat_token(t_data *data, char **pipe_split)
+void	create_token(t_data *data, char **pipe_split)
 {
 	t_token	*last;
 	t_token	*new_node;
@@ -50,7 +50,7 @@ void	tokenization(t_data *data)
 	pipe_split = ft_split(data->line, '|');
 	if (!pipe_split)
 		data_malloc_error(data);
-	creat_token(data, pipe_split);
+	create_token(data, pipe_split);
 	free_arr(pipe_split);
 	free(data->line);
 }

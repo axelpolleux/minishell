@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/03/25 21:28:50 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/03/25 21:43:01 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,36 +48,14 @@
 # define RED_OUT	6 // >
 # define APPEND		7 // >>
 # define HEREDOC	8 // <<
-# define OTHER		9
+# define OTHERS		9
 //==============================================//
 
 //====================<for all struct>===================//
-/*
-typedef struct s_part
-{
-	char			**cmd_part;
-
-	int				type;
-
-	struct s_token	*next;
-}	t_part;
-
 typedef struct s_token
 {
-	char			**cmd_part;
-
+	int				type;
 	char			*cmd;
-
-	struct s_part	*part;
-	struct s_token	*next;
-	struct s_token	*prev;
-}	t_token;
-*/
-
-typedef struct s_token
-{
-	int				type;
-	char			*content;
 
 	struct s_token	*next;
 	struct s_token	*prev;
@@ -193,7 +171,7 @@ int				verif_file(char *line, int in, int doc);
 //========================<for the parsing>=========================//
 void			get_new(int i, char *line, char **env, t_data *data);
 void			tokenization(t_data *data);
-void			creat_token(t_data *data, char **pipe_split);
+void			create_token(t_data *data, char **pipe_split);
 
 int				get_env(t_data *data, char **env);
 //======================================================//

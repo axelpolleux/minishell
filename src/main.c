@@ -33,7 +33,7 @@ void	display_token(t_token *view)
 	while (view)
 	{
 		printf("============================\n");
-		printf("token => {%s}\n", view->content);
+		printf("token => {%s}\n", view->cmd);
 		view = view->next;
 	}
 }
