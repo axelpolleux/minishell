@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/25 11:43:51 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/25 13:28:47 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	main(int ac, char **av, char **env)
 
 	data = init_data(ac, av);
 	get_env(data, env);
-	//display_env(data->env);
+	// display_env(data->env);
 	while (1)
 	{
 		data->line = readline("mimishell> ");
