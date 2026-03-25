@@ -6,17 +6,16 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 17:42:10 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/24 17:15:11 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/25 10:54:51 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*new_token(t_data *data, t_token *prev, char **token_split, char *cmd)
+t_token	*new_token(t_token *prev, char **token_split, char *cmd)
 {
 	t_token	*new_node;
 
-	(void)data;
 	new_node = ft_calloc(sizeof(t_token), 1);
 	if (new_node == NULL)
 		return (NULL);
@@ -28,19 +27,33 @@ t_token	*new_token(t_data *data, t_token *prev, char **token_split, char *cmd)
 	return (new_node);
 }
 
-t_st_env	*new_env(char *line)
+t_env	*new_env(char *line)
 {
-	t_st_env	*new_node;
+	t_env	*new_node;
 
-	new_node = ft_calloc(sizeof(t_st_env), 1);
+	new_node = ft_calloc(sizeof(t_env), 1);
 	if (new_node == NULL)
 		return (NULL);
 	new_node->var = line;
 	new_node->next = NULL;
+	new_node->prev = NULL;
 	return (new_node);
 }
 
-int	ft_lstsize(t_token *lst)
+int	ft_lstsize_e(t_env *lst)
+{
+	size_t	len_lst;
+
+	len_lst = 0;
+	while (lst)
+	{
+		len_lst++;
+		lst = lst->next;
+	}
+	return (len_lst);
+}
+
+int	ft_lstsize_t(t_token *lst)
 {
 	size_t	len_lst;
 
@@ -70,9 +83,9 @@ void	free_token(t_token *node)
 	node = NULL;
 }
 
-void	free_env(t_st_env *node)
+void	free_env(t_env *node)
 {
-	t_st_env	*tmp;
+	t_env	*tmp;
 
 	if (node == NULL)
 		return ;
@@ -92,14 +105,12 @@ void	free_data(t_data *data)
 	{
 		if (data->path)
 			free_arr(data->path);
-		if (data->env)
-			free_arr(data->env);
 		if (data->pid)
 			free(data->pid);
 		if (data->token)
 			free_token(data->token);
-		if (data->st_env)
-			free_env(data->st_env);
+		if (data->env)
+			free_env(data->env);
 		if (data->line)
 			free(data->line);
 		free(data);

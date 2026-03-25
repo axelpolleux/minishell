@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/03/24 17:53:12 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/25 11:32:34 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@
 # define HEREDOC 8 // <<
 //==============================================//
 
+
 //====================<for all struct>===================//
 /*
 typedef struct s_part
@@ -83,25 +84,23 @@ typedef struct s_token
 	struct s_token	*prev;
 }	t_token;
 
-typedef struct s_st_env
+typedef struct s_env
 {
 	char			*var;
 
-	struct s_st_env	*next;
-}	t_st_env;
+	struct s_env	*next;
+	struct s_env	*prev;
+}	t_env;
 
 typedef struct s_data
 {
 	char		**path;
-	char		**env;
 
 	// char		*path_and_cmd;
 	// char		*cmd_space_void;
 	// char		*limit;
 	char		*line;
 
-	int			ac;
-	// int			cmd_n;
 	int			fd_storage[2];
 	int			fd;
 	int			last_fd;
@@ -113,15 +112,15 @@ typedef struct s_data
 	// int			path_invalid;
 	// int			path_void;
 	// int			path_null;
-
 	// int			executable;
 
 	pid_t		*pid;
 	t_token		*token;
-	t_st_env	*st_env;
+	t_env	*env;
 
 }				t_data;
 //=======================================================//
+
 
 //=================<for all type of error>================//
 void			command_error(t_data *data);
@@ -134,6 +133,7 @@ int				malloc_error(char **path);
 int				data_malloc_error(t_data *data);
 int				open_error(t_data *data, char **av, int cmd);
 //=======================================================//
+
 
 //==================<general fonction>====================//
 char			**ft_split(char const *s, char c);
@@ -148,22 +148,36 @@ void			*ft_memset(void *s, int c, size_t n);
 void			closes(int fd, int *fd_storage);
 void			*ft_calloc(size_t nmemb, size_t size);
 void			free_data(t_data *data);
-void			free_env(t_st_env *node);
+void			free_env(t_env *node);
 void			free_token(t_token *node);
-void			add_to_bottom(t_st_env **node, t_st_env *new_bot);
-void			display(t_token *view);// a degager a la fin
+void			add_to_bottom(t_env **node, t_env *new_bot);
+
+void			display_env(t_env *view);// a degager
+void			display_token(t_token *view);//
+
 
 int				ft_strncmp(const char *s1, const char *s2, unsigned int n);
+int				ft_strcmp(char *s1, char *s2);
 int				word_size(char *str, char charset);
 int				srch_cmd(char *s, char c);
-int				ft_lstsize(t_token *lst);
+int				ft_lstsize_e(t_env *lst);
+int				ft_lstsize_t(t_token *lst);
 
 size_t			ft_strlen(const char *str);
 
 t_data			*init_data(int ac, char **av);
-t_token			*new_token(t_data *data, t_token *node, char **token_slpit, char *cmd);
-t_st_env		*new_env(char *line);
+t_token			*new_token(t_token *node, char **token_slpit, char *cmd);
+t_env		*new_env(char *line);
 //======================================================//
+
+
+//========================<for build in>=========================//
+char 			**tab_env(t_env *env);
+char			**tri_alpha(t_env *env);
+
+void 			export_central(t_data *data);
+//===============================================================//
+
 
 //========================<for exec>=========================//
 char			**get_path(char **env, char *motif, t_data *data);
@@ -179,8 +193,11 @@ void			exec_command(char **env, t_data *d);
 void			parent(char *line, t_data *data);
 void			here_doc_manage(t_data *data);
 
+void			exec(t_data *data);
+
 int				verif_file(char *line, int in, int doc);
 //===========================================================//
+
 
 //========================<for the parsing>=========================//
 void			get_new(int i, char *line, char **env, t_data *data);
@@ -189,6 +206,7 @@ void			creat_token(t_data *data, char **pipe_split);
 
 int				get_env(t_data *data, char **env);
 //======================================================//
+
 
 //==========================<Get Next Line>=====================//
 # ifndef BUFFER_SIZE

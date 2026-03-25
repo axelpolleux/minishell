@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 11:53:33 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/23 09:46:26 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/25 11:32:15 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,20 @@ int	ft_strncmp(const char *s1, const char *s2, unsigned int n)
 	while (str1[i] == str2[i] && str1[i] && (i < n - 1))
 		i++;
 	return (str1[i] - str2[i]);
+}
+
+int	ft_strcmp(char *s1, char *s2)
+{
+	int	i;
+	
+	i = 0;
+	while (s1[i] || s2[i])
+	{
+		if (s1[i] != s2[i])
+			return (s1[i] - s2[i]);
+		i++;
+	}
+	return (0);
 }
 
 void	closes(int fd, int *fd_storage)
