@@ -6,14 +6,13 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/03/25 17:46:59 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/25 21:13:56 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include ""
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/wait.h>
@@ -109,7 +108,6 @@ typedef struct s_data
 
 	// int			cmd_null;
 	// int			cmd_	struct s_cmd*next;
-
 	// int			path_invalid;
 	// int			path_void;
 	// int			path_null;
@@ -217,12 +215,9 @@ void			buffer_left(char *buffer, size_t start);
 
 int				init_buff(char **buffer);
 //===========================================================//
-
-
 char			**token_slpit(char *str);
 char			*get_word(char *s, int *i);
 int				is_space(char c);
 int				is_operator(char c);
-
 
 #endif
