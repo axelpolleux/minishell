@@ -4,7 +4,3 @@
 [submodule "includes/libft"]
 	path = includes/libft
 	url = git@github.com:axelpolleux/libft.git
-<<<<<<< HEAD
-
-=======
->>>>>>> a244b283705fc105fd66b67a95f97697a6c24ff8
