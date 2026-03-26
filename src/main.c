@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/26 14:26:17 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/26 16:48:52 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,15 @@ void	display_token(t_token *view)
 	int	i;
 
 	i = 0;
+	printf("{");
 	while (view)
 	{
-		printf("============================\n");
-		printf("token => {%s}\n", view->cmd);
+		printf("\"%s\"", view->cmd);
+		if (view->next)
+			printf(", ");
 		view = view->next;
 	}
+	printf("}\n");
 }
 // void display_cmd(t_token *view)
 // {
@@ -79,7 +82,7 @@ int	get_env(t_data *data, char **env)
 
 	if (!env || !(*env)) // a reconstruire ?    oui imperativement
 	{
-		//make_env(t_data *data);
+		//make_env(t_data *data); bien bien plus tard
 		free_data(data);
 		exit (0);
 	}

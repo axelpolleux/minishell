@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/03/26 14:22:36 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/26 16:21:18 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,24 @@
 //==============================================//
 
 //====================<for all struct>===================//
+
+typedef struct s_cmd
+{
+	char 			**cmd;
+	char 			*cmd_path;
+
+	int 			input;
+	int				output;
+
+	struct s_cmd	*next;
+	struct s_cmd	*prev;
+}	t_cmd;
+
 typedef struct s_token
 {
-	int				type;
 	char			*cmd;
+	
+	int				type;
 
 	struct s_token	*next;
 	struct s_token	*prev;
@@ -181,9 +195,10 @@ int				get_env(t_data *data, char **env);
 int				space(char c);
 int				quote(char c);
 int				get_len(int i, int count, char *str);
+int				make_env(t_data *data, char **env);
 //======================================================//
 
-//==========================<Get Next Line>=====================//
+//==========================<Get Next Line_e>=====================//
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
 # endif
@@ -199,6 +214,6 @@ void			free_line(char **line, char *new_line);
 void			buffer_left(char *buffer, size_t start);
 
 int				init_buff(char **buffer);
-//===========================================================//
+//=============================================================//
 
 #endif
