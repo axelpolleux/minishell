@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 11:02:59 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/25 13:16:31 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/26 18:01:35 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ t_data	*init_data(int ac, char **av)
 	data->last_fd = -1;
 	data->env = NULL;
 	data->token = NULL;
+	data->cmd = NULL;
 	(void)av;
 	(void)ac;
 	return (data);
@@ -69,4 +70,30 @@ void	*ft_calloc(size_t nmemb, size_t size)
 		return (NULL);
 	ft_memset(mal, 0, nmemb * size);
 	return (mal);
+}
+
+char	**tab_env(t_env *env)
+{
+	t_env	*cop;
+	char	**tab_env;
+	char	*tmp;
+	int		i;
+
+	i = -1;
+	tab_env = ft_calloc(sizeof(char *), ft_lstsize_e(env) + 1);
+	if (!tab_env)
+		return (NULL);
+	cop = env;
+	while (cop)
+	{
+		tmp = ft_strdup(cop->var);
+		if (!tmp)
+		{
+			free_arr(tab_env);
+			return (NULL);
+		}
+		tab_env[++i] = tmp;
+		cop = cop->next;
+	}
+	return (tab_env);
 }

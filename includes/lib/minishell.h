@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/03/26 16:21:18 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/26 18:37:45 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_cmd
 	char 			**cmd;
 	char 			*cmd_path;
 
+	int				type;
 	int 			input;
 	int				output;
 
@@ -107,7 +108,7 @@ typedef struct s_data
 	pid_t		*pid;
 	t_token		*token;
 	t_env		*env;
-	//t_cmd		*cmd;
+	t_cmd		*cmd;
 }				t_data;
 //=======================================================//
 
@@ -124,6 +125,7 @@ int				open_error(t_data *data, char **av, int cmd);
 //=======================================================//
 
 //==================<general fonction>====================//
+char			**tab_env(t_env *env);
 char			**ft_split(char const *s, char c);
 
 char			*ft_substr(char const *s, unsigned int start, size_t len);
@@ -159,7 +161,6 @@ t_env			*new_env(char *line);
 //======================================================//
 
 //========================<for build in>=========================//
-char			**tab_env(t_env *env);
 char			**tri_alpha(t_env *env);
 
 void			export_central(t_data *data);
@@ -172,14 +173,15 @@ void			verif_command(t_data *d, char **env);
 void			get_cmd_path(char *cmd, char **env, t_data *d);
 void			children(char *line, t_data *data);
 void			tennage(t_data *data, char **av);
-void			process_manage(char *line, t_data *data);
+void			process_manage(t_data *data);
 void			cmd_whith_path(t_data *data, char *command);
 void			full_cmd(t_data *data, char *command, int i);
-void			exec_command(char **env, t_data *d);
-void			parent(char *line, t_data *data);
+void			exec_command(t_data *d);
+void			parent(t_data *data);
 void			here_doc_manage(t_data *data);
 
 int				verif_file(char *line, int in, int doc);
+int				command_proces(t_cmd *cmd);
 //===========================================================//
 
 //========================<for the parsing>=========================//

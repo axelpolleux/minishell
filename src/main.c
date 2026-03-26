@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/26 16:48:52 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/26 17:51:47 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,12 @@ void	display_token(t_token *view)
 // 		view = view->next;
 // 	}
 // }
+
+	// HIST_ENTRY **history;
+	// history = history_list();
+	// int i = -1;
+	// while (history[++i])
+    //     printf("=> %s\n", history[i]->line);
 
 //=======================================//
 
@@ -122,6 +128,8 @@ int	main(int ac, char **av, char **env)
 	t_data	*data;
 
 	data = init_data(ac, av);
+	if (pipe(data->fd_storage) == -1)
+		return (-1);
 	get_env(data, env);
 	//export_central(data);
 	//display_env(data->env);
@@ -131,7 +139,7 @@ int	main(int ac, char **av, char **env)
 		if (exit_shell(data->line))
 			break ;
 		tokenization(data);
-		//exec(data);
+		process_manage(data);
 	}
 	rl_clear_history();
 	free_data(data);

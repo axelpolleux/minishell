@@ -6,36 +6,43 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:43:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/26 14:01:45 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/26 18:39:33 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void	exec_command(char **env, t_data *data)
-// {
-// 	if (data->path_void)
-// 		void_path(data);
-// 	if (data->path_null || data->path_invalid)
-// 		null_path(data);
-// 	if (data->cmd_null)
-// 		null_command(data);
-// 	else if (data->cmd_invalid)
-// 		command_error(data);
-// 	if (execve(data->path_and_cmd, data->token->cmd_part, env) == -1)
-// 	{
-// 		perror("pipex");
-// 		free_data(data);
-// 		if (errno == ENOENT)
-// 			exit(127);
-// 		else if (errno == EACCES)
-// 			exit(126);
-// 		else
-// 			exit(1);
-// 	}
-// }
+void	exec_command(t_data *data)
+{
+	char **env;
+	
+	env = tab_env(data->env);
+	if(!env)
+		data_malloc_error(data);
+	// if (data->path_void)
+	// 	void_path(data);
+	// if (data->path_null || data->path_invalid)
+	// 	null_path(data);
+	// if (data->cmd_null)
+	// 	null_command(data);
+	// else if (data->cmd_invalid)
+	// 	command_error(data);
+	if (execve(data->cmd->cmd_path, data->cmd->cmd, env) == -1)
+	{
+		free_arr(env);
+		perror("pipex");
+		free_data(data);
+		if (errno == ENOENT)
+			exit(127);
+		else if (errno == EACCES)
+			exit(126);
+		else
+			exit(1);
+	}
+	free_arr(env);
+}
 
-// void	parent(char *line, t_data *data)
+// void	parent(t_data *data)
 // {
 // 	data->last_fd = -1;
 // 	while (data->cmd_n < (data->ac - data->start))
@@ -90,19 +97,22 @@
 // 	exec_command(env, data);
 // }
 
-// void	process_manage(char *line, t_data *data)
-// {
-// 	int	i;
-// 	int	error;
+void	process_manage(t_data *data)
+{
+	int	i;
+	//int	error;
 
-// 	parent(line, data);
-// 	i = 0;
-// 	while (i < data->ac - data->start)
-// 	{
-// 		waitpid(data->pid[i], &error, 0);
-// 		i++;
-// 	}
-// 	free_data(data);
-// 	if (WIFEXITED(error))
-// 		exit(WEXITSTATUS(error));
-// }
+	data->pid = ft_calloc(sizeof(pid_t), command_proces(data->cmd));
+	if (!data->pid)
+		data_malloc_error(data);
+	//parent(data);
+	i = 0;
+	// while ()
+	// {
+	// 	waitpid(data->pid[i], &error, 0);
+	// 	i++;
+	// }
+	// free_data(data);
+	// if (WIFEXITED(error))
+	// 	exit(WEXITSTATUS(error));
+}
