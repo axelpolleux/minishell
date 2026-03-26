@@ -6,27 +6,23 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 10:09:53 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/25 21:43:39 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/03/26 14:27:15 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	create_token(t_data *data, char **pipe_split)
+void	create_token(t_data *data, char **word)
 {
+	int		i;
 	t_token	*last;
 	t_token	*new_node;
-	char	**token_split;
-	int		i;
 
 	i = 0;
 	last = NULL;
-	while (pipe_split[i])
+	while (word[i])
 	{
-		token_split = ft_split(pipe_split[i], ' ');
-		if (!token_split)
-			data_malloc_error(data);
-		new_node = new_token(last, token_split, pipe_split[i]);
+		new_node = new_token(last, word[i]);
 		if (!new_node)
 			data_malloc_error(data);
 		if (!data->token)
@@ -40,17 +36,18 @@ void	create_token(t_data *data, char **pipe_split)
 
 void	tokenization(t_data *data)
 {
-	char	**pipe_split;
+	char	**word;
 
 	if (data->token)
 	{
 		free_token(data->token);
 		data->token = NULL;
 	}
-	pipe_split = ft_split(data->line, '|');
-	if (!pipe_split)
+	word = token_split(data->line);
+	if (!word)
 		data_malloc_error(data);
-	create_token(data, pipe_split);
-	free_arr(pipe_split);
+	create_token(data, word);
+	display_token(data->token);
+	free_arr(word);
 	free(data->line);
 }

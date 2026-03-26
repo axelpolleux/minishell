@@ -1,35 +1,71 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_central.c                                  :+:      :+:    :+:   */
+/*   token_split.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 13:39:10 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/25 21:04:52 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/03/26 14:27:24 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_space(char c)
+int	space(char c)
 {
 	if (c == ' ' || c == '\t' || c == '\n')
 		return (1);
 	return (0);
 }
 
+int	quote(char c)
+{
+	if (c == '\'' || c == '"')
+		return (1);
+	return (0);
+}
+
+int	get_len(int i, int count, char *str)
+{
+	char	sep;
+
+	while (str[i])
+	{
+		while (space(str[i]))
+			i++;
+		if (!str[i])
+			break ;
+		count++;
+		while (str[i] && !space(str[i]))
+		{
+			if (quote(str[i]))
+			{
+				sep = str[i++];
+				while (str[i] && str[i] != sep)
+					i++;
+				if (str[i])
+					i++;
+			}
+			else
+				i++;
+		}
+	}
+	return (count);
+}
+
 char	*get_word(char *s, int *i)
 {
-	int		start;
+	char	*line;
 	char	quote;
+	int		start;
 
-	while (is_space(s[*i]))
+	while (space(s[*i]))
 		(*i)++;
 	if (!s[*i])
 		return (NULL);
 	start = *i;
-	while (s[*i] && !is_space(s[*i]))
+	while (s[*i] && !space(s[*i]))
 	{
 		if (s[*i] == '\'' || s[*i] == '"')
 		{
@@ -42,30 +78,31 @@ char	*get_word(char *s, int *i)
 		else
 			(*i)++;
 	}
-	return (ft_substr(s, start, *i - start));
+	line = ft_substr(s, start, *i - start);
+	return (line);
 }
 
-char	**token_slpit(char *str)
+char	**token_split(char *str)
 {
 	char	**word;
-	char	*tok;
 	int		i;
 	int		j;
+	int		k;
 
 	if (!str)
 		return (NULL);
-	word = ft_calloc(sizeof(char *), 100);
+	i = 0;
+	j = get_len(0, 0, str);
+	word = ft_calloc(sizeof(char *), j + 1);
 	if (!word)
 		return (NULL);
-	i = 0;
-	j = 0;
-	while (1)
+	k = -1;
+	while (++k < j)
 	{
-		tok = get_word(str, &i);
-		if (!tok)
-			break ;
-		j++;
+		word[k] = get_word(str, &i);
+		if (!word[k])
+			return (NULL);
 	}
-	word[j] = NULL;
+	word[k] = NULL;
 	return (word);
 }

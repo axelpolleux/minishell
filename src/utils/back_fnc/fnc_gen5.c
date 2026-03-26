@@ -6,17 +6,16 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 13:14:16 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/25 16:14:00 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/26 14:16:33 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*new_token(t_token *prev, char **token_split, char *cmd)
+t_token	*new_token(t_token *prev, char *cmd)
 {
 	t_token	*new_node;
 
-	(void)token_split;
 	new_node = ft_calloc(sizeof(t_token), 1);
 	if (new_node == NULL)
 		return (NULL);
