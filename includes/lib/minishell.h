@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/03/25 21:43:01 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/03/26 17:25:03 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,11 +169,8 @@ int				verif_file(char *line, int in, int doc);
 //===========================================================//
 
 //========================<for the parsing>=========================//
-void			get_new(int i, char *line, char **env, t_data *data);
-void			tokenization(t_data *data);
-void			create_token(t_data *data, char **pipe_split);
+char	*main_reading(char *title);
 
-int				get_env(t_data *data, char **env);
 //======================================================//
 
 //==========================<Get Next Line>=====================//
@@ -193,7 +190,7 @@ void			buffer_left(char *buffer, size_t start);
 
 int				init_buff(char **buffer);
 //===========================================================//
-char			**token_slpit(char *str);
+char			**token_split(char *str);
 char			*get_word(char *s, int *i);
 int				is_space(char c);
 int				is_operator(char c);
