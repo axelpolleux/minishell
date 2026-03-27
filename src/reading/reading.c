@@ -33,6 +33,8 @@ char	*main_reading(char *title)
 	char	*res;
 
 	res = 0;
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, handle_signal);
 	while (1)
 	{
 		line = readline(title);
@@ -46,8 +48,6 @@ char	*main_reading(char *title)
 		free(line);
 		main_parser(res);
 	}
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, handle_signal);
 	clear_history();
 	return (res);
 }
