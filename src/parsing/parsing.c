@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 10:09:53 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/26 16:55:32 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/03/27 11:16:07 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 int	main_parser(char *input)
 {
-	(void)input;
-	return (0);
+	char	**res;
+
+	(void)res;
+	token_split(input);
+	return (1);
 }

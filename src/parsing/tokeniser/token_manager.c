@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   split_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/27 11:35:55 by apolleux         ###   ########.fr       */
+/*   Created: 2026/03/27 11:06:42 by apolleux          #+#    #+#             */
+/*   Updated: 2026/03/27 11:23:28 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+
 #include "minishell.h"
 
-int main(int ac, char **av, char **env)
+char	**split_words(char *str)
 {
-	(void)ac;
-	(void)av;
-	(void)env;
-	char* line;
+	char	**res;
 
-	line = main_reading("minishell$ ");
-	free(line);
-	return (1);
+	res = ft_split(str, ' ');
+	while (*res)
+		printf("%s", *res++);
+	return (res);
 }
