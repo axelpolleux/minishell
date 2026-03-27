@@ -6,7 +6,7 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:04:56 by apolleux          #+#    #+#             */
-/*   Updated: 2026/03/27 10:02:12 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/03/27 10:04:01 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,6 @@ char	*main_reading(char *title)
 		res = line;
 		free(line);
 	}
+	clear_history();
 	return (res);
 }
