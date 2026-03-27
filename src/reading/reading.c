@@ -6,9 +6,12 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:04:56 by apolleux          #+#    #+#             */
-/*   Updated: 2026/03/26 18:12:13 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/03/27 10:02:12 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <stdlib.h>
+#include <readline/history.h>
 
 #include "minishell.h"
 
@@ -39,6 +42,7 @@ char	*main_reading(char *title)
 			printf("exit\n");
 			exit(0);
 		}
+		add_history(line);
 		res = line;
 		free(line);
 	}
