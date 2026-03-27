@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split_token.c                                      :+:      :+:    :+:   */
+/*   tokeniser.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 11:06:42 by apolleux          #+#    #+#             */
-/*   Updated: 2026/03/27 11:23:28 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/03/27 17:23:41 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 
 #include "minishell.h"
 
-char	**split_words(char *str)
+int is_it_space(int c)
 {
-	char	**res;
+	if (c == ' ' || (c >= 9  && c <= 12))
+		return (1);
+	return (0);
+}
 
-	res = ft_split(str, ' ');
-	while (*res)
-		printf("%s", *res++);
-	return (res);
+int is_quote(int c)
+{
+	if (c == 34 || c == 39)
+		return (1);
+	return (0);
 }
