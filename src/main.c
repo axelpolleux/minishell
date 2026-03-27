@@ -19,7 +19,7 @@ int main(int ac, char **av, char **env)
 	(void)env;
 	char* line;
 
-	line = main_reading("minishell$ ");
+	line = main_reading("pastishell$ ");
 	free(line);
 	return (1);
 }
