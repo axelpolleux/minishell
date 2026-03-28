@@ -57,8 +57,8 @@ typedef struct s_token
 	int				type;
 	char			*cmd;
 
-	struct s_token	*next;
 	struct s_token	*prev;
+	struct s_token	*next;
 }	t_token;
 
 typedef struct s_env
