@@ -40,7 +40,7 @@ FORCE:
 $(BUILDS_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-	@echo "Compiling: $<"
+# 	@echo "Compiling: $<"
 
 clean:
 	@echo "[CLEAN]"

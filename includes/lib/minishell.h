@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/03/26 18:37:45 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/30 14:31:23 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct s_cmd
 {
 	char 			**cmd;
 	char 			*cmd_path;
+	char 			*full_cmd;
 
 	int				type;
 	int 			input;
@@ -87,27 +88,26 @@ typedef struct s_env
 typedef struct s_data
 {
 	char		**path;
+	char		**original_env;
 
 	// char		*path_and_cmd;
 	// char		*cmd_space_void;
-	// char		*limit;
 	char		*line;
 
 	int			fd_storage[2];
 	int			fd;
 	int			last_fd;
-	// int			doc;
-	int			start;
 
-	// int			cmd_null;
-	// int			cmd_	struct s_cmd*next;
-	// int			path_invalid;
-	// int			path_void;
-	// int			path_null;
-	// int			executable;
+	int			cmd_null;
+	int			cmd_void;
+	int			cmd_invalid;
+	int			path_invalid;
+	int			path_void;
+	int			path_null;
+
 	pid_t		*pid;
 	t_token		*token;
-	t_env		*env;
+	t_env		*t_env;
 	t_cmd		*cmd;
 }				t_data;
 //=======================================================//
@@ -121,7 +121,7 @@ void			pipe_error(t_data *data);
 
 int				malloc_error(char **path);
 int				data_malloc_error(t_data *data);
-int				open_error(t_data *data, char **av, int cmd);
+int				open_error(t_data *data);
 //=======================================================//
 
 //==================<general fonction>====================//
@@ -140,10 +140,12 @@ void			*ft_calloc(size_t nmemb, size_t size);
 void			free_data(t_data *data);
 void			free_env(t_env *node);
 void			free_token(t_token *node);
+void			free_cmd(t_cmd *node);
 void			add_to_bottom(t_env **node, t_env *new_bot);
 
 void			display_env(t_env *view);// a degager
 void			display_token(t_token *view);//
+void			display_cmd(t_cmd *view);//
 
 int				ft_strncmp(const char *s1, const char *s2, unsigned int n);
 int				ft_strcmp(char *s1, char *s2);
@@ -151,11 +153,12 @@ int				word_size(char *str, char charset);
 int				srch_cmd(char *s, char c);
 int				ft_lstsize_e(t_env *lst);
 int				ft_lstsize_t(t_token *lst);
+int				ft_lstsize_c(t_cmd *lst);
 int				exit_shell(char *line);
 
 size_t			ft_strlen(const char *str);
 
-t_data			*init_data(int ac, char **av);
+t_data			*init_data(int ac, char **av, char **env);
 t_token			*new_token(t_token *node, char *cmd);
 t_env			*new_env(char *line);
 //======================================================//
@@ -167,26 +170,30 @@ void			export_central(t_data *data);
 //===============================================================//
 
 //========================<for exec>=========================//
-char			**get_path(char **env, char *motif, t_data *data);
+char			**get_path(t_data *data , int i);
 
 void			verif_command(t_data *d, char **env);
-void			get_cmd_path(char *cmd, char **env, t_data *d);
-void			children(char *line, t_data *data);
-void			tennage(t_data *data, char **av);
-void			process_manage(t_data *data);
+void			get_cmd_path(t_data *d);
+void			children(t_data *data);
+void			tennage(t_data *data);
+void			exec(t_data *data);
 void			cmd_whith_path(t_data *data, char *command);
-void			full_cmd(t_data *data, char *command, int i);
-void			exec_command(t_data *d);
-void			parent(t_data *data);
-void			here_doc_manage(t_data *data);
+void			full_cmd(t_data *data, char *command);
+void			exec_command(t_data *data, char **env);
+void			parent(t_data *data, int i);
 
-int				verif_file(char *line, int in, int doc);
-int				command_proces(t_cmd *cmd);
+int				here_doc_manage(t_data *data);
+int				verif_file(char *line, int doc);
+int				nb_process(t_cmd *cmd);
+int				only_quote(char *line);
+int				get_enof(t_data *data, char *line);
+int				full_void(char *line);
+
+void			in_hre(t_data *data, char *line, int fd[2]);
 //===========================================================//
 
 //========================<for the parsing>=========================//
 char			**token_split(char *str);
-
 char			*get_word(char *s, int *i);
 
 void			get_new(int i, char *line, char **env, t_data *data);

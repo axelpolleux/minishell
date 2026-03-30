@@ -6,13 +6,11 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 09:50:21 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/26 18:00:41 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/28 16:04:49 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
 
 char	**tri_alpha(t_env *env)
 {
@@ -48,7 +46,7 @@ void	export_central(t_data *data)
 	int		i;
 
 	i = -1;
-	tab_tri_env = tri_alpha(data->env);
+	tab_tri_env = tri_alpha(data->t_env);
 	if (!tab_tri_env)
 		data_malloc_error(data);
 	while (tab_tri_env[++i])
