@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/30 14:37:23 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/30 17:51:55 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,51 +66,31 @@ void display_cmd(t_cmd *view)
 
 //=======================================//
 
-void	get_new(int i, char *line, char **env, t_data *data)
+void reset(t_data *data)
 {
-	t_env	*new;
-
-	while (env[i])
-	{
-		line = ft_strdup(env[i]);
-		if (!line)
-			data_malloc_error(data);
-		new = new_env(line);
-		if (!new)
-		{
-			free(line);
-			data_malloc_error(data);
-		}
-		add_to_bottom(&data->t_env, new);
-		i++;
-	}
+	if (data->line)
+		free(data->line);
+	if (data->t_env)
+    	free_env(data->t_env);
+    if (data->cmd)
+		free_cmd(data->cmd);
 }
 
-int	get_env(t_data *data, char **env)
+
+void get_env(t_data *data, char **env)
 {
-	t_env	*tmp;
-	char	*line;
+	t_env *new;
+    int i;
 
-	if (!env || !(*env)) // a reconstruire ?    oui imperativement
-	{
-		//make_env(t_data *data); biens biens plus tard
-		free_data(data);
-		exit (0);
-	}
-	line = ft_strdup(env[0]);
-	if (!line)
-		data_malloc_error(data);
-	tmp = new_env(line);
-	if (!tmp)
-	{
-		free(line);
-		data_malloc_error(data);
-	}
-	data->t_env = tmp;
-	get_new(1, line, env, data);
-	return (1);
+	i = -1;
+    while (env[++i])
+    {
+        new = new_env(ft_strdup(env[i]));
+        if (!new)
+            data_malloc_error(data);
+        add_to_bottom(&data->t_env, new);
+    }
 }
-
 int	exit_shell(char *line)
 {
 	if (!line)
@@ -120,7 +100,7 @@ int	exit_shell(char *line)
 	}
 	if (line && *line)
 		add_history(line);
-	if (!strcmp(line, "exit"))
+	if (!strcmp(line, "exit")) // a ameliorer pour les space
 	{
 		printf("exit\n");
 		return (1);
@@ -128,25 +108,33 @@ int	exit_shell(char *line)
 	return (0);
 }
 
-int	main(int ac, char **av, char **env)
+int main(int ac, char **av, char **env)
 {
-	t_data	*data;
+    t_data *data;
 
-	data = init_data(ac, av, env);
-	if (pipe(data->fd_storage) == -1)
-		return (-1);
-	get_env(data, env);
-	//export_central(data);
-	//display_env(data->env);
-	while (1)
-	{
-		data->line = readline("mimishell> ");
+    data = init_data(ac, av, env);
+	data->built_in = init_built();
+	if (!data->built_in)
+		data_malloc_error(data);
+    get_env(data, env);
+    while (1)
+    {
+        data->line = readline("minishell> ");
 		if (exit_shell(data->line))
 			break ;
+		add_history(data->line);
 		tokenization(data);
-		//exec(data);
-	}
-	rl_clear_history();
-	free_data(data);
-	return (0);
+        exec(data);
+        //reset(data); pas bessoin
+    }
+    rl_clear_history();
+    free_data(data);
+    return (0);
 }
+
+ // if (!tokenization(data))//   !parse(data)
+ // {
+ //     reset(data);
+ //     continue;
+ // }
+

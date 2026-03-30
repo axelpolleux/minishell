@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 13:14:16 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/30 13:06:31 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/30 16:07:46 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,18 @@ void	free_data(t_data *data)
 			free_cmd(data->cmd);
 		free(data);
 	}
+}
+
+int		full_void(char *line)
+{
+	int i;
+	
+	i = -1;
+	if (line)
+	{
+		while (line[++i])
+			if (line[i] != ' ' && line[i] != '\t' && line[i] != '\n')
+				return (0);
+	}
+	return (1);
 }

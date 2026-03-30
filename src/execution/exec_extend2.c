@@ -1,59 +1,67 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exec_extend2.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/17 11:48:19 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/30 15:06:39 by ethutin-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// /* ************************************************************************** */
+// /*                                                                            */
+// /*                                                        :::      ::::::::   */
+// /*   exec_extend2.c                                     :+:      :+:    :+:   */
+// /*                                                    +:+ +:+         +:+     */
+// /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
+// /*                                                +#+#+#+#+#+   +#+           */
+// /*   Created: 2025/11/17 11:48:19 by ethutin-          #+#    #+#             */
+// /*   Updated: 2026/03/30 16:26:08 by ethutin-         ###   ########.fr       */
+// /*                                                                            */
+// /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**get_path(t_data *data, int i)
-{
-	t_env 	*tmp;
-	char	**path;
+// char	**get_path(t_data *data, int i)
+// {
+// 	t_env 	*tmp;
+// 	char	**path;
 
+// 	tmp = data->t_env;
+// 	while (tmp)
+// 	{
+// 		i = 0;
+// 		while (tmp->var[i] && tmp->var[i] != '=')
+// 			i++;
+// 		if (!ft_strncmp(tmp->var[i], "PATH", i) && "PATH"[i] == '\0')
+// 		{
+// 			if (tmp->var[i + 1] == '\0')
+// 			{
+// 				data->path_void = 1;
+// 				return (NULL);
+// 			}
+// 			path = ft_split(tmp->var[i]+ 1, ':');
+// 			if (!path)
+// 				data_malloc_error(data);
+// 			return (path);
+// 		}
+// 		tmp = tmp->next;
+// 	}
+// 	data->path_null = 1;
+// 	return (NULL);
+// }
+
+char **get_path(t_data *data, int len)
+{
+    t_env	*tmp;
+	char	**path;
+	
 	tmp = data->t_env;
-	while (tmp)
-	{
-		i = 0;
-		while (tmp->var[i] && tmp->var[i] != '=')
-			i++;
-		if (!ft_strncmp(tmp->var[i], "PATH", i) && "PATH"[i] == '\0')
+    while (tmp)
+    {
+        if (!ft_strncmp(tmp->var, MOTIF, len))
 		{
-			if (tmp->var[i + 1] == '\0')
-			{
-				data->path_void = 1;
-				return (NULL);
-			}
-			path = ft_split(tmp->var[i]+ 1, ':');
+			path = ft_split(tmp->var + len, ':');
 			if (!path)
 				data_malloc_error(data);
-			return (path);
+            return (path);
 		}
-		tmp = tmp->next;
-	}
+        tmp = tmp->next;
+    }
 	data->path_null = 1;
-	return (NULL);
+    return NULL;
 }
 
-int		full_void(char *line)
-{
-	int i;
-	
-	i = -1;
-	if (line)
-	{
-		while (line[++i])
-			if (line[i] != ' ' && line[i] != '\t' && line[i] != '\n')
-				return (0);
-	}
-	return (1);
-}
 
 
 int	verif_file(char *file, int doc)
@@ -90,7 +98,7 @@ void	verif_command(t_data *data)
 		return ;
 	}
 	else
-		data->path = get_path(data, 0);
+		data->path = get_path(data, ft_strlen(MOTIF));
 	if (!data->path_null && !data->path_void)
 		full_cmd(data, tmp->cmd[0]);
 }

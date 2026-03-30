@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/03/30 14:31:23 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/30 18:39:52 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@
 # define APPEND		7 // >>
 # define HEREDOC	8 // <<
 # define OTHERS		9
+
+# define MOTIF		"PATH="
 //==============================================//
 
 //====================<for all struct>===================//
@@ -89,6 +91,7 @@ typedef struct s_data
 {
 	char		**path;
 	char		**original_env;
+	char		**built_in;
 
 	// char		*path_and_cmd;
 	// char		*cmd_space_void;
@@ -127,6 +130,7 @@ int				open_error(t_data *data);
 //==================<general fonction>====================//
 char			**tab_env(t_env *env);
 char			**ft_split(char const *s, char c);
+char			**init_built(void);
 
 char			*ft_substr(char const *s, unsigned int start, size_t len);
 char			*ft_strdup(char *src);
@@ -167,6 +171,9 @@ t_env			*new_env(char *line);
 char			**tri_alpha(t_env *env);
 
 void			export_central(t_data *data);
+
+int				is_builtin(char **built_in, char *cmd);
+
 //===============================================================//
 
 //========================<for exec>=========================//
@@ -181,6 +188,8 @@ void			cmd_whith_path(t_data *data, char *command);
 void			full_cmd(t_data *data, char *command);
 void			exec_command(t_data *data, char **env);
 void			parent(t_data *data, int i);
+void			wait_end(t_data *data, int count);
+void			handle_redir(t_cmd *cmd);
 
 int				here_doc_manage(t_data *data);
 int				verif_file(char *line, int doc);
@@ -199,8 +208,8 @@ char			*get_word(char *s, int *i);
 void			get_new(int i, char *line, char **env, t_data *data);
 void			tokenization(t_data *data);
 void			create_token(t_data *data, char **pipe_split);
+void			get_env(t_data *data, char **env);
 
-int				get_env(t_data *data, char **env);
 int				space(char c);
 int				quote(char c);
 int				get_len(int i, int count, char *str);

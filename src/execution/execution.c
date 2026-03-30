@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:43:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/30 14:27:49 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/30 19:04:20 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,7 @@
 
 void	exec_command(t_data *data, char  **env)
 {
-	if (data->path_void)
-		void_path(data);
-	if (data->path_null || data->path_invalid)
-		null_path(data);
-	if (data->cmd_null)
-		null_command(data);
-	else if (data->cmd_invalid)
-		command_error(data);
-	if (execve(data->cmd->cmd_path, data->cmd->cmd, env) == -1)
+    if (execve(data->cmd->cmd_path, data->cmd->cmd, env) == -1)
 	{
 		free_arr(env);
 		perror("minishell");
@@ -37,80 +29,102 @@ void	exec_command(t_data *data, char  **env)
 	free_arr(env);
 }
 
-void	parent(t_data *data, int i)
+void handle_redir(t_cmd *cmd)
 {
-	data->last_fd = -1;
-	while (data->cmd)
-	{
-		data->fd_storage[0] = -1;
-		data->fd_storage[1] = -1;
-		if (data->cmd->next)
-			if (pipe(data->fd_storage) == -1)
-				pipe_error(data);
-		data->pid[i] = fork();
-		if (data->pid[i] == -1)
-			exit(EXIT_FAILURE);
-		if (data->pid[i] == 0)
-			children(data);
-		if (data->last_fd != -1)
-			close(data->last_fd);
-		if (data->cmd)
-		{
-			close(data->fd_storage[1]);
-			data->last_fd = data->fd_storage[0];
-		}
-		data->cmd = data->cmd->next;
-	}
-	if (data->last_fd != -1)
-		close(data->last_fd);
+    if (!cmd->input)
+    {
+        dup2(cmd->input, STDIN_FILENO);
+        close(cmd->input);
+    }
+    if (!cmd->output)
+    {
+        dup2(cmd->output, STDOUT_FILENO);
+        close(cmd->output);
+    }
 }
 
-void	children(t_data *data)
+
+void children(t_data *data, t_cmd *cmd)
 {
-	char **env;
+    char **env;
 
-	if (!here_doc_manage(data))
-	
-	// {
-	
-	// 	data->fd = verif_file(av[1], 0, 0);
-	// 	if (data->fd == -1)
-	// 		open_error(data, av, 1);
-	// 	if (dup2(data->fd, 0) == -1)
-	// 		exit(EXIT_FAILURE);
-	// 	close(data->fd);
-	// }
-
-	
-	if (dup2(data->last_fd, 0) == -1)
-		exit(EXIT_FAILURE);
-	close(data->last_fd);
-	tennage(data);
-	if (data->cmd->type == CMD)
-		get_cmd_path(data);
-		env = tab_env(data->t_env);
-	if(!env)
+    if (data->last_fd != -1)
+    {
+        dup2(data->last_fd, STDIN_FILENO);
+        close(data->last_fd);
+    }
+    if (cmd->next)
+    {
+        dup2(data->fd_storage[1], STDOUT_FILENO);
+        close(data->fd_storage[0]);
+        close(data->fd_storage[1]);
+    }
+    handle_redirections(cmd);
+    if (is_builtin(data, cmd))
+        exit(children_built(data, cmd));
+    get_cmd_path(data, cmd); //// afaire de plus vois bien a l'utilisation du fd de la struct, t'afait de la merde a se niveaux la pendant le reforg
+	env = tab_env(data->t_env);
+	if (!env)
 		data_malloc_error(data);
 	exec_command(data, env);
 }
 
-void	exec(t_data *data)
-{
-	int	i;
-	int	pid;
-	int	error;
 
-	pid =  nb_process(data->cmd);
-	// if (!pid)
-    // return ();
-	data->pid = ft_calloc(sizeof(pid_t), pid);
-	if (!data->pid)
-		data_malloc_error(data);
-	parent(data, &i);
-	i = -1;
-	while (++i < ft_lstsize_c(data->cmd) - 1)
+void parent(t_data *data, int i)
+{
+    t_cmd *cmd;
+
+	data->last_fd = -1;
+    cmd = data->cmd;
+    while (cmd)
+    {
+		data->fd_storage[0] = -1;
+		data->fd_storage[1] = -1;
+        if (cmd->next && pipe(data->fd_storage) == -1) //la secu er l'error  a revoir
+            perror("METAL PIPE");
+        data->pid[i] = fork();
+        if (data->pid[i] == 0)
+            children(data, cmd);
+        if (data->last_fd != -1)
+            close(data->last_fd);
+        if (cmd->next)
+        {
+            close(data->fd_storage[1]);
+            data->last_fd = data->fd_storage[0];
+        }
+        cmd = cmd->next;
+    }
+}
+
+void wait_end(t_data *data, int count)
+{
+	int i;
+	int error;
+
+	i = 0;
+	while (i < count)
+	{
 		waitpid(data->pid[i], &error, 0);
+		i++;
+	}
 	free_data(data);
 	if (WIFEXITED(error))
 		exit(WEXITSTATUS(error));
+}
+
+void exec(t_data *data)
+{
+    int count;
+
+    count = nb_process(data->cmd);
+    if (count == 0)
+        return ;
+	data->pid = malloc(sizeof(pid_t) * count);
+    if (!data->pid)
+        data_malloc_error(data);
+    if (count == 1 && is_builtin(data->built_in, data->cmd->cmd[0]))
+        parent_built(data);
+    else
+        parent(data, -1);
+	wait_end(data, count);
 }

@@ -1,0 +1,90 @@
+// /* ************************************************************************** */
+// /*                                                                            */
+// /*                                                        :::      ::::::::   */
+// /*   here_doc.c                                         :+:      :+:    :+:   */
+// /*                                                    +:+ +:+         +:+     */
+// /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
+// /*                                                +#+#+#+#+#+   +#+           */
+// /*   Created: 2026/03/28 15:16:58 by ethutin-          #+#    #+#             */
+// /*   Updated: 2026/03/30 14:32:15 by ethutin-         ###   ########.fr       */
+// /*                                                                            */
+// /* ************************************************************************** */
+
+// #include "minishell.h"
+
+// void in_hre(t_data *data, char *line, int fd[2])
+// {
+// 	while (1)
+// 	{
+// 		write(1, "> ", 2);
+// 		line = get_next_line(0, 0);
+// 		if (!line)
+// 			exit(0);
+// 		if(get_enof(line, data))
+// 			break ;
+// 		write(fd[1], line, ft_strlen(line));
+// 		free(line);
+// 	}
+// 	close(fd[1]);
+// 	dup2(fd[0], 0);
+// 	close(fd[0]);
+// }
+
+// int	get_enof(t_data *data, char *line)
+// {
+// 	if (!ft_strncmp(line, data->cmd->cmd[1], ft_strlen(data->cmd->cmd[1]))
+// 		&& line[ft_strlen(data->cmd->cmd[1])] == '\n')
+// 	{
+// 		get_next_line(-1, 0);
+// 		free(line);
+// 		return (1);
+// 	}
+// 	return (0);
+// }
+
+// int hre_arg(t_data *data)
+// {
+// 	t_cmd *tmp;
+
+// 	tmp = data->cmd;
+// 	if (!tmp->cmd[1])
+// 	{
+// 		//perror()
+// 		write(2, "minishell: syntax error near\
+//  unexpected token `newline'\n", 56);
+// 		exit(2);
+// 	}
+// 	if (only_quote(tmp->cmd[1]))
+// 	{
+// 		if (data->cmd->cmd[1]);
+// 			free(data->cmd->cmd[1]);
+// 		data->cmd->cmd[1] = ft_strdup("\n");
+// 		if (!data->cmd->cmd[1])
+// 			return (-1);
+// 	}
+// 	return (1);
+// }
+
+// int	here_doc_manage(t_data *data)// les signaux a faire
+// {
+// 	int		fd[2];
+// 	int		error;
+// 	char	*line;
+
+// 	if (data->cmd->type != HEREDOC)
+// 		return(0);
+// 	if (pipe(fd) == -1)
+// 		pipe_error(data);
+// 	error = hre_arg(data->cmd);
+// 	if (error == 0)
+// 	{
+// 		close(fd[1]);
+// 		dup2(fd[0], 0);
+// 		close(fd[0]);
+// 	}
+// 	else if (error == -1)
+// 		data_malloc_error(data);
+// 	else
+// 		in_hre(data, line, fd);
+// }
+
