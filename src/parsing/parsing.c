@@ -12,25 +12,13 @@
 
 #include "minishell.h"
 
-static void	display_words(char **input)
-{
-	int	i;
-
-	i = 0;
-	while (input[i])
-	{
-		printf("[%s] ", input[i]);
-		i++;
-	}
-	printf("\n");
-}
-
 int	main_parser(char *input)
 {
-	char	**res;
+	char	**res = NULL;
+	(void)input;
 
-	res = token_split(input);
-	display_words(res);
+	// res = tokeniser(input);
+	// display_words(res);
 	free(res);
 	return (1);
 }

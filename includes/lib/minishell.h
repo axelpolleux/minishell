@@ -171,7 +171,9 @@ int				verif_file(char *line, int in, int doc);
 //========================<for the parsing>=========================//
 char			*main_reading(char *title);
 int				main_parser(char *input);
-char			**token_split(char *command);
+void			typer(t_token token);
+void			tokeniser(char *input);
+
 //======================================================//
 
 //==========================<Get Next Line>=====================//

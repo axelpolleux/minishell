@@ -14,34 +14,20 @@
 #include "minishell.h"
 #include "../../includes/lib/minishell.h"
 
-// int is_it_space(int c)
-// {
-// 	if (c == ' ' || (c >= 9  && c <= 12))
-// 		return (1);
-// 	return (0);
-// }
-
-// int is_quote(int c)
-// {
-// 	if (c == 34 || c == 39)
-// 		return (1);
-// 	return (0);
-// }
-
 void	typer(t_token token)
 {
-	if (ft_strcmp(token->cmd, "|"))
-		token->type = PIPE;
+	(void)token;
 }
 
 void	tokeniser(char *input)
 {
-	t_token	token;
-	char	*res;
+	// t_token	token;
+	// char	*res;
 	int		i;
 
+	(void)input;
 	i = 0;
-	while (str[i])
+	while (input[i])
 	{
 		i++;
 	}
