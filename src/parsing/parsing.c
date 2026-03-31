@@ -17,8 +17,7 @@ int	main_parser(char *input)
 	char	**res = NULL;
 	(void)input;
 
-	// res = tokeniser(input);
-	// display_words(res);
+	res = tokeniser(input);
 	free(res);
 	return (1);
 }

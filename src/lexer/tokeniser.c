@@ -14,22 +14,34 @@
 #include "minishell.h"
 #include "../../includes/lib/minishell.h"
 
-void	typer(t_token token)
-{
-	(void)token;
-}
 
-void	tokeniser(char *input)
+// int	is_it_quote(int c)
+// {
+// 	if (c == 34 || c == 39)
+// 		return (1);
+// 	return (0);
+// }
+//
+// int	is_it_space(int c)
+// {
+// 	if (c == ' ' || (c >= 9 && c <= 13))
+// 		return (1);
+// 	return (0);
+// }
+
+char	*select_quote(char *input)
 {
-	// t_token	token;
-	// char	*res;
+	char	*res;
 	int		i;
 
-	(void)input;
 	i = 0;
-	while (input[i])
-	{
-		i++;
-	}
+	if (!(input[i] == 34 || input[i] == 39))
+	return (res);
+}
+
+void	tokeniser(char *input, char *delim)
+{
+	t_token	token;
+
 
 }
