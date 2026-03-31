@@ -14,10 +14,8 @@
 
 int	main_parser(char *input)
 {
-	char	**res = NULL;
-	(void)input;
+	t_token	res;
 
 	res = tokeniser(input);
-	free(res);
 	return (1);
 }

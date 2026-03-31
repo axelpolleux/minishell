@@ -11,23 +11,9 @@
 /* ************************************************************************** */
 
 
+#include <stdio.h>
 #include "minishell.h"
-#include "../../includes/lib/minishell.h"
 
-
-// int	is_it_quote(int c)
-// {
-// 	if (c == 34 || c == 39)
-// 		return (1);
-// 	return (0);
-// }
-//
-// int	is_it_space(int c)
-// {
-// 	if (c == ' ' || (c >= 9 && c <= 13))
-// 		return (1);
-// 	return (0);
-// }
 
 char	*select_quote(char *input)
 {
@@ -36,12 +22,20 @@ char	*select_quote(char *input)
 
 	i = 0;
 	if (!(input[i] == 34 || input[i] == 39))
+		return (0);
 	return (res);
 }
 
-void	tokeniser(char *input, char *delim)
+t_token	tokeniser(char *input, char *delim)
 {
-	t_token	token;
+	int		i;
+	t_token	res;
 
+	i = 0;
+	while (input[i] && !ft_strchr(delim, input[i]))
+	{
+		printf("");
+		i++;
+	}
 
 }
