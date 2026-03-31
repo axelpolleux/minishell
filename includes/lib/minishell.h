@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/03/30 18:39:52 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/31 14:22:50 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,9 +179,9 @@ int				is_builtin(char **built_in, char *cmd);
 //========================<for exec>=========================//
 char			**get_path(t_data *data , int i);
 
-void			verif_command(t_data *d, char **env);
-void			get_cmd_path(t_data *d);
-void			children(t_data *data);
+void			verif_command(t_data *d);
+void			get_cmd_path(t_data *data);
+void			children(t_data *data, t_cmd *cmd);
 void			tennage(t_data *data);
 void			exec(t_data *data);
 void			cmd_whith_path(t_data *data, char *command);
@@ -189,7 +189,7 @@ void			full_cmd(t_data *data, char *command);
 void			exec_command(t_data *data, char **env);
 void			parent(t_data *data, int i);
 void			wait_end(t_data *data, int count);
-void			handle_redir(t_cmd *cmd);
+void			manage_redir(t_cmd *cmd);
 
 int				here_doc_manage(t_data *data);
 int				verif_file(char *line, int doc);
@@ -198,7 +198,7 @@ int				only_quote(char *line);
 int				get_enof(t_data *data, char *line);
 int				full_void(char *line);
 
-void			in_hre(t_data *data, char *line, int fd[2]);
+void			in_hre(t_data *data, int fd[2]);
 //===========================================================//
 
 //========================<for the parsing>=========================//

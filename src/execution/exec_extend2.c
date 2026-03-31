@@ -1,120 +1,76 @@
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   exec_extend2.c                                     :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2025/11/17 11:48:19 by ethutin-          #+#    #+#             */
-// /*   Updated: 2026/03/30 16:26:08 by ethutin-         ###   ########.fr       */
-// /*                                                                            */
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_extend2.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/26 17:40:43 by ethutin-          #+#    #+#             */
+/*   Updated: 2026/03/31 13:51:49 by ethutin-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 
-// char	**get_path(t_data *data, int i)
-// {
-// 	t_env 	*tmp;
-// 	char	**path;
-
-// 	tmp = data->t_env;
-// 	while (tmp)
-// 	{
-// 		i = 0;
-// 		while (tmp->var[i] && tmp->var[i] != '=')
-// 			i++;
-// 		if (!ft_strncmp(tmp->var[i], "PATH", i) && "PATH"[i] == '\0')
-// 		{
-// 			if (tmp->var[i + 1] == '\0')
-// 			{
-// 				data->path_void = 1;
-// 				return (NULL);
-// 			}
-// 			path = ft_split(tmp->var[i]+ 1, ':');
-// 			if (!path)
-// 				data_malloc_error(data);
-// 			return (path);
-// 		}
-// 		tmp = tmp->next;
-// 	}
-// 	data->path_null = 1;
-// 	return (NULL);
-// }
-
-char **get_path(t_data *data, int len)
+int nb_process(t_cmd *cmd)
 {
-    t_env	*tmp;
-	char	**path;
-	
-	tmp = data->t_env;
+    t_cmd   *tmp;
+    int     count;
+
+    count = 0;
+    tmp = cmd;
     while (tmp)
     {
-        if (!ft_strncmp(tmp->var, MOTIF, len))
-		{
-			path = ft_split(tmp->var + len, ':');
-			if (!path)
-				data_malloc_error(data);
-            return (path);
-		}
+        if (tmp->type == CMD)
+            count++;
         tmp = tmp->next;
     }
-	data->path_null = 1;
-    return NULL;
+    return (count);
 }
 
-
-
-int	verif_file(char *file, int doc)
+void	full_cmd(t_data *data, char *command)
 {
-	int	fd;
+	char	*tmp;
+	int 	i;
 
-	if (doc == HEREDOC || doc == APPEND)
-		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0777);
-	else if (doc == RED_OUT)
-		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	else if (doc == RED_IN)
-		fd = open(file, O_RDONLY);
-	return (fd);
-}
-
-void	cmd_whith_path(t_data *data, char *command)
-{
-	if (access(command, F_OK | X_OK) == 0)
-		data->cmd->cmd_path = command;
-	else
-		data->path_invalid = 1;
-	return ;
-}
-
-void	verif_command(t_data *data)
-{
-
-	t_cmd *tmp;
-
-	tmp = data->cmd;
-	if (srch_cmd(tmp->cmd[0], '/'))
+	i = -1;
+	while (data->path && data->path[++i])
 	{
-		cmd_whith_path(data, tmp->cmd[0]);
-		return ;
+		if (data->path[i][0] == '\0')
+			tmp = ft_strdup("./");
+		else
+			tmp = ft_strjoin(data->path[i], "/");
+		if (!tmp)
+			data_malloc_error(data);
+		data->cmd->cmd_path = ft_strjoin(tmp, command);
+		free(tmp);
+		if (!data->cmd->cmd_path)
+			data_malloc_error(data);
+		if (access(data->cmd->cmd_path, F_OK | X_OK) == 0)
+			return ;
+	}
+	data->cmd_invalid = 1;
+}
+
+void	tennage(t_data *data)
+{
+	if (data->cmd->type == RED_OUT || data->cmd->type == APPEND
+        || data->cmd->type == HEREDOC ||  data->cmd->type == RED_IN)
+	{
+		data->fd = verif_file(data->cmd->cmd[1], data->cmd->type);
+		if (data->fd == -1)
+			open_error(data);
+		if (dup2(data->fd, 1) == -1)
+			exit(EXIT_FAILURE);
+		close(data->fd);
 	}
 	else
-		data->path = get_path(data, ft_strlen(MOTIF));
-	if (!data->path_null && !data->path_void)
-		full_cmd(data, tmp->cmd[0]);
-}
-
-void	get_cmd_path(t_data *data)
-{
-	t_cmd *tmp;
-
-	tmp = data->cmd;
-	if (!tmp->full_cmd || !*tmp->full_cmd)
 	{
-		data->cmd_null = 1;
-		return ;
+		if (dup2(data->fd_storage[1], 1) == -1)
+			exit(EXIT_FAILURE);
+		closes(-1, data->fd_storage);
 	}
-	if (full_void(tmp->cmd))
-		return ;
-
-	verif_command(data);
 }
+
+// ethutin-@2F7:~/COMMON TRUNK/CIRCLE3/Minishell/minishell_hub$ << 
+// bash: syntax error near unexpected token `newline'

@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/30 17:51:55 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/31 14:28:00 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void display_cmd(t_cmd *view)
 		view = view->next;
 	}
 }
-
+	// //pour voir l'historique
 	// HIST_ENTRY **history;
 	// history = history_list();
 	// int i = -1;
@@ -98,7 +98,7 @@ int	exit_shell(char *line)
 		printf("exit\n");
 		return (1);
 	}
-	if (line && *line)
+	if (line && *line && !full_void(line))
 		add_history(line);
 	if (!strcmp(line, "exit")) // a ameliorer pour les space
 	{
@@ -119,13 +119,12 @@ int main(int ac, char **av, char **env)
     get_env(data, env);
     while (1)
     {
-        data->line = readline("minishell> ");
+        data->line = readline("minishell> "); //amelioration possible, rendre dynamique
 		if (exit_shell(data->line))
 			break ;
-		add_history(data->line);
 		tokenization(data);
-        exec(data);
-        //reset(data); pas bessoin
+        exec(data); // sa crash pas mais sa fontionne pas du tout
+        //reset(data); pas bessoin pour l'instant
     }
     rl_clear_history();
     free_data(data);
