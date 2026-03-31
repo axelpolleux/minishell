@@ -16,6 +16,7 @@ int	main_parser(char *input)
 {
 	t_token	res;
 
-	res = tokeniser(input);
+	(void)res;
+	tokeniser(input);
 	return (1);
 }

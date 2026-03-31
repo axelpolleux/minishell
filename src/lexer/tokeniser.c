@@ -13,6 +13,7 @@
 
 #include <stdio.h>
 #include "minishell.h"
+#include "../../includes/lib/minishell.h"
 
 
 char	*select_quote(char *input)
@@ -20,22 +21,26 @@ char	*select_quote(char *input)
 	char	*res;
 	int		i;
 
+	(void)res;
+	res = NULL;
 	i = 0;
+	printf("Quote detected\n");
 	if (!(input[i] == 34 || input[i] == 39))
 		return (0);
 	return (res);
 }
 
-t_token	tokeniser(char *input, char *delim)
+void	tokeniser(char *input)
 {
 	int		i;
 	t_token	res;
 
 	i = 0;
-	while (input[i] && !ft_strchr(delim, input[i]))
+	(void)res;
+	while (input[i])
 	{
-		printf("");
+		if (input[i] == 34 || input[i] == 39)
+			select_quote(input);
 		i++;
 	}
-
 }

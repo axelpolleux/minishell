@@ -89,7 +89,7 @@ typedef struct s_token
 char			*main_reading(char *title);
 int				main_parser(char *input);
 void			typer(t_token token);
-t_token			tokeniser(char *input);
+void			tokeniser(char *input);
 
 //======================================================//
 
