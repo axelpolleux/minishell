@@ -6,12 +6,13 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 11:06:42 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/01 18:55:15 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/01 19:15:45 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "../../includes/lib/minishell.h"
+#include "../../includes/libft/libft.h"
 
 int	is_space(int c)
 {
@@ -33,11 +34,18 @@ void	add_operator(char *input, t_token token, int *index)
 
 void	add_word(char *input, t_token token, int *index)
 {
-	while ()
+	int	len;
+
+	len = 0;
+	while (input[*index]
+		&& !is_space(input[*index])
+		&& !ft_strchr("|<>", input[*index]))
 	{
-		i++;
+		(*index)++;
+		len++;
 	}
-	token->type = WORD;
+	token.cmd = ft_substr(input, *index, len);
+	token.type = WORD;
 }
 
 t_token	*tokeniser(char *input)
