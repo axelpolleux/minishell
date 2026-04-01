@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/03/27 16:33:50 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/01 18:24:39 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,7 @@ typedef struct s_token
 //========================<for the parsing>=========================//
 char			*main_reading(char *title);
 int				main_parser(char *input);
-void			typer(t_token token);
-void			tokeniser(char *input);
+t_token			*tokeniser(char *input);
 
 //======================================================//
 

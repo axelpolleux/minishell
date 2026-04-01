@@ -6,41 +6,55 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 11:06:42 by apolleux          #+#    #+#             */
-/*   Updated: 2026/03/28 12:01:16 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/01 18:55:15 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#include <stdio.h>
 #include "minishell.h"
 #include "../../includes/lib/minishell.h"
 
-
-char	*select_quote(char *input)
+int	is_space(int c)
 {
-	char	*res;
-	int		i;
-
-	(void)res;
-	res = NULL;
-	i = 0;
-	printf("Quote detected\n");
-	if (!(input[i] == 34 || input[i] == 39))
-		return (0);
-	return (res);
+	if (c == ' ' && (c >= 9 && c <= 13))
+		return (1);
+	return (0);
 }
 
-void	tokeniser(char *input)
+void	skip_spaces(char *input, int *index)
 {
-	int		i;
-	t_token	res;
+	while (is_space(input[*index]))
+		(*index)++;
+}
 
-	i = 0;
-	(void)res;
-	while (input[i])
+void	add_operator(char *input, t_token token, int *index)
+{
+	return ;
+}
+
+void	add_word(char *input, t_token token, int *index)
+{
+	while ()
 	{
-		if (input[i] == 34 || input[i] == 39)
-			select_quote(input);
 		i++;
 	}
+	token->type = WORD;
+}
+
+t_token	*tokeniser(char *input)
+{
+	int		i;
+	t_token	*token;
+
+	i = 0;
+	token = NULL;
+	while (input[i])
+	{
+		skip_spaces(input, &i);
+		if (ft_strchr("|<>", input[i]))
+			add_operator(input, &token, &i);
+		else
+			add_word(input, &token, &i);
+		i++;
+	}
+	return (token);
 }
