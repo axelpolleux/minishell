@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/03/31 14:22:50 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/01 19:04:19 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,16 +90,15 @@ typedef struct s_env
 typedef struct s_data
 {
 	char		**path;
-	char		**original_env;
 	char		**built_in;
+	char		**built_env;
+	char		**original_env;
 
-	// char		*path_and_cmd;
-	// char		*cmd_space_void;
 	char		*line;
 
-	int			fd_storage[2];
 	int			fd;
 	int			last_fd;
+	int			fd_storage[2];
 
 	int			cmd_null;
 	int			cmd_void;
@@ -107,6 +106,7 @@ typedef struct s_data
 	int			path_invalid;
 	int			path_void;
 	int			path_null;
+	int			exit;
 
 	pid_t		*pid;
 	t_token		*token;
@@ -121,6 +121,8 @@ void			null_command(t_data *data);
 void			null_path(t_data *data);
 void			void_path(t_data *data);
 void			pipe_error(t_data *data);
+void			wait_error(t_data *data);
+void			dup_error(t_data *data);
 
 int				malloc_error(char **path);
 int				data_malloc_error(t_data *data);
@@ -130,7 +132,6 @@ int				open_error(t_data *data);
 //==================<general fonction>====================//
 char			**tab_env(t_env *env);
 char			**ft_split(char const *s, char c);
-char			**init_built(void);
 
 char			*ft_substr(char const *s, unsigned int start, size_t len);
 char			*ft_strdup(char *src);
@@ -169,11 +170,13 @@ t_env			*new_env(char *line);
 
 //========================<for build in>=========================//
 char			**tri_alpha(t_env *env);
+char			**init_built(void);
 
 void			export_central(t_data *data);
+void 			exec_built(t_data *data, t_cmd *cmd);
+void			built_choice(t_data *data, t_cmd *cmd);
 
 int				is_builtin(char **built_in, char *cmd);
-
 //===============================================================//
 
 //========================<for exec>=========================//
@@ -186,10 +189,10 @@ void			tennage(t_data *data);
 void			exec(t_data *data);
 void			cmd_whith_path(t_data *data, char *command);
 void			full_cmd(t_data *data, char *command);
-void			exec_command(t_data *data, char **env);
-void			parent(t_data *data, int i);
+void			exec_command(t_data *data);
+void			parent(t_data *data, t_cmd *cmd);
 void			wait_end(t_data *data, int count);
-void			manage_redir(t_cmd *cmd);
+void			manage_redir(t_data *data, t_cmd *cmd);
 
 int				here_doc_manage(t_data *data);
 int				verif_file(char *line, int doc);

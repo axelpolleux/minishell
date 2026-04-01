@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 13:14:16 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/31 13:56:22 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/03/31 15:27:11 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ void	free_data(t_data *data)
 			free_arr(data->path);
 		if (data->built_in)
 			free_arr(data->built_in);
+		if (data->built_env)
+			free_arr(data->built_env);
 		if (data->pid)
 			free(data->pid);
 		if (data->line)

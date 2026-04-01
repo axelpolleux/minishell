@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 09:51:16 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/30 10:59:38 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/01 18:55:32 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,21 @@ int	open_error(t_data *data)
 	free_data(data);
 	exit(EXIT_FAILURE);
 }
+
+void	wait_error(t_data *data)
+{
+	free_data(data);
+	perror("waitpid");
+	exit (-1);
+}
+
+void	dup_error(t_data *data)
+{
+	free_data(data);
+	perror("dup");
+	exit (-1);
+}
+
 
 // void	command_error(t_data *data)
 // {
@@ -56,3 +71,10 @@ int	open_error(t_data *data)
 // 	free_data(data);
 // 	exit(126);
 // }
+
+void	pipe_error(t_data *data)
+{
+	perror("pipe");
+	free_data(data);
+	exit (-1);
+}

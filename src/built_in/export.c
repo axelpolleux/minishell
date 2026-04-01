@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 09:50:21 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/28 16:04:49 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/01 19:13:03 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	**tri_alpha(t_env *env)
 	return (arr);
 }
 
-void	export_central(t_data *data)
+void	export_central(t_data *data)// a refaire completement 
 {
 	char	**tab_tri_env;
 	int		i;

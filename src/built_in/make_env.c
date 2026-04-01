@@ -1,28 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_utils.c                                      :+:      :+:    :+:   */
+/*   make_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/30 17:08:16 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/01 17:43:54 by ethutin-         ###   ########.fr       */
+/*   Created: 2026/03/31 15:29:02 by ethutin-          #+#    #+#             */
+/*   Updated: 2026/04/01 17:02:55 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int is_builtin(char **built_in, char *cmd)
-{
-    int i;
-
-    i = 0;
-    if (built_in == NULL)
-        return (0);
-    while(built_in[i])
-    {
-        if(!strcmp(built_in[i], cmd))
-        return(1);
-    }
-    return (0);
-}
+// void make_built_env(t_data *data)
+// {
+//    char c
+    
+//     env = 
+//     data->built_env = env;
+// }

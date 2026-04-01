@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/31 14:28:00 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/01 19:16:05 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,15 @@ void display_cmd(t_cmd *view)
 
 //=======================================//
 
-void reset(t_data *data)
-{
-	if (data->line)
-		free(data->line);
-	if (data->t_env)
-    	free_env(data->t_env);
-    if (data->cmd)
-		free_cmd(data->cmd);
-}
+// void reset(t_data *data)
+// {
+// 	if (data->line)
+// 		free(data->line);
+// 	if (data->t_env)
+//     	free_env(data->t_env);
+//     if (data->cmd)
+// 		free_cmd(data->cmd);
+// }
 
 
 void get_env(t_data *data, char **env)
@@ -83,6 +83,12 @@ void get_env(t_data *data, char **env)
     int i;
 
 	i = -1;
+if (!env || !(*env)) // a reconstruire ?    oui imperativement
+{
+		//make_built_env(data);
+		free_data(data);
+		exit(0);
+}
     while (env[++i])
     {
         new = new_env(ft_strdup(env[i]));
@@ -108,6 +114,11 @@ int	exit_shell(char *line)
 	return (0);
 }
 
+/*
+faire tout le built in, refaire export
+terminer la logique d'exec
+commencer a BIEN faire les exec
+*/
 int main(int ac, char **av, char **env)
 {
     t_data *data;
@@ -124,16 +135,41 @@ int main(int ac, char **av, char **env)
 			break ;
 		tokenization(data);
         exec(data); // sa crash pas mais sa fontionne pas du tout
-        //reset(data); pas bessoin pour l'instant
     }
     rl_clear_history();
     free_data(data);
     return (0);
 }
 
- // if (!tokenization(data))//   !parse(data)
- // {
- //     reset(data);
- //     continue;
- // }
 
+
+/*
+        /`·.¸
+       /¸...¸`:·
+   ¸.·´  ¸   `·.¸.·´)
+  : © ):´;      ¸  {
+   `·.¸ `·  ¸.·´\`·¸)
+       `\\´´\¸.·´
+
+        /`·.¸
+       /¸...¸`:·
+   ¸.·´  ¸   `·.¸.·´)
+  : © ):´;      ¸  {
+   `·.¸ `·  ¸.·´\`·¸)
+       `\\´´\¸.·´
+
+
+        /`·.¸
+       /¸...¸`:·
+   ¸.·´  ¸   `·.¸.·´)
+  : © ):´;      ¸  {
+   `·.¸ `·  ¸.·´\`·¸)
+       `\\´´\¸.·´
+
+        /`·.¸
+       /¸...¸`:·
+   ¸.·´  ¸   `·.¸.·´)
+  : © ):´;      ¸  {
+   `·.¸ `·  ¸.·´\`·¸)
+       `\\´´\¸.·´
+*/
