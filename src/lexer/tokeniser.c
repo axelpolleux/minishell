@@ -6,7 +6,7 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 11:06:42 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/01 19:15:45 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/02 15:26:00 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 int	is_space(int c)
 {
-	if (c == ' ' && (c >= 9 && c <= 13))
+	if (c == 32 || (c >= 9 && c <= 13))
 		return (1);
 	return (0);
 }
@@ -27,34 +27,35 @@ void	skip_spaces(char *input, int *index)
 		(*index)++;
 }
 
-void	add_operator(char *input, t_token token, int *index)
+void	add_operator(char *input, t_token *token, int *index)
 {
+	(void)input;
+	(void)token;
+	(void)index;
 	return ;
 }
 
-void	add_word(char *input, t_token token, int *index)
+void	add_word(char *input, t_token *token, int *index)
 {
 	int	len;
 
 	len = 0;
-	while (input[*index]
-		&& !is_space(input[*index])
-		&& !ft_strchr("|<>", input[*index]))
-	{
-		(*index)++;
+	while (input[*index + len]
+		&& !is_space(input[*index + len])
+		&& !ft_strchr("|<>", input[*index + len]))
 		len++;
-	}
-	token.cmd = ft_substr(input, *index, len);
-	token.type = WORD;
+	token->cmd = ft_substr(input, *index, len);
+	token->type = WORD;
+	(*index) += len;
 }
 
-t_token	*tokeniser(char *input)
+t_token	tokeniser(char *input)
 {
 	int		i;
-	t_token	*token;
+	t_token	token;
 
 	i = 0;
-	token = NULL;
+	// token = NULL;
 	while (input[i])
 	{
 		skip_spaces(input, &i);

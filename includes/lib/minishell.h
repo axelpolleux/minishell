@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/01 18:24:39 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/02 14:29:10 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ typedef struct s_token
 //========================<for the parsing>=========================//
 char			*main_reading(char *title);
 int				main_parser(char *input);
-t_token			*tokeniser(char *input);
+t_token			tokeniser(char *input);
 
 //======================================================//
 
@@ -97,20 +97,20 @@ t_token			*tokeniser(char *input);
 #  define BUFFER_SIZE 42
 # endif
 
-char			*get_next_line_e(int fd, size_t i);
-char			*line_add(char const *s1, char const *s2, size_t size);
-char			*read_line(int fd, char **buffer_ptr, char *line, size_t i);
-char			*verif_read_line(ssize_t r, char *line, char **buf_ptr);
-char			*clean_buff(char *buffer);
-
-void			*ft_memset(void *s, int c, size_t n);
-void			free_line(char **line, char *new_line);
-void			buffer_left(char *buffer, size_t start);
-
-int				init_buff(char **buffer);
-//===========================================================//
-char			*get_word(char *s, int *i);
-int				is_space(char c);
-int				is_operator(char c);
+// char			*get_next_line_e(int fd, size_t i);
+// char			*line_add(char const *s1, char const *s2, size_t size);
+// char			*read_line(int fd, char **buffer_ptr, char *line, size_t i);
+// char			*verif_read_line(ssize_t r, char *line, char **buf_ptr);
+// char			*clean_buff(char *buffer);
+//
+// void			*ft_memset(void *s, int c, size_t n);
+// void			free_line(char **line, char *new_line);
+// void			buffer_left(char *buffer, size_t start);
+//
+// int				init_buff(char **buffer);
+// //===========================================================//
+// char			*get_word(char *s, int *i);
+// int				is_space(char c);
+// int				is_operator(char c);
 
 #endif
