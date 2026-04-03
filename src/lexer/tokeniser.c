@@ -6,7 +6,7 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 11:06:42 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/03 13:18:03 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/03 16:58:01 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	add_operator(char *input, t_token *token, int *index)
 	(void)input;
 	(void)token;
 	(void)index;
-
 	printf("Operator detected\n");
 	(*index)++;
 	return ;
@@ -42,18 +41,12 @@ void	add_word(char *input, t_token *token, int *index)
 	int	len;
 
 	len = 0;
-	while (input[*index + len]
-		&& !is_space(input[*index + len])
+	while (input[*index + len] && !is_space(input[*index + len])
 		&& !ft_strchr("|<>", input[*index + len]))
 		len++;
 	token->cmd = ft_substr(input, *index, len);
 	token->type = WORD;
 	(*index) += len;
-}
-
-void	display_tokens(t_token token)
-{
-	(void)token;
 }
 
 t_token	tokeniser(char *input)
@@ -67,12 +60,10 @@ t_token	tokeniser(char *input)
 		skip_spaces(input, &i);
 		if (!input[i])
 			break ;
- 		if (ft_strchr("|<>", input[i]))
+		if (ft_strchr("|<>", input[i]))
 			add_operator(input, &token, &i);
 		else if (!is_space(input[i]))
 			add_word(input, &token, &i);
-		/*else
-			i++;*/
 	}
 	display_tokens(token);
 	return (token);
