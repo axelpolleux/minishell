@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 15:29:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/01 17:02:55 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/03 14:42:05 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // void make_built_env(t_data *data)
 // {
 //    char c
-    
+
 //     env = 
 //     data->built_env = env;
 // }

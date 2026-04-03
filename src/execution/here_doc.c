@@ -6,13 +6,11 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 15:16:58 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/31 14:24:58 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/03 13:51:08 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
 
 int	get_enof(t_data *data, char *line)
 {
@@ -76,7 +74,7 @@ int	here_doc_manage(t_data *data)// les signaux a faire
 	if (data->cmd->type != HEREDOC)
 		return(0);
 	if (pipe(fd) == -1)
-		perror("METAL PIPE"); // a remplacer pipe_error(data);
+		pipe_error(data);
 	error = hre_arg(data);
 	if (error == 0)
 	{

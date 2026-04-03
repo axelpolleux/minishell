@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/01 19:16:05 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/03 14:38:56 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ void	display_token(t_token *view)
 	}
 	printf("}\n");
 }
-void display_cmd(t_cmd *view)
+
+void	display_cmd(t_cmd *view)
 {
 	int	i;
 
@@ -62,8 +63,7 @@ void display_cmd(t_cmd *view)
 	// history = history_list();
 	// int i = -1;
 	// while (history[++i])
-    //     printf("=> %s\n", history[i]->line);
-
+	//     printf("=> %s\n", history[i]->line);
 //=======================================//
 
 // void reset(t_data *data)
@@ -76,27 +76,27 @@ void display_cmd(t_cmd *view)
 // 		free_cmd(data->cmd);
 // }
 
-
-void get_env(t_data *data, char **env)
+void	get_env(t_data *data, char **env)
 {
-	t_env *new;
-    int i;
+	t_env	*new;
+	int		i;
 
 	i = -1;
-if (!env || !(*env)) // a reconstruire ?    oui imperativement
-{
+	if (!env || !(*env)) // a reconstruire ?    oui imperativement
+	{
 		//make_built_env(data);
 		free_data(data);
 		exit(0);
+	}
+	while (env[++i])
+	{
+		new = new_env(ft_strdup(env[i]));
+		if (!new)
+			data_malloc_error(data);
+		add_to_bottom(&data->t_env, new);
+	}
 }
-    while (env[++i])
-    {
-        new = new_env(ft_strdup(env[i]));
-        if (!new)
-            data_malloc_error(data);
-        add_to_bottom(&data->t_env, new);
-    }
-}
+
 int	exit_shell(char *line)
 {
 	if (!line)
@@ -121,55 +121,22 @@ commencer a BIEN faire les exec
 */
 int main(int ac, char **av, char **env)
 {
-    t_data *data;
+	t_data	*data;
 
-    data = init_data(ac, av, env);
+	data = init_data(ac, av, env);
 	data->built_in = init_built();
 	if (!data->built_in)
 		data_malloc_error(data);
-    get_env(data, env);
-    while (1)
-    {
-        data->line = readline("minishell> "); //amelioration possible, rendre dynamique
+	get_env(data, env);
+	while (1)
+	{
+		data->line = readline("minishell> "); //amelioration possible, rendre dynamique
 		if (exit_shell(data->line))
 			break ;
 		tokenization(data);
-        exec(data); // sa crash pas mais sa fontionne pas du tout
-    }
-    rl_clear_history();
-    free_data(data);
-    return (0);
+		exec(data); // sa crash pas mais sa fontionne pas du tout
+	}
+	rl_clear_history();
+	free_data(data);
+	return (0);
 }
-
-
-
-/*
-        /`·.¸
-       /¸...¸`:·
-   ¸.·´  ¸   `·.¸.·´)
-  : © ):´;      ¸  {
-   `·.¸ `·  ¸.·´\`·¸)
-       `\\´´\¸.·´
-
-        /`·.¸
-       /¸...¸`:·
-   ¸.·´  ¸   `·.¸.·´)
-  : © ):´;      ¸  {
-   `·.¸ `·  ¸.·´\`·¸)
-       `\\´´\¸.·´
-
-
-        /`·.¸
-       /¸...¸`:·
-   ¸.·´  ¸   `·.¸.·´)
-  : © ):´;      ¸  {
-   `·.¸ `·  ¸.·´\`·¸)
-       `\\´´\¸.·´
-
-        /`·.¸
-       /¸...¸`:·
-   ¸.·´  ¸   `·.¸.·´)
-  : © ):´;      ¸  {
-   `·.¸ `·  ¸.·´\`·¸)
-       `\\´´\¸.·´
-*/

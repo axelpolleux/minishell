@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 11:02:59 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/30 17:44:34 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/03 15:10:17 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	add_to_bottom(t_env **node, t_env *new_bot)
 	new_bot->prev = end;
 }
 
-t_data	*init_data(int ac, char **av, char** env)
+t_data	*init_data(int ac, char **av, char **env)
 {
 	t_data	*data;
 
@@ -46,11 +46,10 @@ t_data	*init_data(int ac, char **av, char** env)
 		data_malloc_error(data);
 	data->fd_storage[0] = -1;
 	data->fd_storage[1] = -1;
-	data->last_fd = -1;
 	data->t_env = NULL;
 	data->token = NULL;
 	data->cmd = NULL;
-	data->original_env = env;
+	//data->original_env = env;
 	(void)av;
 	(void)ac;
 	return (data);

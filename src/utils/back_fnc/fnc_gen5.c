@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 13:14:16 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/31 15:27:11 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/03 15:10:53 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int	only_quote(char *line)
 	int	i;
 
 	i = 0;
-	while(line[i])
-		if(line[i] != '\'' && line[i] != '\"')
+	while (line[i])
+		if (line[i] != '\'' && line[i] != '\"')
 			return (0);
 	return (1);
 }
@@ -74,10 +74,10 @@ void	free_data(t_data *data)
 	}
 }
 
-int		full_void(char *line)
+int	full_void(char *line)
 {
-	int i;
-	
+	int	i;
+
 	i = -1;
 	if (line)
 	{

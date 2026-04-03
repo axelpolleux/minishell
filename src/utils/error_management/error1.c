@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 09:51:16 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/01 18:55:32 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/03 10:57:40 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,13 @@ void	dup_error(t_data *data)
 {
 	free_data(data);
 	perror("dup");
+	exit (-1);
+}
+
+void	fork_error(t_data *data)
+{
+	free_data(data);
+	perror("fork");
 	exit (-1);
 }
 
