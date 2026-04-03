@@ -6,13 +6,12 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 11:06:42 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/02 15:26:00 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/03 13:18:03 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "../../includes/lib/minishell.h"
-#include "../../includes/libft/libft.h"
+#include "libft/libft.h"
 
 int	is_space(int c)
 {
@@ -32,6 +31,9 @@ void	add_operator(char *input, t_token *token, int *index)
 	(void)input;
 	(void)token;
 	(void)index;
+
+	printf("Operator detected\n");
+	(*index)++;
 	return ;
 }
 
@@ -49,21 +51,29 @@ void	add_word(char *input, t_token *token, int *index)
 	(*index) += len;
 }
 
+void	display_tokens(t_token token)
+{
+	(void)token;
+}
+
 t_token	tokeniser(char *input)
 {
 	int		i;
 	t_token	token;
 
 	i = 0;
-	// token = NULL;
 	while (input[i])
 	{
 		skip_spaces(input, &i);
-		if (ft_strchr("|<>", input[i]))
+		if (!input[i])
+			break ;
+ 		if (ft_strchr("|<>", input[i]))
 			add_operator(input, &token, &i);
-		else
+		else if (!is_space(input[i]))
 			add_word(input, &token, &i);
-		i++;
+		/*else
+			i++;*/
 	}
+	display_tokens(token);
 	return (token);
 }
