@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:40:43 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/31 13:51:49 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/05 16:51:04 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,29 +48,30 @@ void	full_cmd(t_data *data, char *command)
 			data_malloc_error(data);
 		if (access(data->cmd->cmd_path, F_OK | X_OK) == 0)
 			return ;
-	}
-	data->cmd_invalid = 1;
-}
-
-void	tennage(t_data *data)
-{
-	if (data->cmd->type == RED_OUT || data->cmd->type == APPEND
-        || data->cmd->type == HEREDOC ||  data->cmd->type == RED_IN)
-	{
-		data->fd = verif_file(data->cmd->cmd[1], data->cmd->type);
-		if (data->fd == -1)
-			open_error(data);
-		if (dup2(data->fd, 1) == -1)
-			exit(EXIT_FAILURE);
-		close(data->fd);
-	}
-	else
-	{
-		if (dup2(data->fd_storage[1], 1) == -1)
-			exit(EXIT_FAILURE);
-		closes(-1, data->fd_storage);
+        else
+        {
+            perror(command);
+            data->error_exit = 126;
+        }
 	}
 }
 
-// ethutin-@2F7:~/COMMON TRUNK/CIRCLE3/Minishell/minishell_hub$ << 
-// bash: syntax error near unexpected token `newline'
+// void	tennage(t_data *data)
+// {
+// 	if (data->cmd->type == RED_OUT || data->cmd->type == APPEND
+//         || data->cmd->type == HEREDOC ||  data->cmd->type == RED_IN)
+// 	{
+// 		data->fd = verif_file(data->cmd->cmd[1], data->cmd->type);
+// 		if (data->fd == -1)
+// 			open_error(data);
+// 		if (dup2(data->fd, 1) == -1)
+// 			exit(EXIT_FAILURE);
+// 		close(data->fd);
+// 	}
+// 	else
+// 	{
+// 		if (dup2(data->fd_storage[1], 1) == -1)
+// 			exit(EXIT_FAILURE);
+// 		closes(-1, data->fd_storage);
+// 	}
+// }

@@ -51,6 +51,12 @@ char **get_path(t_data *data, int len)
     {
         if (!ft_strncmp(tmp->var, MOTIF, len))
 		{
+			if (tmp->var[len + 1] == '\0')
+			{
+				data->error_exit = 127;
+				//data->error_line = NULL;
+				return (NULL);
+			}
 			path = ft_split(tmp->var + len, ':');
 			if (!path)
 				data_malloc_error(data);
@@ -58,8 +64,9 @@ char **get_path(t_data *data, int len)
 		}
         tmp = tmp->next;
     }
-	data->path_null = 1;
-    return NULL;
+	data->error_exit = 127;
+	//data->error_line = NULL;
+    return (NULL);
 }
 
 int	verif_file(char *file, int doc)
@@ -81,38 +88,37 @@ void	cmd_whith_path(t_data *data, char *command)
 	if (access(command, F_OK | X_OK) == 0)
 		data->cmd->cmd_path = command;
 	else
-		data->path_invalid = 1;
-	return ;
+	{
+		perror(command);
+		data->error_exit = 126;
+	}
 }
 
-void	verif_command(t_data *data)
+void	verif_command(t_data *data, t_cmd *cmd)
 {
-
-	t_cmd *tmp;
-
-	tmp = data->cmd;
-	if (srch_cmd(tmp->cmd[0], '/'))
+	if (srch_cmd(cmd->cmd[0], '/'))
 	{
-		cmd_whith_path(data, tmp->cmd[0]);
+		cmd_whith_path(data, cmd->cmd[0]);
 		return ;
 	}
 	else
 		data->path = get_path(data, ft_strlen(MOTIF));
-	if (!data->path_null && !data->path_void)
-		full_cmd(data, tmp->cmd[0]);
+	if (data->error_exit == -1)
+		full_cmd(data, cmd->cmd[0]);
 }
 
-void	get_cmd_path(t_data *data)
+void	get_cmd_path(t_data *data, t_cmd *cmd)
 {
-	t_cmd *tmp;
-
-	tmp = data->cmd;
-	if (!tmp->full_cmd || !*tmp->full_cmd)
+	if (!cmd->full_cmd || !*cmd->full_cmd)
 	{
-		data->cmd_null = 1;
+		data->error_exit = 126;
 		return ;
 	}
-	if (full_void(tmp->cmd[0]))
+	else if (full_void(cmd->cmd[0]))
+	{
+		data->error_exit = 127;
+		//data->error_line = cmd->cmd[0];
 		return ;
-	verif_command(data);
+	}
+	verif_command(data, cmd);
 }

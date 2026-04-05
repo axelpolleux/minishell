@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:43:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/03 15:13:44 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/05 16:48:10 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,8 @@ void manage_redir(t_data *data, t_cmd *cmd)
 	}
 }
 
-void exec_command(t_data *data)
+void exec_command(t_data *data, char **env)
 {
-	char **env;
-	
-	env = tab_env(data->t_env);
-	if (!env)
-		data_malloc_error(data);
 	if(execve(data->cmd->cmd_path, data->cmd->cmd, env) == -1)
 	{
 		free_arr(env);
@@ -46,11 +41,17 @@ void exec_command(t_data *data)
 		else
 			exit(1);
 	}
-	free_arr(env);
 }
 
 void children(t_data *data, t_cmd *cmd, int last_fd)
 {
+	char **env;
+
+	// if (is_builtin(data->built_in, cmd->cmd[0]))
+	// 	exec_built(data, cmd);
+	get_cmd_path(data, cmd);
+	if (data->error_exit > -2) //error_exit(data);
+		exit(data->error_exit);
 	if (last_fd != -1)
 	{
 		if (dup2(last_fd, STDIN_FILENO) == -1)
@@ -64,18 +65,14 @@ void children(t_data *data, t_cmd *cmd, int last_fd)
 		closes(-1, data->fd_storage);
 	}
 	manage_redir(data, cmd);
-	if (is_builtin(data->built_in, cmd->cmd[0]))
-	{
-		exec_built(data, cmd);
-		free_data(data);
-		exit(0);
-	}
-	get_cmd_path(data);
-	exec_command(data);
+	env = tab_env(data->t_env);
+	if (!env)
+		data_malloc_error(data);
+	exec_command(data, env);
+	free_arr(env);
 }
 
-
-void	parent(t_data *data, t_cmd *cmd) //process_manage
+void	parent(t_data *data, t_cmd *cmd)
 {
 	int	i;
 	int last_fd;
@@ -84,8 +81,6 @@ void	parent(t_data *data, t_cmd *cmd) //process_manage
 	last_fd = -1;
 	while (cmd)
 	{
-		if (last_fd != -1)
-			close(last_fd);
 		if (cmd->next)
 			if (pipe(data->fd_storage) == -1)
 				pipe_error(data);
@@ -94,10 +89,13 @@ void	parent(t_data *data, t_cmd *cmd) //process_manage
 			fork_error(data);
 		if (!data->pid[i])
 			children(data, cmd, last_fd);
-		// else
-		// 	parent(data, cmd);
+		if (last_fd != -1)
+			close(last_fd);
 		if (cmd->next)
+		{		
+			close(data->fd_storage[1]);
 			last_fd = data->fd_storage[0];
+		}
 		cmd = cmd->next;
 		i++;
 	}
@@ -175,4 +173,5 @@ void parent(t_data *data, t_cmd *cmd)
 	// 	cmd->next->input = data->fd_storage[0];
 	else
 		close(data->fd_storage[0]);
-}*/
+}
+*/

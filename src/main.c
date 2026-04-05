@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/03 14:38:56 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/05 16:55:53 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,17 +113,14 @@ int	exit_shell(char *line)
 	}
 	return (0);
 }
-
 /*
-faire tout le built in, refaire export
-terminer la logique d'exec
-commencer a BIEN faire les exec
+faire tout le built in, refaire export , merde
 */
-int main(int ac, char **av, char **env)
+int	main(int ac, char **av, char **env)
 {
 	t_data	*data;
 
-	data = init_data(ac, av, env);
+	data = init_data(ac, av);
 	data->built_in = init_built();
 	if (!data->built_in)
 		data_malloc_error(data);

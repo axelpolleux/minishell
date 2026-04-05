@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/03 15:13:24 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/05 16:53:53 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,10 @@ typedef struct s_data
 	// char		**original_env;
 
 	char		*line;
+	//char		*error_line;
 
 	int			fd_storage[2];
-	int			exit;
+	int			error_exit;
 
 	pid_t		*pid;
 	
@@ -108,14 +109,11 @@ typedef struct s_data
 //=======================================================//
 
 //=================<for all type of error>================//
-void			command_error(t_data *data);
-void			null_command(t_data *data);
-void			null_path(t_data *data);
-void			void_path(t_data *data);
 void			pipe_error(t_data *data);
 void			wait_error(t_data *data);
 void			dup_error(t_data *data);
 void			fork_error(t_data *data);
+//void			error_exit(t_data *data);
 
 int				malloc_error(char **path);
 int				data_malloc_error(t_data *data);
@@ -156,7 +154,7 @@ int				exit_shell(char *line);
 
 size_t			ft_strlen(const char *str);
 
-t_data			*init_data(int ac, char **av, char **env);
+t_data			*init_data(int ac, char **av);
 t_token			*new_token(t_token *node, char *cmd);
 t_env			*new_env(char *line);
 //======================================================//
@@ -173,16 +171,16 @@ int				is_builtin(char **built_in, char *cmd);
 //===============================================================//
 
 //========================<for exec>=========================//
-char			**get_path(t_data *data , int i);
+char			**get_path(t_data *data, int len);
 
-void			verif_command(t_data *d);
-void			get_cmd_path(t_data *data);
+void			verif_command(t_data *data, t_cmd *cmd);
+void			get_cmd_path(t_data *data, t_cmd *cmd);
 void			children(t_data *data, t_cmd *cmd, int last_fd);
 void			tennage(t_data *data);
 void			exec(t_data *data);
 void			cmd_whith_path(t_data *data, char *command);
 void			full_cmd(t_data *data, char *command);
-void			exec_command(t_data *data);
+void			exec_command(t_data *data, char **env);
 void			parent(t_data *data, t_cmd *cmd);
 void			wait_end(t_data *data, int count);
 void			manage_redir(t_data *data, t_cmd *cmd);
@@ -232,3 +230,4 @@ int				init_buff(char **buffer);
 //=============================================================//
 
 #endif
+
