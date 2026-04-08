@@ -6,7 +6,7 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 11:06:42 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/07 16:16:39 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/08 15:37:44 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	skip_spaces(char *input, int *index)
 		(*index)++;
 }
 
-void	add_operator(char *input, t_token **tokens, int *index)
+void	add_in(char *input, t_token **tokens, int *index)
 {
 	int	type;
 	int	len;
@@ -38,7 +38,19 @@ void	add_operator(char *input, t_token **tokens, int *index)
 		else
 			type = RED_IN;
 	}
-	else if (input[*index] == '>')
+	else
+		type = WORD;
+	ft_token_add_back(tokens, token_new(ft_substr(input, *index, len), type));
+	(*index) += len;
+}
+
+void	add_out(char *input, t_token **tokens, int *index)
+{
+	int	type;
+	int	len;
+
+	len = 1;
+	if (input[*index] == '>')
 	{
 		if (input[*index + 1] == '>')
 		{
@@ -80,8 +92,10 @@ t_token	*tokeniser(char *input)
 		skip_spaces(input, &i);
 		if (!input[i])
 			break ;
-		if (ft_strchr("|<>", input[i]))
-			add_operator(input, &tokens, &i);
+		if (ft_strchr("|<", input[i]))
+			add_in(input, &tokens, &i);
+		else if (ft_strchr(">", input[i]))
+			add_out(input, &tokens, &i);
 		else if (!is_space(input[i]))
 			add_word(input, &tokens, &i);
 	}
