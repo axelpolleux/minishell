@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 11:53:33 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/25 13:14:44 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/08 13:08:45 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,21 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-int	ft_strncmp(const char *s1, const char *s2, unsigned int n)
-{
-	unsigned int	i;
-	unsigned char	*str1;
-	unsigned char	*str2;
+// int	ft_strncmp(const char *s1, const char *s2, unsigned int n)
+// {
+// 	unsigned int	i;
+// 	unsigned char	*str1;
+// 	unsigned char	*str2;
 
-	str1 = (unsigned char *)s1;
-	str2 = (unsigned char *)s2;
-	i = 0;
-	if (n == 0)
-		return (0);
-	while (str1[i] == str2[i] && str1[i] && (i < n - 1))
-		i++;
-	return (str1[i] - str2[i]);
-}
+// 	str1 = (unsigned char *)s1;
+// 	str2 = (unsigned char *)s2;
+// 	i = 0;
+// 	if (n == 0)
+// 		return (0);
+// 	while (str1[i] == str2[i] && str1[i] && (i < n - 1))
+// 		i++;
+// 	return (str1[i] - str2[i]);
+// }
 
 int	ft_strcmp(char *s1, char *s2)
 {

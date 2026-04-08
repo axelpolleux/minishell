@@ -2,7 +2,7 @@
 CC				:= cc
 CFLAGS			:= -Wall -Werror -Wextra -g -fsanitize=address -MMD -MP
 
-INCLUDES_DIR	:= -Iincludes/ -Iincludes/lib/
+INCLUDES_DIR	:= -Iincludes/ -Iincludes/libft/ -Iincludes/lib/
 INCLUDES		:= $(INCLUDES_DIR)
 LIBS			:= -lreadline
 NAME			:= minishell

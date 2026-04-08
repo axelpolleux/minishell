@@ -1,33 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fnc_gen6.c                                         :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/30 17:15:16 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/08 14:03:04 by ethutin-         ###   ########.fr       */
+/*   Created: 2026/04/08 14:14:40 by ethutin-          #+#    #+#             */
+/*   Updated: 2026/04/08 14:16:35 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**init_built(void)// on  pourrait plus securiser
+int exec_pwd(t_data *data, char **cmd)
 {
-	char    **built_in;
-
-	built_in = ft_split("echo cd pwd export unset env exit", ' ');
-	if (!built_in)
-		return (NULL);
-	return (built_in);
-}
-
-int nb_arg(char **ar)
-{
-	int i;
-
-	i = 0;
-	while(ar[i])
-		i++;
-	return(i);
+    
 }

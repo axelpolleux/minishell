@@ -1,73 +1,16 @@
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   exec_extend2.c                                     :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2025/11/17 11:48:19 by ethutin-          #+#    #+#             */
-// /*   Updated: 2026/03/30 16:26:08 by ethutin-         ###   ########.fr       */
-// /*                                                                            */
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_extend1.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/17 11:48:19 by ethutin-          #+#    #+#             */
+/*   Updated: 2026/04/08 14:00:28 by ethutin-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
-
-// char	**get_path(t_data *data, int i)
-// {
-// 	t_env 	*tmp;
-// 	char	**path;
-
-// 	tmp = data->t_env;
-// 	while (tmp)
-// 	{
-// 		i = 0;
-// 		while (tmp->var[i] && tmp->var[i] != '=')
-// 			i++;
-// 		if (!ft_strncmp(tmp->var[i], "PATH", i) && "PATH"[i] == '\0')
-// 		{
-// 			if (tmp->var[i + 1] == '\0')
-// 			{
-// 				data->path_void = 1;
-// 				return (NULL);
-// 			}
-// 			path = ft_split(tmp->var[i]+ 1, ':');
-// 			if (!path)
-// 				data_malloc_error(data);
-// 			return (path);
-// 		}
-// 		tmp = tmp->next;
-// 	}
-// 	data->path_null = 1;
-// 	return (NULL);
-// }
-
-char **get_path(t_data *data, int len)
-{
-    t_env	*tmp;
-	char	**path;
-	
-	tmp = data->t_env;
-    while (tmp)
-    {
-        if (!ft_strncmp(tmp->var, MOTIF, len))
-		{
-			if (tmp->var[len + 1] == '\0')
-			{
-				data->error_exit = 127;
-				//data->error_line = NULL;
-				return (NULL);
-			}
-			path = ft_split(tmp->var + len, ':');
-			if (!path)
-				data_malloc_error(data);
-            return (path);
-		}
-        tmp = tmp->next;
-    }
-	data->error_exit = 127;
-	//data->error_line = NULL;
-    return (NULL);
-}
 
 int	verif_file(char *file, int doc)
 {
@@ -90,7 +33,7 @@ void	cmd_whith_path(t_data *data, char *command)
 	else
 	{
 		perror(command);
-		data->error_exit = 126;
+		data->exit = 126;
 	}
 }
 
@@ -102,8 +45,8 @@ void	verif_command(t_data *data, t_cmd *cmd)
 		return ;
 	}
 	else
-		data->path = get_path(data, ft_strlen(MOTIF));
-	if (data->error_exit == -1)
+		data->path = get_path(data, ft_strlen(PATH));
+	if (data->exit == -1)
 		full_cmd(data, cmd->cmd[0]);
 }
 
@@ -111,14 +54,30 @@ void	get_cmd_path(t_data *data, t_cmd *cmd)
 {
 	if (!cmd->full_cmd || !*cmd->full_cmd)
 	{
-		data->error_exit = 126;
+		data->exit = 126;
 		return ;
 	}
 	else if (full_void(cmd->cmd[0]))
 	{
-		data->error_exit = 127;
+		data->exit = 127;
 		//data->error_line = cmd->cmd[0];
 		return ;
 	}
 	verif_command(data, cmd);
+}
+
+void manage_redir(t_data *data, t_cmd *cmd)
+{
+	if (cmd->input != -1)
+	{
+		if (dup2(cmd->input, STDIN_FILENO) == -1)
+			dup_error(data);
+		close(cmd->input);
+	}
+	if (cmd->output != -1)
+	{
+		if (dup2(cmd->output, STDOUT_FILENO) == -1)
+			dup_error(data);		
+		close(cmd->output);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/05 16:55:53 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/08 13:59:18 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,9 @@ void	get_env(t_data *data, char **env)
 	int		i;
 
 	i = -1;
-	if (!env || !(*env)) // a reconstruire ?    oui imperativement
+	if (!env || !(*env)) // a reconstruire ? /  oui imperativement
 	{
-		//make_built_env(data);
+		//make_built_env(data); il doit faire l'env minimum ainsi que oldpwd et pwd et HOME
 		free_data(data);
 		exit(0);
 	}
@@ -114,7 +114,12 @@ int	exit_shell(char *line)
 	return (0);
 }
 /*
-faire tout le built in, refaire export , merde
+faire tout le built in, refaire export ;
+	-> echo\ cd- pwd
+faire tout le systeme dexpand dans environement ;
+	-> mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+continuer la logic d'exec;
+	-> plus tard sa m'emmerde
 */
 int	main(int ac, char **av, char **env)
 {
@@ -131,7 +136,7 @@ int	main(int ac, char **av, char **env)
 		if (exit_shell(data->line))
 			break ;
 		tokenization(data);
-		exec(data); // sa crash pas mais sa fontionne pas du tout
+		exec(data); //pas terminer 
 	}
 	rl_clear_history();
 	free_data(data);

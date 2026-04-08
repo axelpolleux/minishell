@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 11:06:25 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/23 09:46:23 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/08 13:08:57 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,26 +55,26 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (cop);
 }
 
-char	*ft_strdup(char *src)
-{
-	char	*duplicate;
-	int		i;
+// char	*ft_strdup(char *src)
+// {
+// 	char	*duplicate;
+// 	int		i;
 
-	i = 0;
-	while (src[i])
-		i++;
-	duplicate = (char *)malloc((i + 1) * sizeof(char));
-	if (!duplicate)
-		return (0);
-	i = 0;
-	while (src[i])
-	{
-		duplicate[i] = src[i];
-		i++;
-	}
-	duplicate[i] = '\0';
-	return (duplicate);
-}
+// 	i = 0;
+// 	while (src[i])
+// 		i++;
+// 	duplicate = (char *)malloc((i + 1) * sizeof(char));
+// 	if (!duplicate)
+// 		return (0);
+// 	i = 0;
+// 	while (src[i])
+// 	{
+// 		duplicate[i] = src[i];
+// 		i++;
+// 	}
+// 	duplicate[i] = '\0';
+// 	return (duplicate);
+// }
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {

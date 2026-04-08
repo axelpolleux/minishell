@@ -6,13 +6,14 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/05 16:53:53 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/08 13:56:08 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "libft.h"
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/wait.h>
@@ -27,6 +28,7 @@
 # include <curses.h>
 # include <term.h>
 # include <signal.h>
+# include <limits.h>
 
 /* respecter l'ordre
 	char
@@ -48,9 +50,21 @@
 # define RED_OUT	6 // >
 # define APPEND		7 // >>
 # define HEREDOC	8 // <<
-# define OTHERS		9
+# define OTHERS		9 // ????????
 
-# define MOTIF		"PATH="
+# define PATH		"PATH="
+# define PWD		"PWD="
+# define OLDPWD		"OLDPWD="
+# define HOME		"HOME="
+
+# define HOM_NSET	"minishell: cd: HOME not set\n"
+# define OLDP_NSET	"minishell: cd: OLDPWD not set\n"
+# define CD_ER		"minishell: cd"
+# define CD_ARG		"minishell: cd: too many arguments\n"
+
+# define P_ERROR 0
+# define C_ERROR 1
+# define NF 0
 //==============================================//
 
 //====================<for all struct>===================//
@@ -92,13 +106,13 @@ typedef struct s_data
 	char		**path;
 	char		**built_in;
 	char		**built_env;
-	// char		**original_env;
 
 	char		*line;
-	//char		*error_line;
+	// char		*error_line;
 
 	int			fd_storage[2];
-	int			error_exit;
+	int 		last_fd;
+	int			exit;
 
 	pid_t		*pid;
 	
@@ -113,7 +127,7 @@ void			pipe_error(t_data *data);
 void			wait_error(t_data *data);
 void			dup_error(t_data *data);
 void			fork_error(t_data *data);
-//void			error_exit(t_data *data);
+void			error_exit(char *error, int error_p, int fd);
 
 int				malloc_error(char **path);
 int				data_malloc_error(t_data *data);
@@ -125,7 +139,7 @@ char			**tab_env(t_env *env);
 char			**ft_split(char const *s, char c);
 
 char			*ft_substr(char const *s, unsigned int start, size_t len);
-char			*ft_strdup(char *src);
+//char			*ft_strdup(char *src);
 char			*ft_strjoin(char const *s1, char const *s2);
 
 void			*ft_memcpy(void *dest, const void *src, size_t n);
@@ -143,7 +157,7 @@ void			display_env(t_env *view);// a degager
 void			display_token(t_token *view);//
 void			display_cmd(t_cmd *view);//
 
-int				ft_strncmp(const char *s1, const char *s2, unsigned int n);
+//int				ft_strncmp(const char *s1, const char *s2, unsigned int n);
 int				ft_strcmp(char *s1, char *s2);
 int				word_size(char *str, char charset);
 int				srch_cmd(char *s, char c);
@@ -151,6 +165,7 @@ int				ft_lstsize_e(t_env *lst);
 int				ft_lstsize_t(t_token *lst);
 int				ft_lstsize_c(t_cmd *lst);
 int				exit_shell(char *line);
+int				nb_arg(char **ar);
 
 size_t			ft_strlen(const char *str);
 
@@ -159,15 +174,24 @@ t_token			*new_token(t_token *node, char *cmd);
 t_env			*new_env(char *line);
 //======================================================//
 
+//============for the the expand========//
+char			*expand(t_data *data, t_cmd *cmd);
+//=====================================//
+
+
 //========================<for build in>=========================//
 char			**tri_alpha(t_env *env);
 char			**init_built(void);
 
+void			print_flag(char **cmd, int start);
 void			export_central(t_data *data);
-void 			exec_built(t_data *data, t_cmd *cmd);
 void			built_choice(t_data *data, t_cmd *cmd);
 
 int				is_builtin(char **built_in, char *cmd);
+int				exec_echo(char **cmd);
+int				exec_cd(t_data *data, char **cmd);
+int				exec_built(t_data *data, t_cmd *cmd);
+int				exec_chdir(char *path, char *new_pwd, size_t size);
 //===============================================================//
 
 //========================<for exec>=========================//
@@ -175,7 +199,7 @@ char			**get_path(t_data *data, int len);
 
 void			verif_command(t_data *data, t_cmd *cmd);
 void			get_cmd_path(t_data *data, t_cmd *cmd);
-void			children(t_data *data, t_cmd *cmd, int last_fd);
+void			children(t_data *data, t_cmd *cmd);
 void			tennage(t_data *data);
 void			exec(t_data *data);
 void			cmd_whith_path(t_data *data, char *command);
@@ -184,7 +208,6 @@ void			exec_command(t_data *data, char **env);
 void			parent(t_data *data, t_cmd *cmd);
 void			wait_end(t_data *data, int count);
 void			manage_redir(t_data *data, t_cmd *cmd);
-//void			process_manage(t_data *data, t_cmd *cmd);
 
 int				here_doc_manage(t_data *data);
 int				verif_file(char *line, int doc);

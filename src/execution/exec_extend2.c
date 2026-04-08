@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:40:43 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/05 16:51:04 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/08 11:39:56 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,66 @@ void	full_cmd(t_data *data, char *command)
         else
         {
             perror(command);
-            data->error_exit = 126;
+            data->exit = 126;
         }
 	}
+}
+
+// char	**get_path(t_data *data, int i)
+// {
+// 	t_env 	*tmp;
+// 	char	**path;
+
+// 	tmp = data->t_env;
+// 	while (tmp)
+// 	{
+// 		i = 0;
+// 		while (tmp->var[i] && tmp->var[i] != '=')
+// 			i++;
+// 		if (!ft_strncmp(tmp->var[i], "PATH", i) && "PATH"[i] == '\0')
+// 		{
+// 			if (tmp->var[i + 1] == '\0')
+// 			{
+// 				data->path_void = 1;
+// 				return (NULL);
+// 			}
+// 			path = ft_split(tmp->var[i]+ 1, ':');
+// 			if (!path)
+// 				data_malloc_error(data);
+// 			return (path);
+// 		}
+// 		tmp = tmp->next;
+// 	}
+// 	data->path_null = 1;
+// 	return (NULL);
+// }
+
+char **get_path(t_data *data, int len)
+{
+    t_env	*tmp;
+	char	**path;
+	
+	tmp = data->t_env;
+    while (tmp)
+    {
+        if (!ft_strncmp(tmp->var, PATH, len))
+		{
+			if (tmp->var[len + 1] == '\0')
+			{
+				data->exit = 127;
+				//data->error_line = NULL;
+				return (NULL);
+			}
+			path = ft_split(tmp->var + len, ':');
+			if (!path)
+				data_malloc_error(data);
+            return (path);
+		}
+        tmp = tmp->next;
+    }
+	data->exit = 127;
+	//data->error_line = NULL;
+    return (NULL);
 }
 
 // void	tennage(t_data *data)
