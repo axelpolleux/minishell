@@ -6,7 +6,7 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 11:06:42 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/08 15:37:44 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/09 16:44:14 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,10 @@ t_token	*tokeniser(char *input)
 		skip_spaces(input, &i);
 		if (!input[i])
 			break ;
-		if (ft_strchr("|<", input[i]))
+		else if (ft_strchr("|<", input[i]))
 			add_in(input, &tokens, &i);
+		else if (input[i] == 34)
+			double_quotes(input, &tokens, &i);
 		else if (ft_strchr(">", input[i]))
 			add_out(input, &tokens, &i);
 		else if (!is_space(input[i]))

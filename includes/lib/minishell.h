@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/07 16:17:02 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/09 16:37:06 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ int				is_space(int c);
 t_token			*token_new(char *cmd, int type);
 void			free_tokens(t_token *token);
 void			ft_token_add_back(t_token **lst, t_token *new);
+void			double_quotes(char *input, t_token **tokens, int *index);
 
 //======================================================//
 
