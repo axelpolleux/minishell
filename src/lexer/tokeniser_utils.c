@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "../../includes/lib/minishell.h"
 
 int	is_space(int c)
 {

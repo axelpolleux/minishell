@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "../../includes/lib/minishell.h"
 #include "libft/libft.h"
 
 void	skip_spaces(char *input, int *index)

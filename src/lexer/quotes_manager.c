@@ -6,13 +6,12 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/08 16:01:08 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/09 18:17:11 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/10 17:31:42 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "../../includes/lib/minishell.h"
-#include "../../includes/libft/libft.h"
+#include "libft/libft.h"
 
 void	double_quotes(char *input, t_token **tokens, int *index)
 {
@@ -23,11 +22,12 @@ void	double_quotes(char *input, t_token **tokens, int *index)
 		return ;
 	i = 1;
 	while (input[*index + i] && input[*index + i] != 34)
-	{
 		i++;
-	}
 	if (!input[*index + i])
-		return ;
+	{
+		printf("Ferme tes quotes putaing, fada !\n");
+		exit(0);
+	}
 	token = token_new(ft_substr(input, *index + 1, i - 1), WORD);
 	ft_token_add_back(tokens, token);
 	(*index) += (i + 1);

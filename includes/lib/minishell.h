@@ -40,6 +40,7 @@
 */
 
 //=============<for general utility>=============//
+# define ERROR		0
 # define WORD		1
 # define PIPE		2 // |
 # define RED_IN		3 // <
