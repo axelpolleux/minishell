@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 13:14:16 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/03 15:10:53 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/09 11:15:30 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,17 @@ t_env	*new_env(char *line)
 {
 	t_env	*new_node;
 
+	int i;
+
+	i = 0;
 	new_node = ft_calloc(sizeof(t_env), 1);
 	if (new_node == NULL)
 		return (NULL);
 	new_node->var = line;
+	while (line[i] != '=')
+		i++;
+	new_node->arg = line + i + 1;
+	new_node->export = 1;
 	new_node->next = NULL;
 	new_node->prev = NULL;
 	return (new_node);

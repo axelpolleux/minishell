@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/08 13:56:08 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/10 12:00:06 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,16 @@
 # define OLDPWD		"OLDPWD="
 # define HOME		"HOME="
 
-# define HOM_NSET	"minishell: cd: HOME not set\n"
+# define HOME_NSET	"minishell: cd: HOME not set\n"
 # define OLDP_NSET	"minishell: cd: OLDPWD not set\n"
 # define CD_ER		"minishell: cd"
 # define CD_ARG		"minishell: cd: too many arguments\n"
+# define PWD_ER		"minishell: pwd"
+# define EXP_ER		"bash: export: `????????`: not a valid identifier\n"
 
 # define P_ERROR 0
 # define C_ERROR 1
-# define NF 0
+# define NF -1
 //==============================================//
 
 //====================<for all struct>===================//
@@ -96,6 +98,9 @@ typedef struct s_token
 typedef struct s_env
 {
 	char			*var;
+	char			*arg;
+	
+	int				export;
 
 	struct s_env	*next;
 	struct s_env	*prev;
@@ -135,7 +140,7 @@ int				open_error(t_data *data);
 //=======================================================//
 
 //==================<general fonction>====================//
-char			**tab_env(t_env *env);
+char			**tab_env(t_env *env, int i);
 char			**ft_split(char const *s, char c);
 
 char			*ft_substr(char const *s, unsigned int start, size_t len);
@@ -178,20 +183,27 @@ t_env			*new_env(char *line);
 char			*expand(t_data *data, t_cmd *cmd);
 //=====================================//
 
-
 //========================<for build in>=========================//
 char			**tri_alpha(t_env *env);
 char			**init_built(void);
+char			*get_var_env(t_data *data, char *motif, int len);
+char			*path_env(t_data *data, char **cmd);
 
 void			print_flag(char **cmd, int start);
-void			export_central(t_data *data);
 void			built_choice(t_data *data, t_cmd *cmd);
+void			unset_place(t_data *data, char *motif);
 
 int				is_builtin(char **built_in, char *cmd);
 int				exec_echo(char **cmd);
 int				exec_cd(t_data *data, char **cmd);
 int				exec_built(t_data *data, t_cmd *cmd);
 int				exec_chdir(char *path, char *new_pwd, size_t size);
+int				exec_pwd(void);
+int 			exec_export(t_data *data, char **cmd);
+int				exec_unset(t_data *data, char **cmd);
+int				exec_env(t_data *data);
+int				update_var(t_data *data, char *new_pwd, char *old_pwd);
+int				replace(t_data *data, char *motif, char *path);
 //===============================================================//
 
 //========================<for exec>=========================//
@@ -200,7 +212,7 @@ char			**get_path(t_data *data, int len);
 void			verif_command(t_data *data, t_cmd *cmd);
 void			get_cmd_path(t_data *data, t_cmd *cmd);
 void			children(t_data *data, t_cmd *cmd);
-void			tennage(t_data *data);
+//void			tennage(t_data *data);
 void			exec(t_data *data);
 void			cmd_whith_path(t_data *data, char *command);
 void			full_cmd(t_data *data, char *command);
@@ -226,7 +238,7 @@ char			*get_word(char *s, int *i);
 void			get_new(int i, char *line, char **env, t_data *data);
 void			tokenization(t_data *data);
 void			create_token(t_data *data, char **pipe_split);
-void			get_env(t_data *data, char **env);
+void			init_env(t_data *data, char **env);
 
 int				space(char c);
 int				quote(char c);

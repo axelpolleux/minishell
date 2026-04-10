@@ -1,46 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_utils.c                                      :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/30 17:08:16 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/09 11:23:02 by ethutin-         ###   ########.fr       */
+/*   Created: 2026/04/09 14:16:32 by ethutin-          #+#    #+#             */
+/*   Updated: 2026/04/09 14:35:38 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_var_env(t_data *data, char *motif, int len)
+void    unset_place(t_data *data, char *motif)
 {
 	t_env	*tmp;
-	char	*path;
 
 	tmp = data->t_env;
 	while (tmp)
 	{
-		if (!ft_strncmp(tmp->var, motif, len))
+		if (!ft_strncmp(tmp->var, motif, ft_strlen(motif)))
 		{
-			path = tmp->arg;
-			return (path);
+            if (tmp->export)
+                tmp->export = 0;
+			break ;
 		}
 		tmp = tmp->next;
 	}
-	return (NULL);
 }
 
-int	is_builtin(char **built_in, char *cmd)
+int exec_unset(t_data *data, char **cmd)
 {
-	int	i;
-
-	i = 0;
-	if (built_in == NULL)
-		return (0);
-	while (built_in[i])
-	{
-		if (!strcmp(built_in[i], cmd))
-			return (1);
-	}
-	return (0);
+    t_env   *tmp;
+    int     i;
+    
+    i = 0;
+    tmp = data->t_env;
+    while (cmd[++i])
+    {
+        unset_place(data, cmd[i]);
+        tmp = tmp->next;
+    }
+    return (EXIT_SUCCESS);
 }

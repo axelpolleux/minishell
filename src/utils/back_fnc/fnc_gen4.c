@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 11:02:59 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/08 11:39:56 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/08 16:58:02 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,30 +71,4 @@ void	*ft_calloc(size_t nmemb, size_t size)
 		return (NULL);
 	ft_memset(mal, 0, nmemb * size);
 	return (mal);
-}
-
-char	**tab_env(t_env *env)
-{
-	t_env	*cop;
-	char	**tab_env;
-	char	*tmp;
-	int		i;
-
-	i = -1;
-	tab_env = ft_calloc(sizeof(char *), ft_lstsize_e(env) + 1);
-	if (!tab_env)
-		return (NULL);
-	cop = env;
-	while (cop)
-	{
-		tmp = ft_strdup(cop->var);
-		if (!tmp)
-		{
-			free_arr(tab_env);
-			return (NULL);
-		}
-		tab_env[++i] = tmp;
-		cop = cop->next;
-	}
-	return (tab_env);
 }

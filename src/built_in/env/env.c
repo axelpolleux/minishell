@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd_extend.c                                        :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/08 13:23:45 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/08 13:55:54 by ethutin-         ###   ########.fr       */
+/*   Created: 2026/04/09 13:59:12 by ethutin-          #+#    #+#             */
+/*   Updated: 2026/04/09 14:16:24 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	exec_chdir(char *path, char *new_pwd, size_t size)
+int exec_env(t_data *data)
 {
-	if (chdir(path) == -1 || !getcwd(new_pwd, size))
-	{
-		error_exit (CD_ER, C_ERROR, NF);
-		return (EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
+    t_env *tmp;
+    
+    tmp = data->t_env;
+    while (tmp)
+        printf("%s\n", tmp->var);
+    return (EXIT_SUCCESS);
 }

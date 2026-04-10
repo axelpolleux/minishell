@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/08 13:59:18 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/09 11:16:47 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ void	display_env(t_env *view)
 {
 	while (view)
 	{
-		printf("->%s \n", view->var);
+		printf("var-> %s \n", view->var);
+		printf("arg-> %s \n", view->arg);
+		printf("export-> %d \n", view->export);
+		printf("====================\n");
 		view = view->next;
 	}
 }
@@ -76,7 +79,7 @@ void	display_cmd(t_cmd *view)
 // 		free_cmd(data->cmd);
 // }
 
-void	get_env(t_data *data, char **env)
+void	init_env(t_data *data, char **env)
 {
 	t_env	*new;
 	int		i;
@@ -84,7 +87,7 @@ void	get_env(t_data *data, char **env)
 	i = -1;
 	if (!env || !(*env)) // a reconstruire ? /  oui imperativement
 	{
-		//make_built_env(data); il doit faire l'env minimum ainsi que oldpwd et pwd et HOME
+		//make_env(data); il doit faire l'env minimum ainsi que oldpwd et pwd et HOME
 		free_data(data);
 		exit(0);
 	}
@@ -115,7 +118,7 @@ int	exit_shell(char *line)
 }
 /*
 faire tout le built in, refaire export ;
-	-> echo\ cd- pwd
+	-> echo\ cd\ pwd\ 
 faire tout le systeme dexpand dans environement ;
 	-> mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 continuer la logic d'exec;
@@ -129,14 +132,15 @@ int	main(int ac, char **av, char **env)
 	data->built_in = init_built();
 	if (!data->built_in)
 		data_malloc_error(data);
-	get_env(data, env);
+	init_env(data, env);
+	//display_env(data->t_env);
 	while (1)
 	{
 		data->line = readline("minishell> "); //amelioration possible, rendre dynamique
 		if (exit_shell(data->line))
 			break ;
 		tokenization(data);
-		exec(data); //pas terminer 
+		//exec(data); //pas terminer 
 	}
 	rl_clear_history();
 	free_data(data);

@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 17:42:10 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/03 15:09:01 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/09 12:04:17 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	ft_lstsize_e(t_env *lst)
 	len_lst = 0;
 	while (lst)
 	{
-		len_lst++;
+		if (lst->export)
+			len_lst++;
 		lst = lst->next;
 	}
 	return (len_lst);
