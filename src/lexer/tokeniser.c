@@ -6,11 +6,12 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 11:06:42 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/09 16:44:14 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/13 14:11:02 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "../../includes/lib/minishell.h"
 #include "libft/libft.h"
 
 void	skip_spaces(char *input, int *index)
@@ -72,7 +73,8 @@ void	add_word(char *input, t_token **tokens, int *index)
 
 	len = 0;
 	while (input[*index + len] && !is_space(input[*index + len])
-		&& !ft_strchr("|<>", input[*index + len]))
+		&& !ft_strchr("|<>", input[*index + len])
+		&& (input[*index + len] != 34 && input[*index + len] != 39))
 		len++;
 	token = token_new(ft_substr(input, *index, len), WORD);
 	ft_token_add_back(tokens, token);
@@ -95,6 +97,8 @@ t_token	*tokeniser(char *input)
 			add_in(input, &tokens, &i);
 		else if (input[i] == 34)
 			double_quotes(input, &tokens, &i);
+		else if (input[i] == 39)
+			single_quotes(input, &tokens, &i);
 		else if (ft_strchr(">", input[i]))
 			add_out(input, &tokens, &i);
 		else if (!is_space(input[i]))
