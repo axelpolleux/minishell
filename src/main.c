@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/09 11:16:47 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/14 14:24:52 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	init_env(t_data *data, char **env)
 	}
 	while (env[++i])
 	{
-		new = new_env(ft_strdup(env[i]));
+		new = new_env(ft_strdup(env[i]), 1);
 		if (!new)
 			data_malloc_error(data);
 		add_to_bottom(&data->t_env, new);
@@ -123,6 +123,7 @@ faire tout le systeme dexpand dans environement ;
 	-> mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 continuer la logic d'exec;
 	-> plus tard sa m'emmerde
+URGENT check les pipe ouverte pour les built in 
 */
 int	main(int ac, char **av, char **env)
 {

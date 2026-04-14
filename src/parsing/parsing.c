@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 10:09:53 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/31 14:00:15 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/14 14:52:14 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	tokenization(t_data *data)
 	if (!word)
 		data_malloc_error(data);
 	create_token(data, word);
-	//display_token(data->token);
 	free_arr(word);
 	free(data->line);
 }

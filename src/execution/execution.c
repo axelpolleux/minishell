@@ -6,15 +6,15 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:43:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/08 13:18:38 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/14 15:08:18 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void exec_command(t_data *data, char **env)
+void	exec_command(t_data *data, char **env)
 {
-	if(execve(data->cmd->cmd_path, data->cmd->cmd, env) == -1)
+	if (execve(data->cmd->cmd_path, data->cmd->cmd, env) == -1)
 	{
 		free_arr(env);
 		perror("minishell");
@@ -27,14 +27,14 @@ void exec_command(t_data *data, char **env)
 	}
 }
 
-void children(t_data *data, t_cmd *cmd)
+void	children(t_data *data, t_cmd *cmd)
 {
-	char **env;
+	char	**env;
 
 	if (is_builtin(data->built_in, cmd->cmd[0]))
 		exit(exec_built(data, cmd));
 	get_cmd_path(data, cmd);
-	if (data->exit > -2) //error_exit(data);
+	if (data->exit > -2)
 		exit(data->exit);
 	if (data->last_fd != -1)
 	{
@@ -49,7 +49,7 @@ void children(t_data *data, t_cmd *cmd)
 		closes(-1, data->fd_storage);
 	}
 	manage_redir(data, cmd);
-	env = tab_env(data->t_env);
+	env = tab_env(data->t_env, -1);
 	if (!env)
 		data_malloc_error(data);
 	exec_command(data, env);
@@ -75,7 +75,7 @@ void	parent(t_data *data, t_cmd *cmd)
 		if (data->last_fd != -1)
 			close(data->last_fd);
 		if (cmd->next)
-		{		
+		{
 			close(data->fd_storage[1]);
 			data->last_fd = data->fd_storage[0];
 		}
@@ -84,10 +84,10 @@ void	parent(t_data *data, t_cmd *cmd)
 	}
 }
 
-void wait_end(t_data *data, int count)
+void	wait_end(t_data *data, int count)
 {
-	int i;
-	int error;
+	int	i;
+	int	error;
 
 	i = -1;
 	while (++i < count)
@@ -98,7 +98,7 @@ void wait_end(t_data *data, int count)
 		exit(WEXITSTATUS(error));
 }
 
-void exec(t_data *data)
+void	exec(t_data *data)
 {
 	t_cmd	*cmd;
 	int		count;
@@ -111,7 +111,7 @@ void exec(t_data *data)
 	if (!data->pid)
 		data_malloc_error(data);
 	if (is_builtin(data->built_in, cmd->cmd[0]) && !cmd->next)
-		exit(exec_built(data, cmd));// pas enocre terminer
+		exit(exec_built(data, cmd));
 	parent(data, cmd);
 	wait_end(data, count);
 }

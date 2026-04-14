@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 15:16:58 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/08 14:02:18 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/14 15:12:29 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,17 @@ int	get_enof(t_data *data, char *line)
 	return (0);
 }
 
-void in_hre(t_data *data, int fd[2])
+void	in_hre(t_data *data, int fd[2])
 {
-    char *line;
+	char	*line;
+
 	while (1)
 	{
 		write(1, "> ", 2);
 		line = get_next_line_e(0, 0);
 		if (!line)
 			exit(0);
-		if(get_enof(data, line))
+		if (get_enof(data, line))
 			break ;
 		write(fd[1], line, ft_strlen(line));
 		free(line);
@@ -43,9 +44,9 @@ void in_hre(t_data *data, int fd[2])
 	close(fd[0]);
 }
 
-int hre_arg(t_data *data)
+int	hre_arg(t_data *data)
 {
-	t_cmd *tmp;
+	t_cmd	*tmp;
 
 	tmp = data->cmd;
 	if (!tmp->cmd[1])
@@ -71,7 +72,7 @@ int	here_doc_manage(t_data *data)// les signaux a faire
 	int		error;
 
 	if (data->cmd->type != HEREDOC)
-		return(0);
+		return (0);
 	if (pipe(fd) == -1)
 		pipe_error(data);
 	error = hre_arg(data);
@@ -85,6 +86,5 @@ int	here_doc_manage(t_data *data)// les signaux a faire
 		data_malloc_error(data);
 	else
 		in_hre(data, fd);
-    return (1);
+	return (1);
 }
-

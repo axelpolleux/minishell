@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/10 12:00:06 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/14 15:17:01 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@
 # define CD_ER		"minishell: cd"
 # define CD_ARG		"minishell: cd: too many arguments\n"
 # define PWD_ER		"minishell: pwd"
-# define EXP_ER		"bash: export: `????????`: not a valid identifier\n"
+# define EXP_ER		"minishell: export: `????????`: not a valid identifier\n"
 
 # define P_ERROR 0
 # define C_ERROR 1
@@ -73,12 +73,12 @@
 
 typedef struct s_cmd
 {
-	char 			**cmd;
-	char 			*cmd_path;
-	char 			*full_cmd;
+	char			**cmd;
+	char			*cmd_path;
+	char			*full_cmd;
 
 	int				type;
-	int 			input;
+	int				input;
 	int				output;
 
 	struct s_cmd	*next;
@@ -88,7 +88,7 @@ typedef struct s_cmd
 typedef struct s_token
 {
 	char			*cmd;
-	
+
 	int				type;
 
 	struct s_token	*next;
@@ -99,7 +99,7 @@ typedef struct s_env
 {
 	char			*var;
 	char			*arg;
-	
+
 	int				export;
 
 	struct s_env	*next;
@@ -113,14 +113,13 @@ typedef struct s_data
 	char		**built_env;
 
 	char		*line;
-	// char		*error_line;
 
 	int			fd_storage[2];
-	int 		last_fd;
+	int			last_fd;
 	int			exit;
 
 	pid_t		*pid;
-	
+
 	t_token		*token;
 	t_env		*t_env;
 	t_cmd		*cmd;
@@ -133,6 +132,7 @@ void			wait_error(t_data *data);
 void			dup_error(t_data *data);
 void			fork_error(t_data *data);
 void			error_exit(char *error, int error_p, int fd);
+void			error_export(t_data *data, char *error);
 
 int				malloc_error(char **path);
 int				data_malloc_error(t_data *data);
@@ -162,7 +162,6 @@ void			display_env(t_env *view);// a degager
 void			display_token(t_token *view);//
 void			display_cmd(t_cmd *view);//
 
-//int				ft_strncmp(const char *s1, const char *s2, unsigned int n);
 int				ft_strcmp(char *s1, char *s2);
 int				word_size(char *str, char charset);
 int				srch_cmd(char *s, char c);
@@ -176,7 +175,8 @@ size_t			ft_strlen(const char *str);
 
 t_data			*init_data(int ac, char **av);
 t_token			*new_token(t_token *node, char *cmd);
-t_env			*new_env(char *line);
+t_env			*new_env(char *line, int export);
+t_env			*new_env_n_on(char *line, int export);
 //======================================================//
 
 //============for the the expand========//
@@ -191,7 +191,9 @@ char			*path_env(t_data *data, char **cmd);
 
 void			print_flag(char **cmd, int start);
 void			built_choice(t_data *data, t_cmd *cmd);
+void			built_pipe(t_data *data, t_cmd *cmd);
 void			unset_place(t_data *data, char *motif);
+void			only_name(t_data *data, t_env *tmp, char *cmd);
 
 int				is_builtin(char **built_in, char *cmd);
 int				exec_echo(char **cmd);
@@ -199,11 +201,14 @@ int				exec_cd(t_data *data, char **cmd);
 int				exec_built(t_data *data, t_cmd *cmd);
 int				exec_chdir(char *path, char *new_pwd, size_t size);
 int				exec_pwd(void);
-int 			exec_export(t_data *data, char **cmd);
+int				exec_export(t_data *data, char **cmd);
 int				exec_unset(t_data *data, char **cmd);
 int				exec_env(t_data *data);
 int				update_var(t_data *data, char *new_pwd, char *old_pwd);
 int				replace(t_data *data, char *motif, char *path);
+int				name_arg(t_data *data, t_env *tmp, char *cmd);
+int				only_export(t_data *data, char **cmd);
+int				not_in_en(t_data *data, char *name);
 //===============================================================//
 
 //========================<for exec>=========================//
@@ -212,7 +217,6 @@ char			**get_path(t_data *data, int len);
 void			verif_command(t_data *data, t_cmd *cmd);
 void			get_cmd_path(t_data *data, t_cmd *cmd);
 void			children(t_data *data, t_cmd *cmd);
-//void			tennage(t_data *data);
 void			exec(t_data *data);
 void			cmd_whith_path(t_data *data, char *command);
 void			full_cmd(t_data *data, char *command);
@@ -265,4 +269,3 @@ int				init_buff(char **buffer);
 //=============================================================//
 
 #endif
-

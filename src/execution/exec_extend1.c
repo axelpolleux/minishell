@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 11:48:19 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/08 14:00:28 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/14 15:09:18 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,12 @@ void	get_cmd_path(t_data *data, t_cmd *cmd)
 	else if (full_void(cmd->cmd[0]))
 	{
 		data->exit = 127;
-		//data->error_line = cmd->cmd[0];
 		return ;
 	}
 	verif_command(data, cmd);
 }
 
-void manage_redir(t_data *data, t_cmd *cmd)
+void	manage_redir(t_data *data, t_cmd *cmd)
 {
 	if (cmd->input != -1)
 	{
@@ -77,7 +76,7 @@ void manage_redir(t_data *data, t_cmd *cmd)
 	if (cmd->output != -1)
 	{
 		if (dup2(cmd->output, STDOUT_FILENO) == -1)
-			dup_error(data);		
+			dup_error(data);
 		close(cmd->output);
 	}
 }

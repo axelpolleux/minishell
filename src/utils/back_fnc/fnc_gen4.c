@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 11:02:59 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/08 16:58:02 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/14 15:03:02 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ t_data	*init_data(int ac, char **av)
 	data->token = NULL;
 	data->cmd = NULL;
 	data->exit = -2;
-	//data->original_env = env;
 	(void)av;
 	(void)ac;
 	return (data);

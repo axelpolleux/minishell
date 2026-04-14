@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 17:42:10 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/09 12:04:17 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/14 15:02:46 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,27 +77,6 @@ void	free_env(t_env *node)
 	{
 		tmp = (node)->next;
 		free(node->var);
-		free(node);
-		node = tmp;
-	}
-	node = NULL;
-}
-
-void	free_cmd(t_cmd *node)
-{
-	t_cmd	*tmp;
-
-	if (node == NULL)
-		return ;
-	while (node)
-	{
-		tmp = (node)->next;
-		if (tmp->cmd)
-			free_arr(tmp->cmd);
-		if (tmp->cmd_path)
-			free(tmp->cmd_path);
-		if (tmp->full_cmd)
-			free(tmp->full_cmd);
 		free(node);
 		node = tmp;
 	}
