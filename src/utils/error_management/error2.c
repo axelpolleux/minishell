@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/05 18:26:35 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/14 15:05:31 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/15 13:54:42 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	data_malloc_error(t_data *data)
 	exit (EXIT_FAILURE);
 }
 
-void	error_exit(char *error, int error_p, int fd)
+void	error_perror(char *error, int error_p, int fd)
 {
 	if (error_p)
 		perror("error");
@@ -35,18 +35,16 @@ void	pipe_error(t_data *data)
 	exit (-1);
 }
 
-void	error_export(t_data *data, char *error)
+void	error_export(char *error)
 {
-	char	*tmp;
-	char	*line;
+	ft_putstr_fd("minishell: export: `", 2);
+	ft_putstr_fd(error, 2);
+	ft_putstr_fd("`: not a valid identifier\n", 2);
+}
 
-	tmp = ft_strjoin("minishell: export: `", error);
-	if (!tmp)
-		data_malloc_error(data);
-	line = ft_strjoin(tmp, "`: not a valid identifier\n");
-	free(tmp);
-	if (!line)
-		data_malloc_error(data);
-	ft_putstr_fd(line, 2);
-	free(line);
+void	error_exit(char *error)
+{
+	ft_putstr_fd("minishell: exit: ", 2);
+	ft_putstr_fd(error, 2);
+	ft_putstr_fd(": numeric argument required\n", 2);
 }

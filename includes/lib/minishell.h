@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/14 15:17:01 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/15 14:26:29 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@
 # define CD_ER		"minishell: cd"
 # define CD_ARG		"minishell: cd: too many arguments\n"
 # define PWD_ER		"minishell: pwd"
-# define EXP_ER		"minishell: export: `????????`: not a valid identifier\n"
+# define EXT_ARG	"minishell: exit: too many arguments\n"
 
 # define P_ERROR 0
 # define C_ERROR 1
@@ -131,8 +131,9 @@ void			pipe_error(t_data *data);
 void			wait_error(t_data *data);
 void			dup_error(t_data *data);
 void			fork_error(t_data *data);
-void			error_exit(char *error, int error_p, int fd);
-void			error_export(t_data *data, char *error);
+void			error_perror(char *error, int error_p, int fd);
+void			error_export(char *error);
+void			error_exit(char *error);
 
 int				malloc_error(char **path);
 int				data_malloc_error(t_data *data);
@@ -194,6 +195,7 @@ void			built_choice(t_data *data, t_cmd *cmd);
 void			built_pipe(t_data *data, t_cmd *cmd);
 void			unset_place(t_data *data, char *motif);
 void			only_name(t_data *data, t_env *tmp, char *cmd);
+void			exec_exit(t_data *data, t_cmd *g_cmd, char **cmd);
 
 int				is_builtin(char **built_in, char *cmd);
 int				exec_echo(char **cmd);

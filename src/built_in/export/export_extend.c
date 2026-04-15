@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 13:37:04 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/14 14:59:37 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/15 10:18:36 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	name_arg(t_data *data, t_env *tmp, char *cmd)
 	{
 		if (cmd[i] == '=')
 		{
-			replace = ft_substr(cmd, 0, i - 1);
+			replace = ft_substr(cmd, 0, i);
 			if (!replace)
 				data_malloc_error(data);
 			if (not_in_en(data, replace))
@@ -98,19 +98,8 @@ int	name_arg(t_data *data, t_env *tmp, char *cmd)
 
 void	only_name(t_data *data, t_env *tmp, char *cmd)
 {
-	t_env	*new;
-	char	*replace;
-
-	replace = ft_strdup(cmd);
-	if (!replace)
-		data_malloc_error(data);
-	if (not_in_en(data, replace))
-	{
-		new = new_env(ft_strdup(cmd), 1);
-		if (!new)
-			data_malloc_error(data);
-		add_to_bottom(&data->t_env, new);
-	}
+	if (not_in_en(data, cmd))
+		return ;
 	else
 		tmp->export = 1;
 }

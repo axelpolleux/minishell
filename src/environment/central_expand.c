@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 10:10:01 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/06 15:31:06 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/15 14:29:13 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // char *expand(t_data *data, t_cmd *cmd)
 // {
 //     char *expand;
-    
+
 //     expand = cmd->full_cmd;
 //     brace_expand();
 //     tilde_expand();
@@ -28,10 +28,6 @@
 
 //     return(expand);
 // }
-
-
-
-
 //     Brace expansion
 
 //     Tilde expansion

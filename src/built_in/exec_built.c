@@ -6,16 +6,17 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 14:53:34 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/14 14:53:54 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/15 14:29:55 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	built_pipe(t_data *data, t_cmd *cmd)
-{
 	// if (in_pipe()) //faire le check de pipe ouverte ici
 	// 	return ;
+
+void	built_pipe(t_data *data, t_cmd *cmd)
+{
 	if (!ft_strncmp("export", cmd->cmd[0], 6))
 		data->exit = exec_export(data, cmd->cmd);
 	else if (!ft_strncmp("unset", cmd->cmd[0], 5))
@@ -32,7 +33,8 @@ void	built_choice(t_data *data, t_cmd *cmd)
 		data->exit = exec_pwd();
 	else if (!ft_strncmp("env", cmd->cmd[0], 3))
 		data->exit = exec_env(data);
-	// else if (!ft_strncmp("exit", cmd->cmd[0], 4))
+	else if (!ft_strncmp("exit", cmd->cmd[0], 4))
+		exec_exit(data, cmd, cmd->cmd);
 	built_pipe(data, cmd);
 }
 

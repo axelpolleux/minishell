@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 09:50:21 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/14 14:56:49 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/15 13:22:39 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,14 @@ int	not_in_en(t_data *data, char *name)
 {
 	t_env	*env;
 	int		i;
+	int		len;
 
 	env = data->t_env;
 	i = 0;
+	len = ft_strlen(name);
 	while (env)
 	{
-		if (!ft_strncmp(env->var, name, ft_strlen(name)))
+		if (!ft_strncmp(env->var, name, len) && name[len + 1] == '=')
 			return (EXIT_SUCCESS);
 		env = env->next;
 	}
@@ -57,7 +59,7 @@ int	central_export(t_data *data, char **cmd, int i)
 	{
 		if (pars_export(cmd[i]))
 		{
-			error_export(data, cmd[i]);
+			error_export(cmd[i]);
 			output = EXIT_FAILURE;
 			continue ;
 		}

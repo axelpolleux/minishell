@@ -6,61 +6,61 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/14 14:24:52 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/15 14:28:43 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //=======a degager a la fin==========//
-void	display_env(t_env *view)
-{
-	while (view)
-	{
-		printf("var-> %s \n", view->var);
-		printf("arg-> %s \n", view->arg);
-		printf("export-> %d \n", view->export);
-		printf("====================\n");
-		view = view->next;
-	}
-}
+// void	display_env(t_env *view)
+// {
+// 	while (view)
+// 	{
+// 		printf("var-> %s \n", view->var);
+// 		printf("arg-> %s \n", view->arg);
+// 		printf("export-> %d \n", view->export);
+// 		printf("====================\n");
+// 		view = view->next;
+// 	}
+// }
 
-void	display_token(t_token *view)
-{
-	printf("{");
-	while (view)
-	{
-		printf("%s", view->cmd);
-		if (view->next)
-			printf(", ");
-		view = view->next;
-	}
-	printf("}\n");
-}
+// void	display_token(t_token *view)
+// {
+// 	printf("{");
+// 	while (view)
+// 	{
+// 		printf("%s", view->cmd);
+// 		if (view->next)
+// 			printf(", ");
+// 		view = view->next;
+// 	}
+// 	printf("}\n");
+// }
 
-void	display_cmd(t_cmd *view)
-{
-	int	i;
+// void	display_cmd(t_cmd *view)
+// {
+// 	int	i;
 
-	i = 0;
-	while (view)
-	{
-		printf("============================\n");
-		printf("{");
-		while (view->cmd[i])
-		{
-			printf("cmd => %s", view->cmd[i]);
-			if (view->next)
-				printf(", ");
-		}
-		printf("}\n");
-		printf("cmd_path => %s\n", view->cmd_path);
-		printf("full_cmd => %s\n", view->full_cmd);
-		printf("input => %d\n", view->input);
-		printf("output => %d\n", view->output);
-		view = view->next;
-	}
-}
+// 	i = 0;
+// 	while (view)
+// 	{
+// 		printf("============================\n");
+// 		printf("{");
+// 		while (view->cmd[i])
+// 		{
+// 			printf("cmd => %s", view->cmd[i]);
+// 			if (view->next)
+// 				printf(", ");
+// 		}
+// 		printf("}\n");
+// 		printf("cmd_path => %s\n", view->cmd_path);
+// 		printf("full_cmd => %s\n", view->full_cmd);
+// 		printf("input => %d\n", view->input);
+// 		printf("output => %d\n", view->output);
+// 		view = view->next;
+// 	}
+// }
 	// //pour voir l'historique
 	// HIST_ENTRY **history;
 	// history = history_list();
@@ -85,9 +85,8 @@ void	init_env(t_data *data, char **env)
 	int		i;
 
 	i = -1;
-	if (!env || !(*env)) // a reconstruire ? /  oui imperativement
+	if (!env || !(*env))
 	{
-		//make_env(data); il doit faire l'env minimum ainsi que oldpwd et pwd et HOME
 		free_data(data);
 		exit(0);
 	}
@@ -109,22 +108,14 @@ int	exit_shell(char *line)
 	}
 	if (line && *line && !full_void(line))
 		add_history(line);
-	if (!strcmp(line, "exit")) // a ameliorer pour les space
+	if (!strcmp(line, "exit"))
 	{
 		printf("exit\n");
 		return (1);
 	}
 	return (0);
 }
-/*
-faire tout le built in, refaire export ;
-	-> echo\ cd\ pwd\ 
-faire tout le systeme dexpand dans environement ;
-	-> mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
-continuer la logic d'exec;
-	-> plus tard sa m'emmerde
-URGENT check les pipe ouverte pour les built in 
-*/
+
 int	main(int ac, char **av, char **env)
 {
 	t_data	*data;
@@ -134,16 +125,24 @@ int	main(int ac, char **av, char **env)
 	if (!data->built_in)
 		data_malloc_error(data);
 	init_env(data, env);
-	//display_env(data->t_env);
 	while (1)
 	{
-		data->line = readline("minishell> "); //amelioration possible, rendre dynamique
+		data->line = readline("minishell> ");
 		if (exit_shell(data->line))
 			break ;
 		tokenization(data);
-		//exec(data); //pas terminer 
+		exec(data);
 	}
 	rl_clear_history();
 	free_data(data);
 	return (0);
 }
+
+/*
+faire tout le built in, refaire export ;
+	-> echo\ cd\ pwd\ 
+faire tout le systeme dexpand dans environement ;
+	-> mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+continuer la logic d'exec;
+	-> plus tard sa m'emmerde
+*/

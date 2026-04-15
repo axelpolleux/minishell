@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 16:06:43 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/09 11:29:26 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/15 14:32:58 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	exec_chdir(char *path, char *new_pwd, size_t size)
 {
 	if (chdir(path) == -1 || !getcwd(new_pwd, size))
 	{
-		error_exit (CD_ER, C_ERROR, NF);
+		error_perror (CD_ER, C_ERROR, NF);
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
@@ -42,13 +42,14 @@ int	replace(t_data *data, char *motif, char *path)
 		}
 		tmp = tmp->next;
 	}
-	// if (!tmp) //pas sur au cas ou 
+	return (EXIT_SUCCESS);
+}
+
+	// if (!tmp) // dans replacepas sur au cas ou 
 	// {
 	// 	make_env(data, var);
 	// 	replace(data, motif, path);
 	// }
-	return (EXIT_SUCCESS);
-}
 
 int	update_var(t_data *data, char *new_pwd, char *old_pwd)
 {
@@ -70,13 +71,13 @@ char	*path_env(t_data *data, char **cmd)
 	{
 		path = get_var_env(data, HOME, ft_strlen(HOME));
 		if (!path)
-			error_exit (HOME_NSET, P_ERROR, 2);
+			error_perror (HOME_NSET, P_ERROR, 2);
 	}
 	else if (!strcmp(cmd[1], "-"))
 	{
 		path = get_var_env(data, OLDPWD, ft_strlen(OLDPWD));
 		if (!path)
-			error_exit (OLDP_NSET, P_ERROR, 2);
+			error_perror (OLDP_NSET, P_ERROR, 2);
 		else
 			printf("%s\n", path);
 	}
@@ -93,12 +94,12 @@ int	exec_cd(t_data *data, char **cmd)
 
 	if (nb_arg(cmd) > 2)
 	{
-		error_exit (CD_ARG, P_ERROR, 2);
+		error_perror (CD_ARG, P_ERROR, 2);
 		return (EXIT_FAILURE);
 	}
 	if (!getcwd(old_pwd, sizeof(old_pwd)))
 	{
-		error_exit (CD_ER, C_ERROR, NF);
+		error_perror (CD_ER, C_ERROR, NF);
 		return (EXIT_FAILURE);
 	}
 	path = path_env(data, cmd);
