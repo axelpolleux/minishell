@@ -2,7 +2,7 @@
 CC				:= cc
 CFLAGS			:= -Wall -Werror -Wextra -g -fsanitize=address -MMD -MP
 
-INCLUDES_DIR	:= -Iincludes/ -Iincludes/lib/
+INCLUDES_DIR	:= -Iincludes/ -Iincludes/libft/ -Iincludes/lib/
 INCLUDES		:= $(INCLUDES_DIR)
 LIBS			:= -lreadline
 NAME			:= minishell
@@ -40,7 +40,7 @@ FORCE:
 $(BUILDS_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-	@echo "Compiling: $<"
+# 	@echo "Compiling: $<"
 
 clean:
 	@echo "[CLEAN]"
