@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:43:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/14 15:08:18 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/20 10:35:28 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,18 +100,18 @@ void	wait_end(t_data *data, int count)
 
 void	exec(t_data *data)
 {
-	t_cmd	*cmd;
+	t_cmd	*t_cmd;
 	int		count;
 
-	cmd = data->cmd;
-	count = nb_process(cmd);
+	t_cmd = data->cmd;
+	count = nb_process(t_cmd);
 	if (count == 0)
 		return ;
 	data->pid = ft_calloc(sizeof(pid_t), count);
 	if (!data->pid)
 		data_malloc_error(data);
-	if (is_builtin(data->built_in, cmd->cmd[0]) && !cmd->next)
-		exit(exec_built(data, cmd));
-	parent(data, cmd);
+	if (is_builtin(data->built_in, t_cmd->cmd[0]) && !t_cmd->next)
+		exit(exec_built(data, t_cmd));
+	parent(data, t_cmd);
 	wait_end(data, count);
 }

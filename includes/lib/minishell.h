@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/17 11:24:36 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/20 11:00:11 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@
 # define CD_ARG		"minishell: cd: too many arguments\n"
 # define PWD_ER		"minishell: pwd"
 # define EXT_ARG	"minishell: exit: too many arguments\n"
+# define QUOT_ER	"minishell: every quote must be closed\n"
 
 # define P_ERROR 0
 # define C_ERROR 1
@@ -134,6 +135,7 @@ void			fork_error(t_data *data);
 void			error_perror(char *error, int error_p, int fd);
 void			error_export(char *error);
 void			error_exit(char *error);
+void			error_quote(void);
 
 int				malloc_error(char **path);
 int				data_malloc_error(t_data *data);

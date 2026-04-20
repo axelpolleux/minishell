@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 11:06:42 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/20 10:05:14 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/20 11:29:08 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ void	add_in(t_data *data, t_token **tokens, char *input, int *index)
 	len = 1;
 	if (input[*index] == '|')
 		type = PIPE;
-	else if (input[*index] == '<')
+	if (input[*index] == '<')
 	{
-		if (input[*index + 1] == '<')
+		if (input[*index + 1] && input[*index + 1] == '<')
 		{
 			type = HEREDOC;
 			len = 2;
@@ -55,7 +55,7 @@ void	add_out(t_data *data, t_token **tokens, char *input, int *index)
 	len = 1;
 	if (input[*index] == '>')
 	{
-		if (input[*index + 1] == '>')
+		if (input[*index + 1] && input[*index + 1] == '>')
 		{
 			type = APPEND;
 			len = 2;

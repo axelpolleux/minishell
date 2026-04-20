@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 16:30:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/17 11:29:20 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/20 11:04:27 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,9 @@ t_token	*token_new(char *input, int *index, int len, int type)
 	t_token	*new;
 	char	*cmd;
 
-	new = (t_token *)malloc(sizeof(t_token));
+	if (!input || !index || *index < 0 || len < 0)
+		return (NULL);
+	new = ft_calloc(sizeof(t_token), 1);
 	if (!new)
 		return (NULL);
 	cmd = ft_substr(input, *index, len);
