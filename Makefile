@@ -2,7 +2,7 @@
 CC				:= cc
 CFLAGS			:= -Wall -Werror -Wextra -g -fsanitize=address -MMD -MP
 
-INCLUDES_DIR	:= -Iincludes/ -Iincludes/libft/ -Iincludes/lib/
+INCLUDES_DIR	:= -Iincludes/ -Iincludes/libft/ -Iincludes/lib/ -Iincludes/gnl
 INCLUDES		:= $(INCLUDES_DIR)
 LIBS			:= -lreadline
 NAME			:= minishell
@@ -10,14 +10,14 @@ NAME			:= minishell
 LIBFT_DIR		:= includes/libft/
 LIBFT			:= $(LIBFT_DIR)libft.a
 
-GNL_DIR			:= includes/get_next_line/
+GNL_DIR			:= includes/gnl/
 GNL_SRCS		:= $(GNL_DIR)get_next_line.c	\
 				$(GNL_DIR)get_next_line_utils.c
 
 #Files
 BUILDS_DIR		:= builds
-SRCS			:= $(shell find src -type f -name "*.c")
-
+SRCS := $(shell find src -type f -name "*.c") \
+        $(GNL_SRCS)
 OBJS			:= $(patsubst %.c, $(BUILDS_DIR)/%.o, $(SRCS))
 DEPS			:= $(OBJS:.o=.d)
 

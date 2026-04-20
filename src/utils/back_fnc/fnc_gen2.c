@@ -6,108 +6,73 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 11:06:25 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/08 13:08:57 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/20 10:07:02 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	*ft_memcpy(void *dest, const void *src, size_t n)
+int	ft_lstsize_e(t_env *lst)
 {
-	unsigned char	*str_des;
-	unsigned char	*str_src;
-	size_t			i;
+	size_t	len_lst;
 
-	if (!dest && !src)
-		return (NULL);
-	i = 0;
-	str_des = dest;
-	str_src = (unsigned char *)src;
-	while (i < n)
+	len_lst = 0;
+	while (lst)
 	{
-		str_des[i] = str_src[i];
-		i++;
+		if (lst->export)
+			len_lst++;
+		lst = lst->next;
 	}
-	return (dest);
+	return (len_lst);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+int	ft_lstsize_t(t_token *lst)
 {
-	char			*cop;
-	char			*verif_dup;
-	size_t			len_s;
+	size_t	len_lst;
 
-	if (!s)
-		return (NULL);
-	len_s = ft_strlen(s);
-	if (start >= len_s)
+	len_lst = 0;
+	while (lst)
 	{
-		verif_dup = ft_strdup("");
-		return (verif_dup);
+		len_lst++;
+		lst = lst->next;
 	}
-	if (len > len_s - start)
-		len = len_s - start;
-	cop = malloc((len + 1) * sizeof(char));
-	if (!cop)
-		return (NULL);
-	cop = ft_memcpy(cop, s + start, len);
-	cop[len] = '\0';
-	return (cop);
+	return (len_lst);
 }
 
-// char	*ft_strdup(char *src)
-// {
-// 	char	*duplicate;
-// 	int		i;
-
-// 	i = 0;
-// 	while (src[i])
-// 		i++;
-// 	duplicate = (char *)malloc((i + 1) * sizeof(char));
-// 	if (!duplicate)
-// 		return (0);
-// 	i = 0;
-// 	while (src[i])
-// 	{
-// 		duplicate[i] = src[i];
-// 		i++;
-// 	}
-// 	duplicate[i] = '\0';
-// 	return (duplicate);
-// }
-
-char	*ft_strjoin(char const *s1, char const *s2)
+int	ft_lstsize_c(t_cmd *lst)
 {
-	size_t		len_s1;
-	size_t		len_s2;
-	char		*concat;
+	size_t	len_lst;
 
-	if (!s1 || !s2)
-		return (NULL);
-	len_s1 = ft_strlen(s1);
-	len_s2 = ft_strlen(s2);
-	concat = malloc((len_s1 + len_s2 + 1) * sizeof(char));
-	if (!concat)
-		return (NULL);
-	ft_memcpy(concat, s1, len_s1);
-	ft_memcpy(concat + len_s1, s2, len_s2 + 1);
-	return (concat);
+	len_lst = 0;
+	while (lst)
+	{
+		len_lst++;
+		lst = lst->next;
+	}
+	return (len_lst);
 }
 
-void	*ft_memset(void *s, int c, size_t n)
+int	only_quote(char *line)
 {
-	unsigned char	cp;
-	unsigned char	*start;
-	size_t			i;
+	int	i;
 
 	i = 0;
-	cp = c;
-	start = s;
-	while (i < n)
+	while (line[i])
+		if (line[i] != '\'' && line[i] != '\"')
+			return (0);
+	return (1);
+}
+
+int	full_void(char *line)
+{
+	int	i;
+
+	i = -1;
+	if (line)
 	{
-		*start = cp;
-		start++;
-		i++;
+		while (line[++i])
+			if (line[i] != ' ' && line[i] != '\t' && line[i] != '\n')
+				return (0);
 	}
-	return (s);
+	return (1);
 }

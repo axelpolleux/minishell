@@ -3,22 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   tokeniser_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 16:30:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/07 16:16:39 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/17 11:29:20 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_space(int c)
-{
-	if (c == 32 || (c >= 9 && c <= 13))
-		return (1);
-	return (0);
-}
-
+//=============choisiser celui que vou voulait==========//
 void	display_tokens(t_token *token)
 {
 	int	i;
@@ -32,18 +26,25 @@ void	display_tokens(t_token *token)
 	}
 }
 
-void	free_tokens(t_token	*token)
+void	display_token(t_token *view)
 {
-	t_token	*tmp;
-
-	while (token)
+	printf("{");
+	while (view)
 	{
-		tmp = token->next;
-		free(token->cmd);
-		free(token);
-		token = tmp;
+		printf("%s:%d", view->cmd, view->type);
+		if (view->next)
+			printf(", ");
+		view = view->next;
 	}
-	token = NULL;
+	printf("}\n");
+}
+//=========================================================//
+
+int	is_space(int c)
+{
+	if (c == ' ' || (c >= 9 && c <= 13))
+		return (1);
+	return (0);
 }
 
 void	ft_token_add_back(t_token **lst, t_token *new)
@@ -64,13 +65,17 @@ void	ft_token_add_back(t_token **lst, t_token *new)
 	new->prev = last;
 }
 
-t_token	*token_new(char *cmd, int type)
+t_token	*token_new(char *input, int *index, int len, int type)
 {
 	t_token	*new;
+	char	*cmd;
 
 	new = (t_token *)malloc(sizeof(t_token));
 	if (!new)
-		return (0);
+		return (NULL);
+	cmd = ft_substr(input, *index, len);
+	if (!cmd)
+		return (NULL);
 	new->cmd = cmd;
 	new->type = type;
 	new->prev = NULL;

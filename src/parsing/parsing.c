@@ -6,17 +6,31 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 10:09:53 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/27 16:17:42 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/20 10:04:59 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main_parser(char *input)
+void	main_parser(t_data *data)
 {
-	t_token	*tokens;
-
-	tokens = tokeniser(input);
-	(void)tokens;
-	return (1);
+	//=============TOKEN==============//
+	if (data->token) //par pure parano
+	{
+		free_token(data->token);
+		data->token = NULL;
+	}
+	data->token = tokeniser(data, data->line);
+	display_token(data->token);
+	//===============================//
+	//
+	// //=============CMD==============//
+	// if (data->cmd) //par pure parano
+	// {
+	// 	free_cmd(data->cmd);
+	// 	data->cmd = NULL;
+	// }
+	// data->cmd = init_cmd(data);
+	// display_cmd(data->cmd);
+	// //===============================//
 }

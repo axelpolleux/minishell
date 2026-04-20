@@ -6,51 +6,11 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 11:53:33 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/08 13:08:45 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/20 10:06:50 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-size_t	ft_strlen(const char *str)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
-// int	ft_strncmp(const char *s1, const char *s2, unsigned int n)
-// {
-// 	unsigned int	i;
-// 	unsigned char	*str1;
-// 	unsigned char	*str2;
-
-// 	str1 = (unsigned char *)s1;
-// 	str2 = (unsigned char *)s2;
-// 	i = 0;
-// 	if (n == 0)
-// 		return (0);
-// 	while (str1[i] == str2[i] && str1[i] && (i < n - 1))
-// 		i++;
-// 	return (str1[i] - str2[i]);
-// }
-
-int	ft_strcmp(char *s1, char *s2)
-{
-	int	i;
-
-	i = 0;
-	while (s1[i] || s2[i])
-	{
-		if (s1[i] != s2[i])
-			return (s1[i] - s2[i]);
-		i++;
-	}
-	return (0);
-}
 
 void	closes(int fd, int *fd_storage)
 {
@@ -74,4 +34,43 @@ int	srch_cmd(char *s, char c)
 		s++;
 	}
 	return (0);
+}
+
+int	ft_strcmp(char *s1, char *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s1[i] || s2[i])
+	{
+		if (s1[i] != s2[i])
+			return (s1[i] - s2[i]);
+		i++;
+	}
+	return (0);
+}
+
+t_env	*last_node(t_env *nod)
+{
+	while (nod && nod->next)
+		nod = nod->next;
+	return (nod);
+}
+
+void	add_to_bottom(t_env **node, t_env *new_bot)
+{
+	t_env	*end;
+
+	if (!new_bot)
+		return ;
+	if (!*node)
+	{
+		*node = new_bot;
+		return ;
+	}
+	end = *node;
+	while (end->next)
+		end = end->next;
+	end->next = new_bot;
+	new_bot->prev = end;
 }

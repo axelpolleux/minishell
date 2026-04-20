@@ -6,12 +6,55 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/15 16:23:06 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/20 10:04:01 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+//=======a degager a la fin==========//
+void	display_env(t_env *view)
+{
+	while (view)
+	{
+		printf("var-> %s \n", view->var);
+		printf("arg-> %s \n", view->arg);
+		printf("export-> %d \n", view->export);
+		printf("====================\n");
+		view = view->next;
+	}
+}
+
+void	display_cmd(t_cmd *view)
+{
+	int	i;
+
+	i = 0;
+	while (view)
+	{
+		printf("============================\n");
+		printf("{");
+		while (view->cmd[i])
+		{
+			printf("cmd => %s", view->cmd[i]);
+			if (view->next)
+				printf(", ");
+		}
+		printf("}\n");
+		printf("cmd_path => %s\n", view->cmd_path);
+		printf("full_cmd => %s\n", view->full_cmd);
+		printf("input => %d\n", view->input);
+		printf("output => %d\n", view->output);
+		view = view->next;
+	}
+}
+	// //pour voir l'historique
+	// HIST_ENTRY **history;
+	// history = history_list();
+	// int i = -1;
+	// while (history[++i])
+	//     printf("=> %s\n", history[i]->line);
+//=======================================//
 
 void	init_env(t_data *data, char **env)
 {
@@ -29,32 +72,20 @@ void	init_env(t_data *data, char **env)
 		new = new_env(ft_strdup(env[i]), 1);
 		if (!new)
 			data_malloc_error(data);
-		add_to_bottom(&data->t_env, new);
+		add_to_bottom (&data->t_env, new);
 	}
 }
 
-int	exit_shell(char *line)
+int	main(int ac, char **av, char **env)
 {
-	if (!line)
-	{
-		printf("exit\n");
-		return (1);
-	}
-	if (line && *line && !full_void(line))
-		add_history(line);
-	if (!strcmp(line, "exit"))
-	{
-		printf("exit\n");
-		return (1);
-	}
-	return (0);
-}
+	t_data	*data;
 
-int	main(void)
-{
-	char	*line;
-
-	line = main_reading("pastishell$ ");
-	free(line);
+	data = init_data(ac, av);
+	data->built_in = init_built();
+	if (!data->built_in)
+		data_malloc_error(data);
+	init_env(data, env);
+	main_reading(data, "pastishell$ ");
 	return (1);
 }
+//PAS DE PANIQUE LE EXIT IL VIENDRA DES BUILT IN 

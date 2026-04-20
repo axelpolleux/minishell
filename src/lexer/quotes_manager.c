@@ -3,20 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_manager.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/08 16:01:08 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/13 15:57:51 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/20 10:04:27 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "libft/libft.h"
 
-void	double_quotes(char *input, t_token **tokens, int *index)
+void	double_quotes(t_data *data, t_token **tokens, char *input, int *index)
 {
+	t_token	*new;
 	int		i;
-	t_token	*token;
 
 	if (input[*index] != 34)
 		return ;
@@ -28,27 +27,28 @@ void	double_quotes(char *input, t_token **tokens, int *index)
 		printf("Ferme tes quotes espece de fada !\n");
 		exit(0);
 	}
-	token = token_new(ft_substr(input, *index + 1, i - 1), WORD);
-	ft_token_add_back(tokens, token);
+	new = token_new(input, index + 1, i - 1, WORD);
+	if (!new)
+		data_malloc_error(data);
+	ft_token_add_back(tokens, new);
 	(*index) += (i + 1);
 }
 
-void	single_quotes(char *input, t_token **tokens, int *index)
+void	single_quotes(t_data *data, t_token **tokens, char *input, int *index)
 {
-	int		i;
-	t_token	*token;
+	t_token		*new;
+	int			i;
 
-	if (input[*index] != 39)
+	if (input[*index] != '\'')
 		return ;
 	i = 1;
-	while (input[*index + i] && input[*index + i] != 39)
+	while (input[*index + i] && input[*index + i] != '\'')
 		i++;
 	if (!input[*index + i])
-	{
-		printf("Ferme tes quotes espece de fada !\n");
-		exit(0);
-	}
-	token = token_new(ft_substr(input, *index + 1, i - 1), WORD);
-	ft_token_add_back(tokens, token);
+		data_malloc_error(data);
+	new = token_new(input, index + 1, i - 1, WORD);
+	if (!new)
+		data_malloc_error(data);
+	ft_token_add_back(tokens, new);
 	(*index) += (i + 1);
 }
