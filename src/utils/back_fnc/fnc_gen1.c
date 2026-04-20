@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 11:53:33 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/17 11:19:00 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/20 10:18:32 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,3 @@ void	add_to_bottom(t_env **node, t_env *new_bot)
 	end->next = new_bot;
 	new_bot->prev = end;
 }
-
-

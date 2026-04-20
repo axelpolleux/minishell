@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 11:17:43 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/17 11:21:43 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/20 10:07:40 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	free_token(t_token *node)
 	{
 		tmp = (node)->next;
 		if (node->cmd)
-			free(node->cmd);		
+			free(node->cmd);
 		free(node);
 		node = tmp;
 	}

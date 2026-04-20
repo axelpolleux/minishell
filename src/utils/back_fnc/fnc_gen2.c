@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 11:06:25 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/17 11:21:22 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/20 10:07:02 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int	ft_lstsize_c(t_cmd *lst)
 	}
 	return (len_lst);
 }
-
 
 int	only_quote(char *line)
 {

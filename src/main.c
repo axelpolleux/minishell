@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/20 09:30:05 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/20 10:04:01 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	display_env(t_env *view)
 		view = view->next;
 	}
 }
+
 void	display_cmd(t_cmd *view)
 {
 	int	i;
@@ -74,6 +75,7 @@ void	init_env(t_data *data, char **env)
 		add_to_bottom (&data->t_env, new);
 	}
 }
+
 int	main(int ac, char **av, char **env)
 {
 	t_data	*data;

@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 11:20:04 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/17 11:21:49 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/20 10:07:10 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,3 @@ char	**init_built(void)// on pourrait bien mieux faire
 		return (NULL);
 	return (built_in);
 }
-

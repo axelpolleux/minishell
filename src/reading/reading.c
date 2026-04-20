@@ -39,7 +39,7 @@ void	main_reading(t_data *data, char *title)
 		if (data->line && *(data->line) && !full_void(data->line))
 			add_history(data->line);
 		main_parser(data);
-		//exec(data);
+		exec(data);
 	}
 	clear_history();
 }
