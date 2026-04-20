@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 15:16:58 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/15 13:54:32 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/16 14:46:30 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	get_enof(t_data *data, char *line)
 	if (!ft_strncmp(line, data->cmd->cmd[1], ft_strlen(data->cmd->cmd[1]))
 		&& line[ft_strlen(data->cmd->cmd[1])] == '\n')
 	{
-		get_next_line_e(-1, 0);
+		get_next_line(-1, 0);
 		free(line);
 		return (1);
 	}
@@ -31,7 +31,7 @@ void	in_hre(t_data *data, int fd[2])
 	while (1)
 	{
 		write(1, "> ", 2);
-		line = get_next_line_e(0, 0);
+		line = get_next_line(0, 0);
 		if (!line)
 			exit(0);
 		if (get_enof(data, line))

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_e.c                                  :+:      :+:    :+:   */
+/*   get_next_line.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -100,7 +100,7 @@ int	init_buff(char **buffer)
 	return (1);
 }
 
-char	*get_next_line_e(int fd, size_t i)
+char	*get_next_line(int fd, size_t i)
 {
 	static char	*buffer;
 	char		*line;

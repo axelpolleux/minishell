@@ -6,61 +6,47 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/15 14:28:43 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/20 09:30:05 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //=======a degager a la fin==========//
-// void	display_env(t_env *view)
-// {
-// 	while (view)
-// 	{
-// 		printf("var-> %s \n", view->var);
-// 		printf("arg-> %s \n", view->arg);
-// 		printf("export-> %d \n", view->export);
-// 		printf("====================\n");
-// 		view = view->next;
-// 	}
-// }
+void	display_env(t_env *view)
+{
+	while (view)
+	{
+		printf("var-> %s \n", view->var);
+		printf("arg-> %s \n", view->arg);
+		printf("export-> %d \n", view->export);
+		printf("====================\n");
+		view = view->next;
+	}
+}
+void	display_cmd(t_cmd *view)
+{
+	int	i;
 
-// void	display_token(t_token *view)
-// {
-// 	printf("{");
-// 	while (view)
-// 	{
-// 		printf("%s", view->cmd);
-// 		if (view->next)
-// 			printf(", ");
-// 		view = view->next;
-// 	}
-// 	printf("}\n");
-// }
-
-// void	display_cmd(t_cmd *view)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (view)
-// 	{
-// 		printf("============================\n");
-// 		printf("{");
-// 		while (view->cmd[i])
-// 		{
-// 			printf("cmd => %s", view->cmd[i]);
-// 			if (view->next)
-// 				printf(", ");
-// 		}
-// 		printf("}\n");
-// 		printf("cmd_path => %s\n", view->cmd_path);
-// 		printf("full_cmd => %s\n", view->full_cmd);
-// 		printf("input => %d\n", view->input);
-// 		printf("output => %d\n", view->output);
-// 		view = view->next;
-// 	}
-// }
+	i = 0;
+	while (view)
+	{
+		printf("============================\n");
+		printf("{");
+		while (view->cmd[i])
+		{
+			printf("cmd => %s", view->cmd[i]);
+			if (view->next)
+				printf(", ");
+		}
+		printf("}\n");
+		printf("cmd_path => %s\n", view->cmd_path);
+		printf("full_cmd => %s\n", view->full_cmd);
+		printf("input => %d\n", view->input);
+		printf("output => %d\n", view->output);
+		view = view->next;
+	}
+}
 	// //pour voir l'historique
 	// HIST_ENTRY **history;
 	// history = history_list();
@@ -68,16 +54,6 @@
 	// while (history[++i])
 	//     printf("=> %s\n", history[i]->line);
 //=======================================//
-
-// void reset(t_data *data)
-// {
-// 	if (data->line)
-// 		free(data->line);
-// 	if (data->t_env)
-//     	free_env(data->t_env);
-//     if (data->cmd)
-// 		free_cmd(data->cmd);
-// }
 
 void	init_env(t_data *data, char **env)
 {
@@ -95,27 +71,9 @@ void	init_env(t_data *data, char **env)
 		new = new_env(ft_strdup(env[i]), 1);
 		if (!new)
 			data_malloc_error(data);
-		add_to_bottom(&data->t_env, new);
+		add_to_bottom (&data->t_env, new);
 	}
 }
-
-int	exit_shell(char *line)
-{
-	if (!line)
-	{
-		printf("exit\n");
-		return (1);
-	}
-	if (line && *line && !full_void(line))
-		add_history(line);
-	if (!strcmp(line, "exit"))
-	{
-		printf("exit\n");
-		return (1);
-	}
-	return (0);
-}
-
 int	main(int ac, char **av, char **env)
 {
 	t_data	*data;
@@ -125,24 +83,7 @@ int	main(int ac, char **av, char **env)
 	if (!data->built_in)
 		data_malloc_error(data);
 	init_env(data, env);
-	while (1)
-	{
-		data->line = readline("minishell> ");
-		if (exit_shell(data->line))
-			break ;
-		tokenization(data);
-		exec(data);
-	}
-	rl_clear_history();
-	free_data(data);
-	return (0);
+	main_reading(data, "pastishell$ ");
+	return (1);
 }
-
-/*
-faire tout le built in, refaire export ;
-	-> echo\ cd\ pwd\ 
-faire tout le systeme dexpand dans environement ;
-	-> mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
-continuer la logic d'exec;
-	-> plus tard sa m'emmerde
-*/
+//PAS DE PANIQUE LE EXIT IL VIENDRA DES BUILT IN 
