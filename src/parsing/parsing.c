@@ -21,7 +21,7 @@ void	main_parser(t_data *data)
 		data->token = NULL;
 	}
 	data->token = tokeniser(data, data->line);
-	display_token(data->token);
+	display_tokens(data->token);
 	//===============================//
 	//
 	// //=============CMD==============//

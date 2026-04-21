@@ -50,7 +50,7 @@
 # define APPEND		5 // >>
 # define HEREDOC	6 // <<
 # define CMD		7
-//# define OTHERS		8 // ????????
+# define OTHERS		8 // ????????
 
 # define PATH		"PATH="
 # define PWD		"PWD="
