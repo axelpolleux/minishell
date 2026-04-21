@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/20 10:04:01 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/20 17:50:03 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,16 @@ void	display_cmd(t_cmd *view)
 	//     printf("=> %s\n", history[i]->line);
 //=======================================//
 
+// void reset(t_data *data)
+// {
+// 	if (data->line)
+// 		free(data->line);
+// 	if (data->t_env)
+//     	free_env(data->t_env);
+//     if (data->cmd)
+// 		free_cmd(data->cmd);
+// }
+
 void	init_env(t_data *data, char **env)
 {
 	t_env	*new;
@@ -72,7 +82,7 @@ void	init_env(t_data *data, char **env)
 		new = new_env(ft_strdup(env[i]), 1);
 		if (!new)
 			data_malloc_error(data);
-		add_to_bottom (&data->t_env, new);
+		add_to_bottom_env (&data->t_env, new);
 	}
 }
 
@@ -88,4 +98,4 @@ int	main(int ac, char **av, char **env)
 	main_reading(data, "pastishell$ ");
 	return (1);
 }
-//PAS DE PANIQUE LE EXIT IL VIENDRA DES BUILT IN 
+//PAS DE PANIQUE LE EXIT IL VIENDRA DES BUILT IN

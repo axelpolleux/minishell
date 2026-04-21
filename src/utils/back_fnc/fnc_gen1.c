@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 11:53:33 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/20 10:18:32 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/20 17:50:03 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_env	*last_node(t_env *nod)
 	return (nod);
 }
 
-void	add_to_bottom(t_env **node, t_env *new_bot)
+void	add_to_bottom_env(t_env **node, t_env *new_bot)
 {
 	t_env	*end;
 

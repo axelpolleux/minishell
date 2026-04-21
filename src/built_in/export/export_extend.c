@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 13:37:04 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/16 18:31:42 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/20 17:50:03 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	name_arg(t_data *data, t_env *tmp, char *cmd)
 				new = new_env(ft_strdup(cmd), 1);
 				if (!new)
 					data_malloc_error(data);
-				add_to_bottom(&data->t_env, new);
+				add_to_bottom_env(&data->t_env, new);
 			}
 			else
 				change_arg(tmp, cmd, i);
