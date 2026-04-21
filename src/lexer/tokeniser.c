@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 11:06:42 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/20 14:54:23 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/21 11:09:34 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	add_in(t_data *data, t_token **tokens, char *input, int *index)
 	len = 1;
 	if (input[*index] == '|')
 		type = PIPE;
-	if (input[*index] == '<')
+	else if (input[*index] == '<')
 	{
 		if (input[*index + 1] && input[*index + 1] == '<')
 		{
