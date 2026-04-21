@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 10:09:53 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/20 18:34:55 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/21 13:55:33 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	main_parser(t_data *data)
 		data->token = NULL;
 	}
 	data->token = tokeniser(data, data->line);
-	display_token(data->token);
+	//display_token(data->token);
 	//===============================//
 	//
 	// //=============CMD==============//

@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 11:02:59 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/20 17:50:48 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/21 13:39:32 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,21 @@ void	add_to_bottom_cmd(t_cmd **node, t_cmd *new_bot)
 		end = end->next;
 	end->next = new_bot;
 	new_bot->prev = end;
+}
+
+char	*var_env(char **env, char *motif, int len)
+{
+	char	*var;
+	int		i;
+
+	i = -1;
+	while (env[++i])
+	{
+		if (!ft_strncmp(env[i], motif, len))
+		{
+			var = env[i] + len + 1;
+			return (var);
+		}
+	}
+	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/20 17:50:03 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/21 15:17:45 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,9 @@ void	init_env(t_data *data, char **env)
 	int		i;
 
 	i = -1;
-	if (!env || !(*env))
-	{
-		free_data(data);
-		exit(0);
-	}
+	new = NULL;
+	if (make_built_env(data, new, env))
+		return ;
 	while (env[++i])
 	{
 		new = new_env(ft_strdup(env[i]), 1);
@@ -88,4 +86,7 @@ int	main(int ac, char **av, char **env)
 	main_reading(data, "pastishell$ ");
 	return (1);
 }
-//PAS DE PANIQUE LE EXIT IL VIENDRA DES BUILT IN 
+/*
+PAS DE PANIQUE LE EXIT IL VIENDRA DES BUILT IN 
+gerer imperativement les modification de variable d'en en pleine execution
+*/

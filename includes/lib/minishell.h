@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/20 17:51:33 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/21 15:23:09 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,7 @@ int				open_error(t_data *data);
 
 //==================<general fonction>====================//
 char			**tab_env(t_env *env, int i);
+char			*var_env(char **env, char *motif, int len);
 
 void			*free_arr(char **str);
 void			closes(int fd, int *fd_storage);
@@ -188,6 +189,7 @@ void			unset_place(t_data *data, char *motif);
 void			only_name(t_data *data, t_env *tmp, char *cmd);
 void			exec_exit(t_data *data, t_cmd *g_cmd, char **cmd);
 
+int				make_built_env(t_data *data, t_env *new, char **env);
 int				is_builtin(char **built_in, char *cmd);
 int				exec_echo(char **cmd);
 int				exec_cd(t_data *data, char **cmd);
@@ -241,6 +243,11 @@ void			add_word(t_data *data, t_token **tokens, \
 char *input, int *index);
 
 int				is_space(int c);
+int				no_minim_env(char **env);
+int				not_in_original_en(char **env, char *name);
+int				make_oldpwd(t_data *data, t_env *new, char **env);
+int				make_pwd(t_data *data, t_env *new);
+int				no_minim_env(char **env);
 
 t_token			*tokeniser(t_data *data, char *input);
 t_token			*token_new(char *input, int *index, int len, int type);
