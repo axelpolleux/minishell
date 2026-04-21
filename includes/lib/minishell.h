@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/20 17:51:33 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/21 15:29:11 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,20 +231,22 @@ int				full_void(char *line);
 //========================<for the parsing>=========================//
 void			main_reading(t_data *data, char *title);
 void			display_tokens(t_token *token);
-void			ft_token_add_back(t_token **lst, t_token *new);
-void			double_quotes(t_data *data, t_token **tokens, \
-char *input, int *index);
-void			single_quotes(t_data *data, t_token **tokens, \
-char *input, int *index);
 void			main_parser(t_data *data);
-void			add_word(t_data *data, t_token **tokens, \
-char *input, int *index);
 
 int				is_space(int c);
 
 t_token			*tokeniser(t_data *data, char *input);
 t_token			*token_new(char *input, int *index, int len, int type);
+void			ft_token_add_back(t_token **lst, t_token *new);
 t_cmd			*init_cmd(t_data *data, t_token *token);
+void			add_word(t_data *data, t_token **tokens, \
+						char *input, int *index);
+void			double_quotes(t_data *data, t_token **tokens, \
+							char *input, int *index);
+void			single_quotes(t_data *data, t_token **tokens, \
+							char *input, int *index);
+
+t_cmd			commander(t_token tokens);
 //======================================================//
 
 //==========================<Get Next Line>=====================//
