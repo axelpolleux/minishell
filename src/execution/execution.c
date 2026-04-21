@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:43:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/20 10:35:28 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/21 09:49:06 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	children(t_data *data, t_cmd *cmd)
 	if (is_builtin(data->built_in, cmd->cmd[0]))
 		exit(exec_built(data, cmd));
 	get_cmd_path(data, cmd);
-	if (data->exit > -2)
+	if (data->exit > -2) // le -2 et pour sigaler la premier fois
 		exit(data->exit);
 	if (data->last_fd != -1)
 	{
@@ -60,13 +60,16 @@ void	parent(t_data *data, t_cmd *cmd)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
 	data->last_fd = -1;
-	while (cmd)
+	while (cmd && ++i > -2)
 	{
-		if (cmd->next)
+		// if (cmd->next)
+		// 	if (pipe(data->fd_storage) == -1)
+		// 		pipe_error(data);
+		if (cmd->type == PIPE)
 			if (pipe(data->fd_storage) == -1)
-				pipe_error(data);
+				pipe_error(data); // a amelioer pour faire un semi heredoc pour pipe end
 		data->pid[i] = fork();
 		if (data->pid[i] < 0)
 			fork_error(data);
@@ -80,7 +83,6 @@ void	parent(t_data *data, t_cmd *cmd)
 			data->last_fd = data->fd_storage[0];
 		}
 		cmd = cmd->next;
-		i++;
 	}
 }
 
@@ -101,9 +103,10 @@ void	wait_end(t_data *data, int count)
 void	exec(t_data *data)
 {
 	t_cmd	*t_cmd;
-	int		count;
+	 int	count;
 
 	t_cmd = data->cmd;
+	display_cmd(t_cmd);
 	count = nb_process(t_cmd);
 	if (count == 0)
 		return ;

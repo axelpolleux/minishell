@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 11:02:59 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/20 10:06:25 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/20 17:50:48 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,22 @@ char	**tab_env(t_env *env, int i)
 			cop = cop->next;
 	}
 	return (tab_env);
+}
+
+void	add_to_bottom_cmd(t_cmd **node, t_cmd *new_bot)
+{
+	t_cmd	*end;
+
+	if (!new_bot)
+		return ;
+	if (!*node)
+	{
+		*node = new_bot;
+		return ;
+	}
+	end = *node;
+	while (end->next)
+		end = end->next;
+	end->next = new_bot;
+	new_bot->prev = end;
 }

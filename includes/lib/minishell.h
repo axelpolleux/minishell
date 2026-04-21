@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/20 11:00:11 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/20 17:51:33 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@
 # define APPEND		5 // >>
 # define HEREDOC	6 // <<
 # define CMD		7
-# define OTHERS		8 // ????????
+//# define OTHERS		8 // ????????
 
 # define PATH		"PATH="
 # define PWD		"PWD="
@@ -89,8 +89,9 @@ typedef struct s_cmd
 
 typedef struct s_token
 {
-	int				type;
 	char			*cmd;
+
+	int				type;
 
 	struct s_token	*prev;
 	struct s_token	*next;
@@ -151,7 +152,8 @@ void			free_data(t_data *data);
 void			free_env(t_env *node);
 void			free_token(t_token *node);
 void			free_cmd(t_cmd *node);
-void			add_to_bottom(t_env **node, t_env *new_bot);
+void			add_to_bottom_env(t_env **node, t_env *new_bot);
+void			add_to_bottom_cmd(t_cmd **node, t_cmd *new_bot);
 
 void			display_env(t_env *view);// a degager
 void			display_token(t_token *view);//
@@ -242,6 +244,7 @@ int				is_space(int c);
 
 t_token			*tokeniser(t_data *data, char *input);
 t_token			*token_new(char *input, int *index, int len, int type);
+t_cmd			*init_cmd(t_data *data, t_token *token);
 //======================================================//
 
 //==========================<Get Next Line>=====================//

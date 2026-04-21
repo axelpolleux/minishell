@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 11:20:04 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/20 10:07:10 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/20 15:31:46 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_env	*new_env_n_on(char *line, int export)
 	return (new_node);
 }
 
-char	**init_built(void)// on pourrait bien mieux faire
+char	**init_built(void)// on pourrait bien mieux faire, a refaire 
 {
 	char	**built_in;
 

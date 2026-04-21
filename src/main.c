@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/20 10:04:01 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/20 17:50:03 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	init_env(t_data *data, char **env)
 		new = new_env(ft_strdup(env[i]), 1);
 		if (!new)
 			data_malloc_error(data);
-		add_to_bottom (&data->t_env, new);
+		add_to_bottom_env (&data->t_env, new);
 	}
 }
 
