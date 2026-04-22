@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/21 15:29:11 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/22 15:09:35 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,7 +246,7 @@ void			double_quotes(t_data *data, t_token **tokens, \
 void			single_quotes(t_data *data, t_token **tokens, \
 							char *input, int *index);
 
-t_cmd			commander(t_token tokens);
+t_cmd			*commander(t_token *tokens);
 //======================================================//
 
 //==========================<Get Next Line>=====================//
