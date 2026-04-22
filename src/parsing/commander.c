@@ -20,6 +20,7 @@ t_cmd	*commander(t_token *tokens)
 	commands = NULL;
 	while (tokens)
 	{
+
 		tokens = tokens->next;
 	}
 	return (commands);

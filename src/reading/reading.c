@@ -32,7 +32,7 @@ void	main_reading(t_data *data, char *title)
 		data->line = readline(title);
 		if (!data->line)
 		{
-			// free_data(data);
+			free_data(data);
 			printf("exit\n");
 			exit(0);
 		}
