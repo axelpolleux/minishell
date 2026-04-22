@@ -6,7 +6,7 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/21 14:44:12 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/21 16:02:05 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/22 11:49:34 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 t_cmd	*commander(t_token *tokens)
 {
+	(void)tokens;
 	while (tokens)
 	{
 		tokens = tokens->next;
