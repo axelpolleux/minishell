@@ -238,15 +238,12 @@ int				is_space(int c);
 t_token			*tokeniser(t_data *data, char *input);
 t_token			*token_new(char *input, int *index, int len, int type);
 void			ft_token_add_back(t_token **lst, t_token *new);
-t_cmd			*init_cmd(t_data *data, t_token *token);
-void			add_word(t_data *data, t_token **tokens, \
-						char *input, int *index);
+t_cmd			*commander(t_token *tokens);
+int				handle_redirections(t_cmd *cmd, t_token **tokens);
 void			double_quotes(t_data *data, t_token **tokens, \
 							char *input, int *index);
 void			single_quotes(t_data *data, t_token **tokens, \
 							char *input, int *index);
-
-t_cmd			*commander(t_token *tokens);
 //======================================================//
 
 //==========================<Get Next Line>=====================//

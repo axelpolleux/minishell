@@ -32,13 +32,15 @@ void	display_cmd(t_cmd *view)
 	i = 0;
 	while (view)
 	{
+		i = 0;
 		printf("============================\n");
 		printf("{");
 		while (view->cmd[i])
 		{
 			printf("cmd => %s", view->cmd[i]);
-			if (view->next)
+			if (view->cmd[i + 1])
 				printf(", ");
+			i++;
 		}
 		printf("}\n");
 		printf("cmd_path => %s\n", view->cmd_path);

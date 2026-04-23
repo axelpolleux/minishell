@@ -53,17 +53,16 @@ void	free_cmd(t_cmd *node)
 		return ;
 	while (node)
 	{
-		tmp = (node)->next;
-		if (tmp->cmd)
-			free_arr(tmp->cmd);
-		if (tmp->cmd_path)
-			free(tmp->cmd_path);
-		if (tmp->full_cmd)
-			free(tmp->full_cmd);
+		tmp = node->next;
+		if (node->cmd)
+			free_arr(node->cmd);
+		if (node->cmd_path)
+			free(node->cmd_path);
+		if (node->full_cmd)
+			free(node->full_cmd);
 		free(node);
 		node = tmp;
 	}
-	node = NULL;
 }
 
 void	free_data(t_data *data)

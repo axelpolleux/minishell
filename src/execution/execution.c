@@ -106,7 +106,7 @@ void	exec(t_data *data)
 	 int	count;
 
 	t_cmd = data->cmd;
-	display_cmd(t_cmd);
+	// display_cmd(t_cmd);
 	count = nb_process(t_cmd);
 	if (count == 0)
 		return ;
@@ -114,7 +114,10 @@ void	exec(t_data *data)
 	if (!data->pid)
 		data_malloc_error(data);
 	if (is_builtin(data->built_in, t_cmd->cmd[0]) && !t_cmd->next)
-		exit(exec_built(data, t_cmd));
+	{
+		exec_built(data, t_cmd);
+		return ;
+	}
 	parent(data, t_cmd);
 	wait_end(data, count);
 }
