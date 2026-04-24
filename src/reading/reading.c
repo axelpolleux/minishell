@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:04:56 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/24 10:49:26 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/24 13:28:10 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ void	main_reading(t_data *data, char *title)
 		}
 		if (data->line && *(data->line) && !full_void(data->line))
 			add_history(data->line);
+		get_expand_t(data, data->line); // pour teste
 		main_parser(data);
-		get_expand_t(data, data->token); // pour teste
 		exec(data);
 	}
 	clear_history();

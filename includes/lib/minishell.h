@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/24 10:41:32 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/24 15:30:45 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ typedef struct s_data
 }				t_data;
 //=======================================================//
 
-void			get_expand_t(t_data *data, t_token *token);
+void			get_expand_t(t_data *data, char *line);
 
 //=================<for all type of error>================//
 void			pipe_error(t_data *data);
@@ -190,6 +190,7 @@ char			*line_expand(t_data *data, char *line, int i);
 void			get_expand(t_data *data, t_cmd *cmd);
 
 int				get_key_len(char *line, char *name);
+int				quote_expand(t_data *data, char *line, int *i);
 //=====================================//
 
 //========================<for build in>=========================//
