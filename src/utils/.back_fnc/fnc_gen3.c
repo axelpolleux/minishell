@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 11:02:59 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/21 13:39:32 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/24 10:43:56 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,16 @@ char	*var_env(char **env, char *motif, int len)
 		}
 	}
 	return (NULL);
+}
+
+char	*ft_charjoin(char *str, char c)
+{
+	char	*new_line;
+	char	tmp[2];
+
+	tmp[0] = c;
+	tmp[1] = '\0';
+	new_line = ft_strjoin(str, tmp);
+	free(str);
+	return (new_line);
 }

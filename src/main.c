@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/21 15:17:45 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/24 10:42:34 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	display_env(t_env *view)
 	{
 		printf("var-> %s \n", view->var);
 		printf("arg-> %s \n", view->arg);
+		printf("key-> %s \n", view->key);
 		printf("export-> %d \n", view->export);
 		printf("====================\n");
 		view = view->next;
@@ -84,9 +85,9 @@ int	main(int ac, char **av, char **env)
 		data_malloc_error(data);
 	init_env(data, env);
 	main_reading(data, "pastishell$ ");
-	return (1);
+	return (0);
 }
 /*
 PAS DE PANIQUE LE EXIT IL VIENDRA DES BUILT IN 
-gerer imperativement les modification de variable d'en en pleine execution
+gerer imperativement les modification de variable d'env en pleine execution
 */

@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 15:29:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/21 15:23:35 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/23 18:44:50 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	make_pwd(t_data *data, t_env *new)
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 		return (EXIT_FAILURE);
-	line = ft_strjoin(PWD, pwd);
+	line = ft_strjoin("PWD=", pwd);
 	free (pwd);
 	if (!line)
 		return (EXIT_FAILURE);
@@ -56,12 +56,12 @@ int	make_oldpwd(t_data *data, t_env *new, char **env)
 
 	if (!env)
 	{
-		line = ft_strjoin(OLDPWD, get_var_env(data, PWD, ft_strlen(PWD)));
+		line = ft_strjoin("OLDPWD=", get_var_env(data, PWD));
 		if (!line)
 			return (EXIT_FAILURE);
 	}
 	else
-		line = var_env(env, PWD, ft_strlen(PWD));
+		line = var_env(env,"PWD=", ft_strlen("PWD="));
 	new = new_env(line, 1);
 	if (!new)
 	{

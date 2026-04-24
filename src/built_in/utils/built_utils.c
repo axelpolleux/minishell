@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:08:16 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/21 11:22:01 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/23 18:27:48 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	not_in_en(t_data *data, char *name)
 	return (EXIT_FAILURE);
 }
 
-char	*get_var_env(t_data *data, char *motif, int len)
+char	*get_var_env(t_data *data, char *motif)
 {
 	t_env	*tmp;
 	char	*path;
@@ -38,7 +38,7 @@ char	*get_var_env(t_data *data, char *motif, int len)
 	tmp = data->t_env;
 	while (tmp)
 	{
-		if (!ft_strncmp(tmp->var, motif, len))
+		if (!ft_strcmp(tmp->key, motif))
 		{
 			path = tmp->arg;
 			return (path);

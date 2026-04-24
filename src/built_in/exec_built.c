@@ -6,14 +6,14 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 14:53:34 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/15 14:29:55 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/22 11:30:08 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-	// if (in_pipe()) //faire le check de pipe ouverte ici
-	// 	return ;
+// 	if (in_pipe()) //faire le check de pipe ouverte ici
+// 		return ;
 
 void	built_pipe(t_data *data, t_cmd *cmd)
 {
@@ -40,6 +40,7 @@ void	built_choice(t_data *data, t_cmd *cmd)
 
 int	exec_built(t_data *data, t_cmd *cmd)
 {
+	//get_expand(data, cmd);
 	if (cmd->output >= 0)
 	{
 		data->last_fd = dup(1);
