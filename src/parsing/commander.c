@@ -6,7 +6,7 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 16:16:55 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/23 18:14:12 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/24 14:48:53 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,11 @@ t_cmd	*commander(t_token *tokens)
 {
 	t_cmd	*commands;
 
+	(void)tokens;
 	commands = NULL;
-	while (tokens)
-	{
-		printf("%d", count_words(tokens));
-	}
+	// while (tokens)
+	// {
+	// 	printf("%d", count_words(tokens));
+	// }
 	return (commands);
 }
