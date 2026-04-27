@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/22 15:09:35 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/27 16:57:22 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ typedef struct s_cmd
 	char			*cmd_path;
 	char			*full_cmd;
 
-	int				type;
+	int				*type;
 	int				input;
 	int				output;
 
@@ -240,10 +240,13 @@ t_token			*token_new(char *input, int *index, int len, int type);
 void			ft_token_add_back(t_token **lst, t_token *new);
 t_cmd			*commander(t_token *tokens);
 int				handle_redirections(t_cmd *cmd, t_token **tokens);
-void			double_quotes(t_data *data, t_token **tokens, \
-							char *input, int *index);
-void			single_quotes(t_data *data, t_token **tokens, \
-							char *input, int *index);
+void			double_quotes(t_data *data, t_token **tokens,	\
+								char *input, int *index);
+void			single_quotes(t_data *data, t_token **tokens,	\
+								char *input, int *index);
+
+t_cmd			*command_new(t_token *token);
+
 //======================================================//
 
 //==========================<Get Next Line>=====================//
