@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/24 15:30:45 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/28 19:12:18 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@
 # define PWD_ER		"minishell: pwd"
 # define EXT_ARG	"minishell: exit: too many arguments\n"
 # define QUOT_ER	"minishell: every quote must be closed\n"
+# define SYNT_ER	"minishell: syntax error near unexpected token `newline'\n"
+# define DATA_ER	"Error : A malloc has failed.\n"
 
 # define P_ERROR 0
 # define C_ERROR 1
@@ -134,7 +136,6 @@ typedef struct s_data
 }				t_data;
 //=======================================================//
 
-void			get_expand_t(t_data *data, char *line);
 
 //=================<for all type of error>================//
 void			pipe_error(t_data *data);
@@ -147,7 +148,6 @@ void			error_exit(char *error);
 void			error_quote(void);
 void			error_signal(int signal);
 
-int				malloc_error(char **path);
 int				data_malloc_error(t_data *data);
 int				open_error(t_data *data);
 //=======================================================//
@@ -180,17 +180,23 @@ int				nb_arg(char **ar);
 
 t_data			*init_data(int ac, char **av);
 t_env			*new_env(char *line, int export);
-// t_env			*new_env_n_on(char *line, int export);
 //======================================================//
 
 //============for the the expand========//
+char			**get_new_cmd( char **new, char **old, int index);
+char			**get_expand_t(t_data *data, char **);
 char			*dollar_expand(t_data *data, char *line, int *i);
 char			*line_expand(t_data *data, char *line, int i);
+char			*get_dollar(t_data *data, char *line, int *i, char *n_line);
 
+void 			replace_cmd(t_data *data, t_cmd *cmd, char **tmp);
+void			place_space(char **args);
 void			get_expand(t_data *data, t_cmd *cmd);
 
-int				get_key_len(char *line, char *name);
+int				split_nquote(char **new, char **old, int i, int k);
+int				get_key_nd_len(char *line, char *name);
 int				quote_expand(t_data *data, char *line, int *i);
+int				count_word_quot(char **arr, char c);
 //=====================================//
 
 //========================<for build in>=========================//
@@ -221,6 +227,7 @@ int				replace(t_data *data, char *motif, char *path);
 int				name_arg(t_data *data, t_env *tmp, char *cmd);
 int				only_export(t_data *data, char **cmd);
 int				not_in_en(t_data *data, char *name);
+int				word_size(char *str, char charset);
 //===============================================================//
 
 //========================<for exec>=========================//

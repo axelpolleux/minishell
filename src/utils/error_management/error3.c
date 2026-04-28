@@ -6,17 +6,11 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 10:52:20 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/24 10:44:44 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/24 16:04:09 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	error_quote(void)
-{
-	ft_putstr_fd(QUOT_ER, 2);
-	exit (0);
-}
 
 // hugo ma prensenter une de ces gestion de signaux, je la mais la pour voire
 // void	error_signal(int signal)

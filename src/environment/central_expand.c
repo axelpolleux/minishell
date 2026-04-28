@@ -6,11 +6,40 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 10:10:01 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/24 15:14:40 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/28 19:15:17 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	split_nquote(char **new, char **old, int i, int k)
+{
+	int	j;
+	int	l;
+
+	while (old[++i])
+	{
+		j = 0;
+		while (old[i][j])
+		{
+			while (old[i][j] == ' ')
+				j++;
+			if (!old[i][j])
+			{
+				new[++k] = ft_strdup("");
+				if (!new[k])
+					return (EXIT_FAILURE);
+				continue ;
+			}
+			l = j;
+			j += word_size(old[i] + j, ' ');
+			new[++k] = ft_substr(old[i], l, j - l);
+			if (!new[k])
+				return (EXIT_FAILURE);
+		}
+	}
+	return (EXIT_SUCCESS);
+}
 
 char	*dollar_expand(t_data *data, char *line, int *i)
 {
@@ -25,7 +54,7 @@ char	*dollar_expand(t_data *data, char *line, int *i)
 		(*i)++;
 		return (ft_itoa(data->exit));
 	}
-	len = get_key_len(&line[*i], key);
+	len = get_key_nd_len(&line[*i], key);
 	if (len == 0)
 	{
 		n_line = ft_strdup("$");
@@ -40,103 +69,117 @@ char	*dollar_expand(t_data *data, char *line, int *i)
 	return (ft_strdup(n_line));
 }
 
-int	quote_expand(t_data *data, char *line, int *i)
-{
-	if (line[*i] == '\'' && data->quote == NQUOT)
-	{
-		data->quote = SQUOT;
-		(*i)++;
-		return (1);
-	}
-	else if (line[*i] == '\'' && data->quote == SQUOT)
-	{
-		data->quote = NQUOT;
-		(*i)++;
-		return (1);
-	}
-	else if (line[*i] == '"' && data->quote == NQUOT)
-	{
-		data->quote = DQUOT;
-		(*i)++;
-		return (1);
-	}
-	else if (line[*i] == '"' && data->quote == DQUOT)
-	{
-		data->quote = NQUOT;
-		(*i)++;
-		return (1);
-	}
-	return (0);
-}
-
 char	*line_expand(t_data *data, char *line, int i)
 {
 	char	*n_line;
-	char	*tmp;
 
-	data->quote = NQUOT;
 	n_line = ft_strdup("");
+	if (!n_line)
+		return (NULL);
 	while (line[i])
 	{
 		if (quote_expand(data, line, &i))
 			continue ;
-		if ((line[i] == '$' && data->quote != SQUOT))
+		if (line[i] == '$' && data->quote != SQUOT)
 		{
-			i++;
-			printf("pre_expand: {%s}\n", line);
-			tmp = dollar_expand(data, line, &i);
-			if (!tmp)
+			n_line = get_dollar(data, line, &i, n_line);
+			if (!n_line)
 				return (NULL);
-			n_line = ft_strjoin_upd(n_line, tmp);
-			free(tmp);
 			continue ;
 		}
-		n_line = ft_charjoin(n_line, line[i]);
+		if (data->quote == DQUOT && line[i] == ' ')
+			n_line = ft_charjoin(n_line, 1);
+		else
+			n_line = ft_charjoin(n_line, line[i]);
+		if (!n_line)
+			return (NULL);
 		i++;
 	}
 	return (n_line);
 }
 
-// void	get_expand(t_data *data, t_cmd *cmd)
-// {
-// 	char	*new_line;
-// 	int		i;
-
-// 	i = -1;
-// 	while (cmd->cmd[++i])
-// 	{
-// 		new_line = line_expand(data, cmd->cmd[i], 0);
-// 		if (!new_line)
-// 			data_malloc_error(data);
-// 		free(cmd->cmd[i]);
-// 		cmd->cmd[i] = new_line;
-// 	}
-// }
-//======================teste=========================//
-void	get_expand_t(t_data *data, char *line)
+void	replace_cmd(t_data *data, t_cmd *cmd, char **tmp)
 {
-	char	*new_line;
+	char	**n_cmd;
 
-	new_line = line_expand(data, line, 0);
-	if (!new_line)
-		data_malloc_error(data);
-	printf("expand: {%s}\n", new_line);
-	free(new_line);
+	n_cmd = ft_calloc(sizeof(char *), count_word_quot(tmp, ' ') + 1);
+	if (!n_cmd)
+	{
+		free_arr(tmp);
+		data_malloc_error (data);
+	}
+	if (split_nquote(n_cmd, tmp, -1, -1))
+	{
+		free_arr(tmp);
+		free_arr(n_cmd);
+		(data_malloc_error (data));
+	}
+	free_arr(tmp);
+	place_space(n_cmd);
+	free_arr(cmd->cmd);
+	cmd->cmd = n_cmd;
 }
 
-// void	get_expand_t(t_data *data, t_token *token)
-// {
-// 	char	*new_line;
+void	get_expand(t_data *data, t_cmd *cmd)
+{
+	char	**tmp;
+	char	*n_line;
+	int		i;
 
-// 	while (token)
-// 	{
-// 		new_line = line_expand(data, token->cmd, 0);
-// 		if (!new_line)
-// 			data_malloc_error(data);
-// 		free(token->cmd);
-// 		token->cmd = new_line;
-// 		printf("expand: {%s}\n", token->cmd);
-// 		token = token->next;
-// 	}
-// }
-//============================================================//
+	tmp = ft_calloc(sizeof(char *), PATH_MAX);
+	if (!tmp)
+		data_malloc_error(data);
+	i = -1;
+	while (cmd->cmd[++i])
+	{
+		data->quote = NQUOT;
+		n_line = line_expand(data, cmd->cmd[i], 0);
+		if (!n_line)
+			data_malloc_error(data);
+		printf("expand:%d:{%s}\n", i + 1, n_line);
+		tmp[i] = n_line;
+	}
+	replace_cmd(data, cmd, tmp);
+}
+
+char	**get_expand_t(t_data *data, char **cmd)
+{
+	char	*n_line;
+	char	**n_cmd;
+	char	**tmp;
+	int		i;
+
+	if (!*cmd)
+		return (NULL);
+	tmp = ft_calloc(sizeof(char *), PATH_MAX);
+	if (!tmp)
+		return (NULL); //data_malloc_error(data);
+	i = -1;
+	while (cmd[++i])
+	{
+		data->quote = NQUOT;
+		n_line = line_expand(data, cmd[i], 0);
+		if (!n_line)
+			data_malloc_error(data);
+		printf("expand:%d:{%s}\n", i + 1, n_line);
+		tmp[i] = n_line;
+	}
+	n_cmd = ft_calloc(sizeof(char *), count_word_quot(tmp, ' ') + 1);
+	if (!n_cmd)
+	{
+		free_arr(tmp);
+		return (NULL); //data_malloc_error (data);
+	}
+	if (split_nquote(n_cmd, tmp, -1, -1))
+	{
+		free_arr(tmp);
+		free_arr(n_cmd);
+		return(NULL); //data_malloc_error (data);
+	}
+	free_arr(tmp);
+	place_space(n_cmd);
+	return (n_cmd);
+}
+
+
+

@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 10:43:28 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/24 10:43:45 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/28 19:14:07 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,24 @@
 
 char	*ft_strjoin_upd(char *s1, char *s2)
 {
-	char *str;
+	char	*str;
 
 	str = ft_strjoin(s1, s2);
 	free(s1);
+	if (!str)
+		return (NULL);
 	return (str);
+}
+
+int	word_size(char *str, char charset)
+{
+	int	i;
+
+	i = 0;
+	while (*str && *str != charset)
+	{
+		i++;
+		str++;
+	}
+	return (i);
 }

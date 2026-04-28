@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 15:16:58 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/16 14:46:30 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/24 16:14:39 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,7 @@ int	hre_arg(t_data *data)
 	tmp = data->cmd;
 	if (!tmp->cmd[1])
 	{
-		error_perror("minishell: syntax error near\
- unexpected token `newline'\n", P_ERROR, 2);
+		error_perror(SYNT_ER, P_ERROR, 2);
 		exit(2);
 	}
 	if (only_quote(tmp->cmd[1]))

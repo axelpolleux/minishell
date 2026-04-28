@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/24 10:42:34 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/25 11:41:37 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,7 @@ int	main(int ac, char **av, char **env)
 	if (!data->built_in)
 		data_malloc_error(data);
 	init_env(data, env);
+	//display_env(data->t_env);
 	main_reading(data, "pastishell$ ");
 	return (0);
 }
-/*
-PAS DE PANIQUE LE EXIT IL VIENDRA DES BUILT IN 
-gerer imperativement les modification de variable d'env en pleine execution
-*/

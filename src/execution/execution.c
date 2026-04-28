@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:43:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/24 10:50:28 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/27 16:29:08 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,11 @@
 void	exec_command(t_data *data, t_cmd *cmd, char **env)
 {
 	(void)cmd;
-	//get_expand(data, cmd);
+	// if (get_expand(data, cmd))
+	// 	{
+	// 		free_arr (env);
+	// 		data_malloc_error(data);
+	// 	}
 	if (execve(data->cmd->cmd_path, data->cmd->cmd, env) == -1)
 	{
 		free_arr(env);
@@ -62,9 +66,9 @@ void	parent(t_data *data, t_cmd *cmd)
 {
 	int	i;
 
-	i = -1;
+	i = 0;
 	data->last_fd = -1;
-	while (cmd && ++i > -2)
+	while (cmd)
 	{
 		if (cmd->type == PIPE)
 			if (pipe(data->fd_storage) == -1)
@@ -72,7 +76,7 @@ void	parent(t_data *data, t_cmd *cmd)
 		data->pid[i] = fork();
 		if (data->pid[i] < 0)
 			fork_error(data);
-		if (!data->pid[i])
+		if (data->pid[i] == 0)
 			children(data, cmd);
 		if (data->last_fd != -1)
 			close(data->last_fd);
@@ -82,6 +86,7 @@ void	parent(t_data *data, t_cmd *cmd)
 			data->last_fd = data->fd_storage[0];
 		}
 		cmd = cmd->next;
+		i++;
 	}
 }
 
@@ -109,7 +114,7 @@ void	exec(t_data *data)
 	count = nb_process(t_cmd);
 	if (count == 0)
 		return ;
-	data->pid = ft_calloc(sizeof(pid_t), count);
+	data->pid = ft_calloc(sizeof(pid_t), count); //pas sur
 	if (!data->pid)
 		data_malloc_error(data);
 	if (is_builtin(data->built_in, t_cmd->cmd[0]) && !t_cmd->next)
