@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/28 15:00:00 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/28 17:10:26 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,14 +238,15 @@ int				is_space(int c);
 t_token			*tokeniser(t_data *data, char *input);
 t_token			*token_new(char *input, int *index, int len, int type);
 void			ft_token_add_back(t_token **lst, t_token *new);
-t_cmd			*commander(t_token *tokens);
-int				handle_redirections(t_cmd *cmd, t_token **tokens);
 void			double_quotes(t_data *data, t_token **tokens,	\
 								char *input, int *index);
 void			single_quotes(t_data *data, t_token **tokens,	\
 								char *input, int *index);
 
-t_cmd			*command_new(t_token *token);
+t_cmd	*parse_commands(t_token *tokens);
+t_cmd	*new_cmd_node(void);
+void	add_cmd_back(t_cmd **lst, t_cmd *new);
+char	**tokens_to_argv(t_token *start, t_token *end);
 
 //======================================================//
 

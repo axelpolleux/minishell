@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 10:09:53 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/28 15:17:36 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/28 17:11:13 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,7 @@ void	main_parser(t_data *data)
 	data->token = tokeniser(data, data->line);
 	if (!data->token)
 		return ;
-	display_tokens(data->token);
-	// data->cmd = commander(data->token);
-	// if (!data->cmd)
-	// 	return ;
-	// display_cmd(data->cmd);
+	data->cmd = parse_commands(data->token);
+	if (!data->cmd)
+		return ;
 }

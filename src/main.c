@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/28 15:17:21 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/28 18:05:42 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ int	main(int ac, char **av, char **env)
 		data_malloc_error(data);
 	init_env(data, env);
 	main_reading(data, "pastishell$ ");
+	exec(data);
 	return (1);
 }
 //PAS DE PANIQUE LE EXIT IL VIENDRA DES BUILT IN
