@@ -6,13 +6,31 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:08:16 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/09 11:23:02 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/23 18:27:48 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_var_env(t_data *data, char *motif, int len)
+int	not_in_en(t_data *data, char *name)
+{
+	t_env	*env;
+	int		i;
+	int		len;
+
+	env = data->t_env;
+	i = 0;
+	len = ft_strlen(name);
+	while (env)
+	{
+		if (!ft_strncmp(env->var, name, len) && name[len + 1] == '=')
+			return (EXIT_SUCCESS);
+		env = env->next;
+	}
+	return (EXIT_FAILURE);
+}
+
+char	*get_var_env(t_data *data, char *motif)
 {
 	t_env	*tmp;
 	char	*path;
@@ -20,7 +38,7 @@ char	*get_var_env(t_data *data, char *motif, int len)
 	tmp = data->t_env;
 	while (tmp)
 	{
-		if (!ft_strncmp(tmp->var, motif, len))
+		if (!ft_strcmp(tmp->key, motif))
 		{
 			path = tmp->arg;
 			return (path);

@@ -5,7 +5,7 @@ CFLAGS			:= -Wall -Werror -Wextra -g -fsanitize=address -MMD -MP
 INCLUDES_DIR	:= -Iincludes/ -Iincludes/libft/ -Iincludes/lib/ -Iincludes/gnl
 INCLUDES		:= $(INCLUDES_DIR)
 LIBS			:= -lreadline
-NAME			:= minishell
+NAME			:= minichevre
 
 LIBFT_DIR		:= includes/libft/
 LIBFT			:= $(LIBFT_DIR)libft.a

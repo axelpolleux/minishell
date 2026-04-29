@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/20 17:50:03 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/25 11:41:37 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	display_env(t_env *view)
 	{
 		printf("var-> %s \n", view->var);
 		printf("arg-> %s \n", view->arg);
+		printf("key-> %s \n", view->key);
 		printf("export-> %d \n", view->export);
 		printf("====================\n");
 		view = view->next;
@@ -56,27 +57,15 @@ void	display_cmd(t_cmd *view)
 	//     printf("=> %s\n", history[i]->line);
 //=======================================//
 
-// void reset(t_data *data)
-// {
-// 	if (data->line)
-// 		free(data->line);
-// 	if (data->t_env)
-//     	free_env(data->t_env);
-//     if (data->cmd)
-// 		free_cmd(data->cmd);
-// }
-
 void	init_env(t_data *data, char **env)
 {
 	t_env	*new;
 	int		i;
 
 	i = -1;
-	if (!env || !(*env))
-	{
-		free_data(data);
-		exit(0);
-	}
+	new = NULL;
+	if (make_built_env(data, new, env))
+		return ;
 	while (env[++i])
 	{
 		new = new_env(ft_strdup(env[i]), 1);
@@ -95,7 +84,7 @@ int	main(int ac, char **av, char **env)
 	if (!data->built_in)
 		data_malloc_error(data);
 	init_env(data, env);
+	//display_env(data->t_env);
 	main_reading(data, "pastishell$ ");
-	return (1);
+	return (0);
 }
-//PAS DE PANIQUE LE EXIT IL VIENDRA DES BUILT IN

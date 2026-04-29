@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/08 16:01:08 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/20 11:14:04 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/25 11:45:13 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	double_quotes(t_data *data, t_token **tokens, char *input, int *index)
 	if (input[*index] != '\"')
 		return ;
 	i = 1;
-	while (input[*index + i] && input[*index + i] != 34)
+	while (input[*index + i] && input[*index + i] != '\"')
 		i++;
 	if (!input[*index + i])
 		error_quote();

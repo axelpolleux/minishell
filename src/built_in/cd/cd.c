@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 16:06:43 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/20 17:48:03 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/23 18:29:17 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ char	*path_env(t_data *data, char **cmd)
 	path = NULL;
 	if (!cmd[1])
 	{
-		path = get_var_env(data, HOME, ft_strlen(HOME));
+		path = get_var_env(data, HOME);
 		if (!path)
 			error_perror (HOME_NSET, P_ERROR, 2);
 	}
 	else if (!strcmp(cmd[1], "-"))
 	{
-		path = get_var_env(data, OLDPWD, ft_strlen(OLDPWD));
+		path = get_var_env(data, OLDPWD);
 		if (!path)
 			error_perror (OLDP_NSET, P_ERROR, 2);
 		else

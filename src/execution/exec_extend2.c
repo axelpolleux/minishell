@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:40:43 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/21 09:48:26 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/29 11:02:23 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,23 +81,3 @@ char	**get_path(t_data *data, int len)
 	data->exit = 127;
 	return (NULL);
 }
-
-// void	tennage(t_data *data)
-// {
-// 	if (data->cmd->type == RED_OUT || data->cmd->type == APPEND
-//         || data->cmd->type == HEREDOC ||  data->cmd->type == RED_IN)
-// 	{
-// 		data->fd = verif_file(data->cmd->cmd[1], data->cmd->type);
-// 		if (data->fd == -1)
-// 			open_error(data);
-// 		if (dup2(data->fd, 1) == -1)
-// 			exit(EXIT_FAILURE);
-// 		close(data->fd);
-// 	}
-// 	else
-// 	{
-// 		if (dup2(data->fd_storage[1], 1) == -1)
-// 			exit(EXIT_FAILURE);
-// 		closes(-1, data->fd_storage);
-// 	}
-// }
