@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/28 17:10:26 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/29 14:03:21 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,8 +156,6 @@ void			add_to_bottom_env(t_env **node, t_env *new_bot);
 void			add_to_bottom_cmd(t_cmd **node, t_cmd *new_bot);
 
 void			display_env(t_env *view);// a degager
-void			display_token(t_token *view);//
-void			display_cmd(t_cmd *view);//
 
 int				ft_strcmp(char *s1, char *s2);
 int				srch_cmd(char *s, char c);
@@ -244,6 +242,7 @@ void			single_quotes(t_data *data, t_token **tokens,	\
 								char *input, int *index);
 
 t_cmd	*parse_commands(t_token *tokens);
+int		count_words(t_token *start, t_token *end);
 t_cmd	*new_cmd_node(void);
 void	add_cmd_back(t_cmd **lst, t_cmd *new);
 char	**tokens_to_argv(t_token *start, t_token *end);

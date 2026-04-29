@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/28 18:05:42 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/29 16:06:47 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,42 +24,6 @@ void	display_env(t_env *view)
 		view = view->next;
 	}
 }
-
-// void	display_cmd(t_cmd *view)
-// {
-// 	int	i;
-//
-// 	i = 0;
-// 	while (view)
-// 	{
-// 		i = 0;
-// 		printf("============================\n");
-// 		printf("{");
-// 		while (view->cmd[i])
-// 		{
-// 			printf("cmd => %s", view->cmd[i]);
-// 			if (view->cmd[i + 1])
-// 				printf(", ");
-// 			i++;
-// 		}
-// 		printf("}\n");
-// 		printf("cmd_path => %s\n", view->cmd_path);
-// 		printf("full_cmd => %s\n", view->full_cmd);
-// 		printf("input => %d\n", view->input);
-// 		printf("output => %d\n", view->output);
-// 		view = view->next;
-// 	}
-// }
-
- // void reset(t_data *data)
- // {
- // 	if (data->line)
- // 		free(data->line);
- // 	if (data->t_env)
- //     	free_env(data->t_env);
- //     if (data->cmd)
- // 		free_cmd(data->cmd);
- // }
 
 void	init_env(t_data *data, char **env)
 {

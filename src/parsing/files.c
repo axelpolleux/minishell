@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error3.c                                           :+:      :+:    :+:   */
+/*   files.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/20 10:52:20 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/29 18:31:04 by apolleux         ###   ########.fr       */
+/*   Created: 2026/04/29 15:41:59 by apolleux          #+#    #+#             */
+/*   Updated: 2026/04/29 16:05:38 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	error_quote(void)
+void	io_manager(t_cmd *commands)
 {
-	ft_putstr_fd(QUOT_ER, 2);
-	return ;
+	(void)commands;
+	
 }

@@ -1,19 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error3.c                                           :+:      :+:    :+:   */
+/*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/20 10:52:20 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/29 18:31:04 by apolleux         ###   ########.fr       */
+/*   Created: 2026/04/29 14:01:10 by apolleux          #+#    #+#             */
+/*   Updated: 2026/04/29 14:03:01 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	error_quote(void)
+int	count_words(t_token *start, t_token *end)
 {
-	ft_putstr_fd(QUOT_ER, 2);
-	return ;
+	int	count;
+
+	count = 0;
+	while (start && start != end)
+	{
+		if (start->type == WORD)
+			count++;
+		start = start->next;
+	}
+	return (count);
 }

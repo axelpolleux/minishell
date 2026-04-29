@@ -6,7 +6,7 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 17:10:40 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/28 17:10:49 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/29 16:07:26 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,6 @@ void	add_cmd_back(t_cmd **lst, t_cmd *new)
 		tmp = tmp->next;
 	tmp->next = new;
 	new->prev = tmp;
-}
-
-static int	count_words(t_token *start, t_token *end)
-{
-	int	count;
-
-	count = 0;
-	while (start && start != end)
-	{
-		if (start->type == WORD)
-			count++;
-		start = start->next;
-	}
-	return (count);
 }
 
 char	**tokens_to_argv(t_token *start, t_token *end)
