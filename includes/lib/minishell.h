@@ -52,10 +52,10 @@
 # define CMD		7
 # define OTHERS		8 // ????????
 
-# define PATH		"PATH="
-# define PWD		"PWD="
-# define OLDPWD		"OLDPWD="
-# define HOME		"HOME="
+# define PATH		"PATH"
+# define PWD		"PWD"
+# define OLDPWD		"OLDPWD"
+# define HOME		"HOME"
 
 # define HOME_NSET	"minishell: cd: HOME not set\n"
 # define OLDP_NSET	"minishell: cd: OLDPWD not set\n"
@@ -64,10 +64,16 @@
 # define PWD_ER		"minishell: pwd"
 # define EXT_ARG	"minishell: exit: too many arguments\n"
 # define QUOT_ER	"minishell: every quote must be closed\n"
+# define SYNT_ER	"minishell: syntax error near unexpected token `newline'\n"
+# define DATA_ER	"Error : A malloc has failed.\n"
 
 # define P_ERROR 0
 # define C_ERROR 1
 # define NF -1
+
+# define NQUOT		0
+# define SQUOT		1
+# define DQUOT		2
 
 //==============================================//
 
@@ -101,6 +107,7 @@ typedef struct s_env
 {
 	char			*var;
 	char			*arg;
+	char			*key;
 
 	int				export;
 
@@ -119,6 +126,7 @@ typedef struct s_data
 	int			fd_storage[2];
 	int			last_fd;
 	int			exit;
+	int			quote;
 
 	pid_t		*pid;
 
@@ -137,6 +145,7 @@ void			error_perror(char *error, int error_p, int fd);
 void			error_export(char *error);
 void			error_exit(char *error);
 void			error_quote(void);
+void			error_signal(int signal);
 
 int				malloc_error(char **path);
 int				data_malloc_error(t_data *data);
@@ -145,6 +154,9 @@ int				open_error(t_data *data);
 
 //==================<general fonction>====================//
 char			**tab_env(t_env *env, int i);
+char			*var_env(char **env, char *motif, int len);
+char			*ft_charjoin(char *str, char c);
+char			*ft_strjoin_upd(char *s1, char *s2);
 
 void			*free_arr(char **str);
 void			closes(int fd, int *fd_storage);
@@ -154,9 +166,11 @@ void			free_token(t_token *node);
 void			free_cmd(t_cmd *node);
 void			add_to_bottom_env(t_env **node, t_env *new_bot);
 void			add_to_bottom_cmd(t_cmd **node, t_cmd *new_bot);
-
+//================================================================//
 void			display_env(t_env *view);// a degager
-
+void			display_token(t_token *view);//
+void			display_cmd(t_cmd *view);//
+//================================================================//
 int				ft_strcmp(char *s1, char *s2);
 int				srch_cmd(char *s, char c);
 int				ft_lstsize_e(t_env *lst);
@@ -170,22 +184,36 @@ t_env			*new_env_n_on(char *line, int export);
 //======================================================//
 
 //============for the the expand========//
-char			*expand(t_data *data, t_cmd *cmd);
+char			**get_new_cmd(char **new, char **old, int index);
+char			**get_expand_t(t_data *data, char **cmd);
+char			*dollar_expand(t_data *data, char *line, int *i);
+char			*line_expand(t_data *data, char *line, int i);
+char			*get_dollar(t_data *data, char *line, int *i, char *n_line);
+
+void			replace_cmd(t_data *data, t_cmd *cmd, char **tmp);
+void			place_space(char **args);
+void			get_expand(t_data *data, t_cmd *cmd);
+
+int				split_nquote(char **new, char **old, int i, int k);
+int				get_key_nd_len(char *line, char *name);
+int				quote_expand(t_data *data, char *line, int *i);
+int				count_word_quot(char **arr, char c);
 //=====================================//
 
 //========================<for build in>=========================//
 char			**tri_alpha(t_env *env);
 char			**init_built(void);
-char			*get_var_env(t_data *data, char *motif, int len);
+char			*get_var_env(t_data *data, char *motif);
 char			*path_env(t_data *data, char **cmd);
 
 void			print_flag(char **cmd, int start);
 void			built_choice(t_data *data, t_cmd *cmd);
-void			built_pipe(t_data *data, t_cmd *cmd);
+void			built_parent(t_data *data, t_cmd *cmd);
 void			unset_place(t_data *data, char *motif);
 void			only_name(t_data *data, t_env *tmp, char *cmd);
 void			exec_exit(t_data *data, t_cmd *g_cmd, char **cmd);
 
+int				make_built_env(t_data *data, t_env *new, char **env);
 int				is_builtin(char **built_in, char *cmd);
 int				exec_echo(char **cmd);
 int				exec_cd(t_data *data, char **cmd);
@@ -200,6 +228,7 @@ int				replace(t_data *data, char *motif, char *path);
 int				name_arg(t_data *data, t_env *tmp, char *cmd);
 int				only_export(t_data *data, char **cmd);
 int				not_in_en(t_data *data, char *name);
+int				word_size(char *str, char charset);
 //===============================================================//
 
 //========================<for exec>=========================//
@@ -230,9 +259,6 @@ int				full_void(char *line);
 void			main_reading(t_data *data, char *title);
 void			display_tokens(t_token *token);
 void			main_parser(t_data *data);
-
-int				is_space(int c);
-
 t_token			*tokeniser(t_data *data, char *input);
 t_token			*token_new(char *input, int *index, int len, int type);
 void			ft_token_add_back(t_token **lst, t_token *new);
@@ -241,6 +267,12 @@ void			double_quotes(t_data *data, t_token **tokens,	\
 void			single_quotes(t_data *data, t_token **tokens,	\
 								char *input, int *index);
 
+int				is_space(int c);
+int				no_minim_env(char **env);
+int				not_in_original_en(char **env, char *name);
+int				make_oldpwd(t_data *data, t_env *new, char **env);
+int				make_pwd(t_data *data, t_env *new);
+int				no_minim_env(char **env);
 t_cmd	*parse_commands(t_token *tokens);
 int		count_words(t_token *start, t_token *end);
 t_cmd	*new_cmd_node(void);

@@ -6,14 +6,20 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:43:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/21 09:49:06 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/27 16:29:08 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	exec_command(t_data *data, char **env)
+void	exec_command(t_data *data, t_cmd *cmd, char **env)
 {
+	(void)cmd;
+	// if (get_expand(data, cmd))
+	// 	{
+	// 		free_arr (env);
+	// 		data_malloc_error(data);
+	// 	}
 	if (execve(data->cmd->cmd_path, data->cmd->cmd, env) == -1)
 	{
 		free_arr(env);
@@ -52,7 +58,7 @@ void	children(t_data *data, t_cmd *cmd)
 	env = tab_env(data->t_env, -1);
 	if (!env)
 		data_malloc_error(data);
-	exec_command(data, env);
+	exec_command(data, cmd, env);
 	free_arr(env);
 }
 
@@ -60,20 +66,17 @@ void	parent(t_data *data, t_cmd *cmd)
 {
 	int	i;
 
-	i = -1;
+	i = 0;
 	data->last_fd = -1;
-	while (cmd && ++i > -2)
+	while (cmd)
 	{
-		// if (cmd->next)
-		// 	if (pipe(data->fd_storage) == -1)
-		// 		pipe_error(data);
 		if (cmd->type == PIPE)
 			if (pipe(data->fd_storage) == -1)
-				pipe_error(data); // a amelioer pour faire un semi heredoc pour pipe end
+				pipe_error(data);//a amelioer pour faire un semi heredoc pour pipe end
 		data->pid[i] = fork();
 		if (data->pid[i] < 0)
 			fork_error(data);
-		if (!data->pid[i])
+		if (data->pid[i] == 0)
 			children(data, cmd);
 		if (data->last_fd != -1)
 			close(data->last_fd);
@@ -83,6 +86,7 @@ void	parent(t_data *data, t_cmd *cmd)
 			data->last_fd = data->fd_storage[0];
 		}
 		cmd = cmd->next;
+		i++;
 	}
 }
 
@@ -103,21 +107,18 @@ void	wait_end(t_data *data, int count)
 void	exec(t_data *data)
 {
 	t_cmd	*t_cmd;
-	 int	count;
+	int		count;
 
 	t_cmd = data->cmd;
-	// display_cmd(t_cmd);
+	//display_cmd(t_cmd);
 	count = nb_process(t_cmd);
 	if (count == 0)
 		return ;
-	data->pid = ft_calloc(sizeof(pid_t), count);
+	data->pid = ft_calloc(sizeof(pid_t), count); //pas sur
 	if (!data->pid)
 		data_malloc_error(data);
 	if (is_builtin(data->built_in, t_cmd->cmd[0]) && !t_cmd->next)
-	{
-		exec_built(data, t_cmd);
-		return ;
-	}
+		exit(exec_built(data, t_cmd));
 	parent(data, t_cmd);
 	wait_end(data, count);
 }

@@ -19,6 +19,7 @@ void	display_env(t_env *view)
 	{
 		printf("var-> %s \n", view->var);
 		printf("arg-> %s \n", view->arg);
+		printf("key-> %s \n", view->key);
 		printf("export-> %d \n", view->export);
 		printf("====================\n");
 		view = view->next;
@@ -31,11 +32,9 @@ void	init_env(t_data *data, char **env)
 	int		i;
 
 	i = -1;
-	if (!env || !(*env))
-	{
-		free_data(data);
-		exit(0);
-	}
+	new = NULL;
+	if (make_built_env(data, new, env))
+		return ;
 	while (env[++i])
 	{
 		new = new_env(ft_strdup(env[i]), 1);
@@ -56,6 +55,5 @@ int	main(int ac, char **av, char **env)
 	init_env(data, env);
 	main_reading(data, "pastishell$ ");
 	exec(data);
-	return (1);
+	return (0);
 }
-//PAS DE PANIQUE LE EXIT IL VIENDRA DES BUILT IN

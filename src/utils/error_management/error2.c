@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/05 18:26:35 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/15 13:54:42 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/24 16:16:21 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	data_malloc_error(t_data *data)
 {
 	if (data)
 		free_data(data);
-	write(2, "Error : A malloc has failed.\n", 29);
+	ft_putstr_fd(DATA_ER, 2);
 	exit (EXIT_FAILURE);
 }
 

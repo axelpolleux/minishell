@@ -1,21 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   make_env.c                                         :+:      :+:    :+:   */
+/*   fnc_gen4.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/31 15:29:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/03 14:42:05 by ethutin-         ###   ########.fr       */
+/*   Created: 2026/04/24 10:43:28 by ethutin-          #+#    #+#             */
+/*   Updated: 2026/04/28 19:14:07 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void make_built_env(t_data *data)
-// {
-//    char c
+char	*ft_strjoin_upd(char *s1, char *s2)
+{
+	char	*str;
 
-//     env = 
-//     data->built_env = env;
-// }
+	str = ft_strjoin(s1, s2);
+	free(s1);
+	if (!str)
+		return (NULL);
+	return (str);
+}
+
+int	word_size(char *str, char charset)
+{
+	int	i;
+
+	i = 0;
+	while (*str && *str != charset)
+	{
+		i++;
+		str++;
+	}
+	return (i);
+}
