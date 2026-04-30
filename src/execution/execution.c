@@ -6,20 +6,14 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:43:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/27 16:29:08 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/30 11:36:36 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	exec_command(t_data *data, t_cmd *cmd, char **env)
+void	exec_command(t_data *data, char **env)
 {
-	(void)cmd;
-	// if (get_expand(data, cmd))
-	// 	{
-	// 		free_arr (env);
-	// 		data_malloc_error(data);
-	// 	}
 	if (execve(data->cmd->cmd_path, data->cmd->cmd, env) == -1)
 	{
 		free_arr(env);
@@ -58,7 +52,7 @@ void	children(t_data *data, t_cmd *cmd)
 	env = tab_env(data->t_env, -1);
 	if (!env)
 		data_malloc_error(data);
-	exec_command(data, cmd, env);
+	exec_command(data, env);
 	free_arr(env);
 }
 
@@ -110,7 +104,6 @@ void	exec(t_data *data)
 	int		count;
 
 	t_cmd = data->cmd;
-	//display_cmd(t_cmd);
 	count = nb_process(t_cmd);
 	if (count == 0)
 		return ;

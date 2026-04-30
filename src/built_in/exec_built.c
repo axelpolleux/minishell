@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 14:53:34 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/29 11:49:45 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/30 11:30:33 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 
 void	built_parent(t_data *data, t_cmd *cmd)
 {
-	if (in_pipe()) //faire le check de pipe ouverte ici
-		return ;
 	if (!ft_strncmp("export", cmd->cmd[0], 6))
 		data->exit = exec_export(data, cmd->cmd);
 	else if (!ft_strncmp("unset", cmd->cmd[0], 5))

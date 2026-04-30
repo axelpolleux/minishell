@@ -6,14 +6,14 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/29 16:06:47 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/30 11:48:59 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //=======a degager a la fin==========//
-void	display_env(t_env *view)
+void display_env(t_env *view)
 {
 	while (view)
 	{
@@ -25,6 +25,38 @@ void	display_env(t_env *view)
 		view = view->next;
 	}
 }
+
+void	display_cmd(t_cmd *view)
+{
+	int	i;
+
+	i = 0;
+	while (view)
+	{
+		printf("============================\n");
+		printf("{");
+		while (view->cmd[i])
+		{
+			printf("cmd => %s", view->cmd[i]);
+			if (view->next)
+				printf(", ");
+		}
+		printf("}\n");
+		printf("cmd_path => %s\n", view->cmd_path);
+		printf("full_cmd => %s\n", view->full_cmd);
+		printf("input => %d\n", view->input);
+		printf("output => %d\n", view->output);
+		view = view->next;
+	}
+}
+
+// //pour voir l'historique
+// HIST_ENTRY **history;
+// history = history_list();
+// int i = -1;
+// while (history[++i])
+//     printf("=> %s\n", history[i]->line);
+//=======================================//
 
 void	init_env(t_data *data, char **env)
 {
