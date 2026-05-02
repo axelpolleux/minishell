@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:40:43 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/21 09:48:26 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/30 16:33:10 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,11 @@ void	full_cmd(t_data *data, char *command)
 		free(tmp);
 		if (!data->cmd->cmd_path)
 			data_malloc_error(data);
-		if (access(data->cmd->cmd_path, F_OK | X_OK) == 0)
+		if (!access(data->cmd->cmd_path, F_OK | X_OK) )
 			return ;
 		else
 		{
-			perror(command);
+			//perror(command);
 			data->exit = 126;
 		}
 	}
@@ -64,9 +64,9 @@ char	**get_path(t_data *data, int len)
 	tmp = data->t_env;
 	while (tmp)
 	{
-		if (!ft_strncmp(tmp->var, PATH, len))
+		if (!ft_strncmp(tmp->key, PATH, len))
 		{
-			if (tmp->var[len + 1] == '\0')
+			if (tmp->var[0] == '\0')
 			{
 				data->exit = 127;
 				return (NULL);
@@ -81,23 +81,3 @@ char	**get_path(t_data *data, int len)
 	data->exit = 127;
 	return (NULL);
 }
-
-// void	tennage(t_data *data)
-// {
-// 	if (data->cmd->type == RED_OUT || data->cmd->type == APPEND
-//         || data->cmd->type == HEREDOC ||  data->cmd->type == RED_IN)
-// 	{
-// 		data->fd = verif_file(data->cmd->cmd[1], data->cmd->type);
-// 		if (data->fd == -1)
-// 			open_error(data);
-// 		if (dup2(data->fd, 1) == -1)
-// 			exit(EXIT_FAILURE);
-// 		close(data->fd);
-// 	}
-// 	else
-// 	{
-// 		if (dup2(data->fd_storage[1], 1) == -1)
-// 			exit(EXIT_FAILURE);
-// 		closes(-1, data->fd_storage);
-// 	}
-// }

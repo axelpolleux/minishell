@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/28 19:12:18 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/02 11:54:47 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@
 */
 
 //=============<for general utility>=============//
+extern volatile int	g_signal;
+
 # define ERROR		0
 # define WORD		1
 # define PIPE		2 // |
@@ -50,7 +52,14 @@
 # define APPEND		5 // >>
 # define HEREDOC	6 // <<
 # define CMD		7
-//# define OTHERS		8 // ????????
+
+# define P_ERROR	0
+# define C_ERROR	1
+# define NF 		-1
+
+# define NQUOT		0
+# define SQUOT		1
+# define DQUOT		2
 
 # define PATH		"PATH"
 # define PWD		"PWD"
@@ -65,16 +74,7 @@
 # define EXT_ARG	"minishell: exit: too many arguments\n"
 # define QUOT_ER	"minishell: every quote must be closed\n"
 # define SYNT_ER	"minishell: syntax error near unexpected token `newline'\n"
-# define DATA_ER	"Error : A malloc has failed.\n"
-
-# define P_ERROR 0
-# define C_ERROR 1
-# define NF -1
-
-# define NQUOT		0
-# define SQUOT		1
-# define DQUOT		2
-
+# define DATA_ER	"Error : A malloc has failed\n"
 //==============================================//
 
 //====================<for all struct>===================//<<<<
@@ -127,15 +127,12 @@ typedef struct s_data
 	int			last_fd;
 	int			exit;
 	int			quote;
-
-	pid_t		*pid;
-
+	
 	t_token		*token;
 	t_env		*t_env;
 	t_cmd		*cmd;
 }				t_data;
 //=======================================================//
-
 
 //=================<for all type of error>================//
 void			pipe_error(t_data *data);
@@ -146,7 +143,7 @@ void			error_perror(char *error, int error_p, int fd);
 void			error_export(char *error);
 void			error_exit(char *error);
 void			error_quote(void);
-void			error_signal(int signal);
+//void			error_signal(int signal);
 
 int				data_malloc_error(t_data *data);
 int				open_error(t_data *data);
@@ -166,8 +163,9 @@ void			free_token(t_token *node);
 void			free_cmd(t_cmd *node);
 void			add_to_bottom_env(t_env **node, t_env *new_bot);
 void			add_to_bottom_cmd(t_cmd **node, t_cmd *new_bot);
+void			reset(t_data *data);
 //================================================================//
-void			display_env(t_env *view);// a degager
+void			display_env(t_env *view);// a degager a la fin
 void			display_token(t_token *view);//
 void			display_cmd(t_cmd *view);//
 //================================================================//
@@ -183,13 +181,12 @@ t_env			*new_env(char *line, int export);
 //======================================================//
 
 //============for the the expand========//
-char			**get_new_cmd( char **new, char **old, int index);
-char			**get_expand_t(t_data *data, char **);
+char			**get_expand_t(t_data *data, char **cmd);
 char			*dollar_expand(t_data *data, char *line, int *i);
 char			*line_expand(t_data *data, char *line, int i);
 char			*get_dollar(t_data *data, char *line, int *i, char *n_line);
 
-void 			replace_cmd(t_data *data, t_cmd *cmd, char **tmp);
+void			replace_cmd(t_data *data, t_cmd *cmd, char **tmp);
 void			place_space(char **args);
 void			get_expand(t_data *data, t_cmd *cmd);
 
@@ -207,7 +204,7 @@ char			*path_env(t_data *data, char **cmd);
 
 void			print_flag(char **cmd, int start);
 void			built_choice(t_data *data, t_cmd *cmd);
-void			built_pipe(t_data *data, t_cmd *cmd);
+void			built_parent(t_data *data, t_cmd *cmd);
 void			unset_place(t_data *data, char *motif);
 void			only_name(t_data *data, t_env *tmp, char *cmd);
 void			exec_exit(t_data *data, t_cmd *g_cmd, char **cmd);
@@ -234,17 +231,18 @@ int				word_size(char *str, char charset);
 char			**get_path(t_data *data, int len);
 
 void			verif_command(t_data *data, t_cmd *cmd);
-void			get_cmd_path(t_data *data, t_cmd *cmd);
 void			children(t_data *data, t_cmd *cmd);
-void			exec(t_data *data);
 void			cmd_whith_path(t_data *data, char *command);
 void			full_cmd(t_data *data, char *command);
-void			exec_command(t_data *data, t_cmd *cmd, char **env);
+void			exec_command(t_data *data, char **env);
 void			parent(t_data *data, t_cmd *cmd);
-void			wait_end(t_data *data, int count);
+void			manage_process(t_data *data, t_cmd *cmd);
+void			wait_end(t_data *data);
 void			manage_redir(t_data *data, t_cmd *cmd);
 void			in_hre(t_data *data, int fd[2]);
 
+int				get_cmd_path(t_data *data, t_cmd *cmd);
+int				exec(t_data *data);
 int				here_doc_manage(t_data *data);
 int				verif_file(char *line, int doc);
 int				nb_process(t_cmd *cmd);
@@ -255,27 +253,31 @@ int				full_void(char *line);
 //===========================================================//
 
 //========================<for the parsing>=========================//
+char			**tokens_to_argv(t_token *start, t_token *end);
+
 void			main_reading(t_data *data, char *title);
 void			display_tokens(t_token *token);
-void			ft_token_add_back(t_token **lst, t_token *new);
-void			double_quotes(t_data *data, t_token **tokens, \
-char *input, int *index);
-void			single_quotes(t_data *data, t_token **tokens, \
-char *input, int *index);
 void			main_parser(t_data *data);
-void			add_word(t_data *data, t_token **tokens, \
-char *input, int *index);
-
+void			ft_token_add_back(t_token **lst, t_token *new);
+void			double_quotes(t_data *data, t_token **tokens,	\
+								char *input, int *index);
+void			single_quotes(t_data *data, t_token **tokens,	\
+								char *input, int *index);
+void			add_cmd_back(t_cmd **lst, t_cmd *new);
+								
 int				is_space(int c);
 int				no_minim_env(char **env);
 int				not_in_original_en(char **env, char *name);
 int				make_oldpwd(t_data *data, t_env *new, char **env);
 int				make_pwd(t_data *data, t_env *new);
 int				no_minim_env(char **env);
+int				count_words(t_token *start, t_token *end);
 
+t_cmd			*new_cmd_node(void);
+t_cmd			*init_cmd(t_token *tokens);
 t_token			*tokeniser(t_data *data, char *input);
 t_token			*token_new(char *input, int *index, int len, int type);
-t_cmd			*init_cmd(t_data *data, t_token *token);
+
 //======================================================//
 
 //==========================<Get Next Line>=====================//

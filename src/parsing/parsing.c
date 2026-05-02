@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 10:09:53 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/25 11:58:39 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/01 16:36:47 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,20 @@
 
 void	main_parser(t_data *data)
 {
-	//=============TOKEN==============//
-	if (data->token) //par pure parano
+	if (data->token)
 	{
 		free_token(data->token);
 		data->token = NULL;
 	}
 	data->token = tokeniser(data, data->line);
+	if (data->cmd)
+	{
+		free_cmd(data->cmd);
+		data->cmd = NULL;
+	}
+	data->cmd = init_cmd(data->token);
+	if (!data->cmd)
+		return ;
+	//display_cmd(data->cmd);
 	//display_token(data->token);
-	//===============================//
-	//
-	// //=============CMD==============//
-	// if (data->cmd) //par pure parano
-	// {
-	// 	free_cmd(data->cmd);
-	// 	data->cmd = NULL;
-	// }
-	// data->cmd = init_cmd(data, data->token);
-	// display_cmd(data->cmd);
-	// //===============================//
 }

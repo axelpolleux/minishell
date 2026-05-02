@@ -6,31 +6,28 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:43:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/27 16:29:08 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/02 11:49:09 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	exec_command(t_data *data, t_cmd *cmd, char **env)
+void	exec_command(t_data *data, char **env) // check a la fin 
 {
-	(void)cmd;
-	// if (get_expand(data, cmd))
-	// 	{
-	// 		free_arr (env);
-	// 		data_malloc_error(data);
-	// 	}
-	if (execve(data->cmd->cmd_path, data->cmd->cmd, env) == -1)
+	if (execve(data->cmd->cmd_path, data->cmd->cmd, env) == -1) //data->cmd->cmd ne fonctinera pas
 	{
 		free_arr(env);
 		perror("minishell");
 		if (errno == ENOENT)
-			exit(127);
+			data->exit = 127;
 		else if (errno == EACCES)
-			exit(126);
+			data->exit = 126;
 		else
-			exit(1);
+			data->exit = 1;
+		exit (data->exit);
 	}
+	free_arr(env);
+	exit (data->exit);
 }
 
 void	children(t_data *data, t_cmd *cmd)
@@ -38,46 +35,47 @@ void	children(t_data *data, t_cmd *cmd)
 	char	**env;
 
 	if (is_builtin(data->built_in, cmd->cmd[0]))
-		exit(exec_built(data, cmd));
-	get_cmd_path(data, cmd);
-	if (data->exit > -2) // le -2 et pour sigaler la premier fois
-		exit(data->exit);
-	if (data->last_fd != -1)
-	{
-		if (dup2(data->last_fd, STDIN_FILENO) == -1)
-			dup_error(data);
-		close(data->last_fd);
+	{	
+		exec_built(data, cmd);
+		return ;
 	}
-	if (cmd->next)
+	
+	if (get_cmd_path(data, cmd))
 	{
-		if (dup2(data->fd_storage[1], STDOUT_FILENO) == -1)
-			dup_error(data);
-		closes(-1, data->fd_storage);
+		manage_redir(data, cmd);
+		if (cmd->next) // check final cmd
+		{
+			if (dup2(data->fd_storage[1], STDOUT_FILENO) == -1)
+				dup_error(data);
+			close(data->fd_storage[1]);
+		}
+		env = tab_env(data->t_env, -1);
+		if (!env)
+			data_malloc_error(data);
+		exec_command(data, env);
 	}
-	manage_redir(data, cmd);
-	env = tab_env(data->t_env, -1);
-	if (!env)
-		data_malloc_error(data);
-	exec_command(data, cmd, env);
-	free_arr(env);
+	else 
+	{
+		data->exit = 1;
+		exit (data->exit);
+	}
+
+	
+
 }
 
-void	parent(t_data *data, t_cmd *cmd)
+void	parent(t_data *data, t_cmd *cmd) //pas finis
 {
-	int	i;
-
-	i = 0;
-	data->last_fd = -1;
-	while (cmd)
-	{
-		if (cmd->type == PIPE)
-			if (pipe(data->fd_storage) == -1)
-				pipe_error(data);//a amelioer pour faire un semi heredoc pour pipe end
-		data->pid[i] = fork();
-		if (data->pid[i] < 0)
-			fork_error(data);
-		if (data->pid[i] == 0)
-			children(data, cmd);
+	if (data->exit > -2) // le -2 et pour sigaler la premier fois
+			exit(data->exit);
+		if (data->last_fd != -1)
+		{
+			if (dup2(data->last_fd, STDIN_FILENO) == -1)
+				dup_error(data);
+			close(data->last_fd);
+		}
+			
+		
 		if (data->last_fd != -1)
 			close(data->last_fd);
 		if (cmd->next)
@@ -85,40 +83,87 @@ void	parent(t_data *data, t_cmd *cmd)
 			close(data->fd_storage[1]);
 			data->last_fd = data->fd_storage[0];
 		}
+}
+
+
+
+
+
+
+void	manage_process(t_data *data, t_cmd *cmd) //new ser a gagner des ligne 
+{
+	data->last_fd = -1;
+	while (cmd)
+	{
+		if (pipe(data->fd_storage) == -1)//a amelioer pour faire un semi heredoc pour pipe end
+			pipe_error(data);//
+		g_signal = fork();
+		if (g_signal < 0)
+			fork_error(data); 
+		if (g_signal == 0)
+			children(data, cmd);
+		else
+			parent(data, cmd);
 		cmd = cmd->next;
-		i++;
 	}
 }
 
-void	wait_end(t_data *data, int count)
+void	wait_end(t_data *data) // version modifier apres une idee de gaspard
 {
-	int	i;
-	int	error;
+	t_cmd	*tmp;
+	int		error;
+	int		size_c;
 
-	i = -1;
-	while (++i < count)
-		if (waitpid(data->pid[i], &error, 0) == -1)
-			wait_error(data);
-	free_data(data);
-	if (WIFEXITED(error))
-		exit(WEXITSTATUS(error));
+	tmp = data->cmd;
+	size_c = ft_lstsize_c(tmp);
+	while (size_c--)
+	{
+		if (waitpid(0, &error, 0) == g_signal)
+		{
+			if (WIFEXITED(error))
+				data->exit = WEXITSTATUS(error);
+		}
+			tmp = tmp->next;
+	}
 }
 
-void	exec(t_data *data)
+int	exec(t_data *data) 	//le pid et desormer gerer avec la global
+
 {
 	t_cmd	*t_cmd;
-	int		count;
 
 	t_cmd = data->cmd;
-	//display_cmd(t_cmd);
-	count = nb_process(t_cmd);
-	if (count == 0)
-		return ;
-	data->pid = ft_calloc(sizeof(pid_t), count); //pas sur
-	if (!data->pid)
-		data_malloc_error(data);
+	get_expand(data, t_cmd);
 	if (is_builtin(data->built_in, t_cmd->cmd[0]) && !t_cmd->next)
-		exit(exec_built(data, t_cmd));
-	parent(data, t_cmd);
-	wait_end(data, count);
+	{
+		exec_built(data, t_cmd);
+		return (data->exit);
+	}
+	manage_process(data, t_cmd);
+	wait_end(data);
+	return (data->exit);
 }
+
+
+// int	exec(t_data *data)
+// {
+// 	t_cmd	*t_cmd;
+// 	int		count;
+
+// 	t_cmd = data->cmd;
+// 	count = nb_process(t_cmd);// = nombre de cmd ft_lstsize
+// 	if (count == 0)
+// 		return ;
+// 	data->pid = ft_calloc(sizeof(pid_t), count); //statique on vas utiliser de manier plus fluide
+// 	if (!data->pid)
+// 		data_malloc_error(data);
+// 	get_expand(data, t_cmd);
+// 	if (is_builtin(data->built_in, t_cmd->cmd[0]) && !t_cmd->next)
+// 	{
+// 		exec_built(data, t_cmd);
+// 		return (data->exit);
+// 	}
+// 	parent(data, t_cmd);
+// 	wait_end(data);
+// 	return (data->exit);
+// }

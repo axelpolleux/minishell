@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 11:06:25 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/20 10:07:02 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/01 15:16:12 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_lstsize_t(t_token *lst)
 	return (len_lst);
 }
 
-int	ft_lstsize_c(t_cmd *lst)
+int	ft_lstsize_c(t_cmd *lst) //on pourrait changer le struct pour avoir seulement un ft_lstsize_general
 {
 	size_t	len_lst;
 

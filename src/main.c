@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/25 11:41:37 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/01 16:24:40 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,15 @@ void	display_cmd(t_cmd *view)
 {
 	int	i;
 
-	i = 0;
 	while (view)
 	{
+		i = -1;
 		printf("============================\n");
-		printf("{");
-		while (view->cmd[i])
+		printf("cmd => {");
+		while (view->cmd[++i])
 		{
-			printf("cmd => %s", view->cmd[i]);
-			if (view->next)
+			printf("%s", view->cmd[i]);
+			if (view->cmd[i + 1])
 				printf(", ");
 		}
 		printf("}\n");
@@ -49,6 +49,33 @@ void	display_cmd(t_cmd *view)
 		view = view->next;
 	}
 }
+
+void	display_tokens(t_token *token)
+{
+	int	i;
+
+	i = 0;
+	while (token)
+	{
+		printf("%d: {%s - %d}\n", i, token->cmd, token->type);
+		i++;
+		token = token->next;
+	}
+}
+
+void	display_token(t_token *view)
+{
+	printf("{");
+	while (view)
+	{
+		printf("%s:%d", view->cmd, view->type);
+		if (view->next)
+			printf(", ");
+		view = view->next;
+	}
+	printf("}\n");
+}
+
 	// //pour voir l'historique
 	// HIST_ENTRY **history;
 	// history = history_list();
@@ -56,6 +83,9 @@ void	display_cmd(t_cmd *view)
 	// while (history[++i])
 	//     printf("=> %s\n", history[i]->line);
 //=======================================//
+
+//signal(SIGQUIT, SIG_DFL);
+volatile sig_atomic_t	g_signal;
 
 void	init_env(t_data *data, char **env)
 {
@@ -77,6 +107,7 @@ void	init_env(t_data *data, char **env)
 
 int	main(int ac, char **av, char **env)
 {
+
 	t_data	*data;
 
 	data = init_data(ac, av);

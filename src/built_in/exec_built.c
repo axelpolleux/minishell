@@ -6,16 +6,13 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 14:53:34 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/22 11:30:08 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/02 11:46:22 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// 	if (in_pipe()) //faire le check de pipe ouverte ici
-// 		return ;
-
-void	built_pipe(t_data *data, t_cmd *cmd)
+void	built_parent(t_data *data, t_cmd *cmd)
 {
 	if (!ft_strncmp("export", cmd->cmd[0], 6))
 		data->exit = exec_export(data, cmd->cmd);
@@ -35,12 +32,11 @@ void	built_choice(t_data *data, t_cmd *cmd)
 		data->exit = exec_env(data);
 	else if (!ft_strncmp("exit", cmd->cmd[0], 4))
 		exec_exit(data, cmd, cmd->cmd);
-	built_pipe(data, cmd);
+	built_parent(data, cmd);//senser gerer les sous instance
 }
 
 int	exec_built(t_data *data, t_cmd *cmd)
 {
-	//get_expand(data, cmd);
 	if (cmd->output >= 0)
 	{
 		data->last_fd = dup(1);

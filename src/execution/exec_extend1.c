@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 11:48:19 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/20 16:18:47 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/01 16:34:25 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,27 +46,29 @@ void	verif_command(t_data *data, t_cmd *cmd)
 	}
 	else
 		data->path = get_path(data, ft_strlen(PATH));
-	if (data->exit == -1)
+	if (data->exit == -1)// pas super depand de l'etat global
 		full_cmd(data, cmd->cmd[0]);
 }
 
-void	get_cmd_path(t_data *data, t_cmd *cmd)
+int	get_cmd_path(t_data *data, t_cmd *cmd)
 {
 	if (!cmd->full_cmd || !*cmd->full_cmd)
 	{
 		data->exit = 126;
-		return ;
+		return (EXIT_FAILURE);
 	}
 	else if (full_void(cmd->cmd[0]))
 	{
 		data->exit = 127;
-		return ;
+		return (EXIT_FAILURE);
 	}
 	verif_command(data, cmd);
+	return (EXIT_SUCCESS);
 }
 
 void	manage_redir(t_data *data, t_cmd *cmd)
 {
+	close(data->fd_storage[0]);
 	if (cmd->input != -1)
 	{
 		if (dup2(cmd->input, STDIN_FILENO) == -1)
