@@ -33,6 +33,7 @@ void	double_quotes(t_data *data, t_token **tokens, char *input, int *index)
 	new = token_new(input, &start, i + 1, WORD);
 	if (!new)
 		data_malloc_error(data);
+
 	ft_token_add_back(tokens, new);
 	(*index) += (i + 1);
 }

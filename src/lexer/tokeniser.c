@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 11:06:42 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/22 16:14:44 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/05 16:05:59 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,25 @@ void	add_word(t_data *data, t_token **tokens, char *input, int *index)
 {
 	t_token	*new;
 	int		len;
+	char	quote;
 
 	len = 0;
 	while (input[*index + len] && !is_space(input[*index + len])
-		&& !ft_strchr("|<>", input[*index + len])
-		&& (input[*index + len] != '"' && input[*index + len] != '\''))
-		len++;
+		&& !ft_strchr("|<>", input[*index + len]))
+	{
+		if (input[*index + len] == '"' || input[*index + len] == '\'')
+		{
+			quote = input[*index + len];
+			len++;
+			while (input[*index + len] && input[*index + len] != quote)
+				len++;
+			if (!input[*index + len])
+				error_quote();
+			len++;
+		}
+		else
+			len++;
+	}
 	new = token_new(input, index, len, WORD);
 	if (!new)
 		data_malloc_error(data);

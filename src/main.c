@@ -25,7 +25,6 @@ void display_env(t_env *view)
 		view = view->next;
 	}
 }
-
 void	display_cmd(t_cmd *view)
 {
 	int	i;
