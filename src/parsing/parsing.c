@@ -6,21 +6,11 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 10:09:53 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/05 16:28:47 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/05 18:19:18 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void			display_tokens(t_token *token)
-{
-	while (token)
-	{
-		printf("[%s]", token->cmd);
-		token = token->next;
-	}
-	printf("\n");
-}
 
 void	main_parser(t_data *data)
 {
@@ -35,8 +25,7 @@ void	main_parser(t_data *data)
 		data->cmd = NULL;
 	}
 	data->token = tokeniser(data, data->line);
-	display_tokens(data->token);
-	// data->cmd = parse_commands(data->token);
-	// if (!data->cmd)
+	data->cmd = parse_commands(data->token);
+	if (!data->cmd)
 		return ;
 }
