@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/05 18:08:49 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/05 18:39:55 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ void			add_to_bottom_cmd(t_cmd **node, t_cmd *new_bot);
 void			env_new_node(t_data *data, char *line);
 //void			reset(t_data *data);
 //================================================================//
-void			display_env(t_env *view);// a degager
+void			display_env(t_env *view);// a degager a la fin
 void			display_token(t_token *view);//
 void			display_cmd(t_cmd *view);//
 //================================================================//
@@ -277,6 +277,7 @@ char			**tokens_to_argv(t_token *start, t_token *end);
 
 void			main_reading(t_data *data, char *title);
 void			display_tokens(t_token *token);
+void			main_parser(t_data *data);
 void			ft_token_add_back(t_token **lst, t_token *new);
 void			double_quotes(t_data *data, t_token **tokens,	\
 								char *input, int *index);
@@ -296,6 +297,7 @@ t_cmd			*new_cmd_node(void);
 t_cmd			*init_cmd(t_token *tokens);
 t_token			*tokeniser(t_data *data, char *input);
 t_token			*token_new(char *input, int *index, int len, int type);
+
 
 //======================================================//
 

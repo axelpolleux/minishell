@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:04:56 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/05 17:13:31 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/05 18:44:17 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	main_reading(t_data *data, char *title)
 	signal(SIGINT, handle_signal);
 	while (1)
 	{
+		g_signal = 0;
 		data->line = readline(title);
 		if (!data->line)
 		{

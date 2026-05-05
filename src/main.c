@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/05 17:44:11 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/05 18:43:25 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ void	init_env(t_data *data, char **env, int i)
 
 int	main(int ac, char **av, char **env)
 {
+
 	t_data	*data;
 
 	data = init_data(ac, av);

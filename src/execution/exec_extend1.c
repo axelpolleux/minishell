@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 11:48:19 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/05 18:12:52 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/05 18:43:37 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	verif_command(t_data *data, t_cmd *cmd)
 	}
 	else
 		data->path = get_path(data, ft_strlen(PATH));
-	if (data->exit == -1)
+	if (data->exit == -1)// pas super depand de l'etat global
 		full_cmd(data, cmd->cmd[0]);
 }
 
