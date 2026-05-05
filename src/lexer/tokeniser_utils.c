@@ -6,39 +6,11 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 16:30:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/20 18:39:13 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/04/30 13:17:16 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-//=============choisiser celui que vou voulait==========//
-void	display_tokens(t_token *token)
-{
-	int	i;
-
-	i = 0;
-	while (token)
-	{
-		printf("%d: {%s - %d}\n", i, token->cmd, token->type);
-		i++;
-		token = token->next;
-	}
-}
-
-void	display_token(t_token *view)
-{
-	printf("{");
-	while (view)
-	{
-		printf("%s:%d", view->cmd, view->type);
-		if (view->next)
-			printf(", ");
-		view = view->next;
-	}
-	printf("}\n");
-}
-//=========================================================//
 
 int	is_space(int c)
 {

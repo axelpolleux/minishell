@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 11:06:42 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/21 10:26:06 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/03 17:03:07 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ void	add_word(t_data *data, t_token **tokens, char *input, int *index)
 
 t_token	*tokeniser(t_data *data, char *input)
 {
-	int		index;
 	t_token	*tokens;
+	int		index;
 
 	index = 0;
 	tokens = NULL;
@@ -112,6 +112,5 @@ t_token	*tokeniser(t_data *data, char *input)
 		else if (!is_space(input[index]))
 			add_word(data, &tokens, input, &index);
 	}
-	free(data->line);
 	return (tokens);
 }

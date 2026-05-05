@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:04:56 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/28 19:16:19 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/05 17:13:31 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,35 +36,17 @@ void	main_reading(t_data *data, char *title)
 			printf("exit\n");
 			exit(0);
 		}
-		if (!strcmp(data->line, "exit"))// temporaire a degager
-		{
-			write(1, "exit\n", 5);
-			break ;
-		}
 		if (data->line && *(data->line) && !full_void(data->line))
 			add_history(data->line);
-//=====================================================//
-		char	**ar_tmp;
-		char	**tmp;
-		int		i = -1;
-
-		ar_tmp = ft_split(data->line, '@'); // cractere speciale pour teste les space
-		if (!ar_tmp)
-			data_malloc_error(data);
-		tmp = get_expand_t(data, ar_tmp); // pour teste
-		if (!tmp)
+		if (main_parser(data))
 		{
-			free_arr(ar_tmp);
-			data_malloc_error (data);
+			free(data->line);
+			continue ;
 		}
-		i = -1;
-		while (tmp[++i])
-			printf("arg_cmd:%d:{%s}\n", i + 1, tmp[i]);
-		free_arr(ar_tmp);
-		free_arr(tmp);
-//=====================================================//
-		main_parser(data);
 		exec(data);
+		free(data->line);
+		// if (data->exit != 0)
+		// 	exec_fail(data);
 	}
-	clear_history();
+	free_data(data);
 }

@@ -6,31 +6,13 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:08:16 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/23 18:27:48 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/05 15:30:11 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	not_in_en(t_data *data, char *name)
-{
-	t_env	*env;
-	int		i;
-	int		len;
-
-	env = data->t_env;
-	i = 0;
-	len = ft_strlen(name);
-	while (env)
-	{
-		if (!ft_strncmp(env->var, name, len) && name[len + 1] == '=')
-			return (EXIT_SUCCESS);
-		env = env->next;
-	}
-	return (EXIT_FAILURE);
-}
-
-char	*get_var_env(t_data *data, char *motif)
+char	*get_arg_env(t_data *data, char *motif)
 {
 	t_env	*tmp;
 	char	*path;
@@ -59,6 +41,7 @@ int	is_builtin(char **built_in, char *cmd)
 	{
 		if (!strcmp(built_in[i], cmd))
 			return (1);
+		i++;
 	}
 	return (0);
 }

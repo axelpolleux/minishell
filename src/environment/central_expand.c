@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 10:10:01 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/28 19:15:17 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/05 17:44:56 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	*dollar_expand(t_data *data, char *line, int *i)
 			return (NULL);
 		return (n_line);
 	}
-	n_line = (get_var_env(data, key));
+	n_line = (get_arg_env(data, key));
 	*i += len;
 	if (!n_line)
 		return (ft_strdup(""));
@@ -136,50 +136,7 @@ void	get_expand(t_data *data, t_cmd *cmd)
 		n_line = line_expand(data, cmd->cmd[i], 0);
 		if (!n_line)
 			data_malloc_error(data);
-		printf("expand:%d:{%s}\n", i + 1, n_line);
 		tmp[i] = n_line;
 	}
 	replace_cmd(data, cmd, tmp);
 }
-
-char	**get_expand_t(t_data *data, char **cmd)
-{
-	char	*n_line;
-	char	**n_cmd;
-	char	**tmp;
-	int		i;
-
-	if (!*cmd)
-		return (NULL);
-	tmp = ft_calloc(sizeof(char *), PATH_MAX);
-	if (!tmp)
-		return (NULL); //data_malloc_error(data);
-	i = -1;
-	while (cmd[++i])
-	{
-		data->quote = NQUOT;
-		n_line = line_expand(data, cmd[i], 0);
-		if (!n_line)
-			data_malloc_error(data);
-		printf("expand:%d:{%s}\n", i + 1, n_line);
-		tmp[i] = n_line;
-	}
-	n_cmd = ft_calloc(sizeof(char *), count_word_quot(tmp, ' ') + 1);
-	if (!n_cmd)
-	{
-		free_arr(tmp);
-		return (NULL); //data_malloc_error (data);
-	}
-	if (split_nquote(n_cmd, tmp, -1, -1))
-	{
-		free_arr(tmp);
-		free_arr(n_cmd);
-		return(NULL); //data_malloc_error (data);
-	}
-	free_arr(tmp);
-	place_space(n_cmd);
-	return (n_cmd);
-}
-
-
-

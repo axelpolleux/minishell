@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/25 11:41:37 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/05 17:44:11 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,15 @@ void	display_cmd(t_cmd *view)
 {
 	int	i;
 
-	i = 0;
 	while (view)
 	{
+		i = -1;
 		printf("============================\n");
-		printf("{");
-		while (view->cmd[i])
+		printf("cmd => {");
+		while (view->cmd[++i])
 		{
-			printf("cmd => %s", view->cmd[i]);
-			if (view->next)
+			printf("%s", view->cmd[i]);
+			if (view->cmd[i + 1])
 				printf(", ");
 		}
 		printf("}\n");
@@ -49,6 +49,33 @@ void	display_cmd(t_cmd *view)
 		view = view->next;
 	}
 }
+
+void	display_tokens(t_token *token)
+{
+	int	i;
+
+	i = 0;
+	while (token)
+	{
+		printf("%d: {%s - %d}\n", i, token->cmd, token->type);
+		i++;
+		token = token->next;
+	}
+}
+
+void	display_token(t_token *view)
+{
+	printf("{");
+	while (view)
+	{
+		printf("%s:%d", view->cmd, view->type);
+		if (view->next)
+			printf(", ");
+		view = view->next;
+	}
+	printf("}\n");
+}
+
 	// //pour voir l'historique
 	// HIST_ENTRY **history;
 	// history = history_list();
@@ -57,20 +84,30 @@ void	display_cmd(t_cmd *view)
 	//     printf("=> %s\n", history[i]->line);
 //=======================================//
 
-void	init_env(t_data *data, char **env)
+//signal(SIGQUIT, SIG_DFL);
+volatile sig_atomic_t	g_signal;
+
+void	init_env(t_data *data, char **env, int i)
 {
 	t_env	*new;
-	int		i;
+	char	*new_var;
+	char	*new_arg;
+	char	*new_key;
 
-	i = -1;
 	new = NULL;
+	new_var = NULL;
+	new_arg = NULL;
+	new_key = NULL;
 	if (make_built_env(data, new, env))
 		return ;
 	while (env[++i])
 	{
-		new = new_env(ft_strdup(env[i]), 1);
+		data->line_env = env[i];
+		if (init_champ_env(data, &new_var, &new_arg, &new_key))
+			init_env_fail(data, new_var, new_arg, new_key);
+		new = new_env(new_var, new_arg, new_key, 1);
 		if (!new)
-			data_malloc_error(data);
+			init_env_fail(data, new_var, new_arg, new_key);
 		add_to_bottom_env (&data->t_env, new);
 	}
 }
@@ -83,8 +120,8 @@ int	main(int ac, char **av, char **env)
 	data->built_in = init_built();
 	if (!data->built_in)
 		data_malloc_error(data);
-	init_env(data, env);
-	//display_env(data->t_env);
+	init_env(data, env, -1);
+	display_env(data->t_env);
 	main_reading(data, "pastishell$ ");
 	return (0);
 }

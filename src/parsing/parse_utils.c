@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/09 13:59:12 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/05 11:30:38 by ethutin-         ###   ########.fr       */
+/*   Created: 2026/04/29 14:01:10 by apolleux          #+#    #+#             */
+/*   Updated: 2026/04/29 14:03:01 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	exec_env(t_data *data)
+int	count_words(t_token *start, t_token *end)
 {
-	t_env	*tmp;
+	int	count;
 
-	tmp = data->t_env;
-	while (tmp)
+	count = 0;
+	while (start && start != end)
 	{
-		if (ft_strchr(tmp->var, '='))
-			printf("%s\n", tmp->var);
-		tmp = tmp->next;
+		if (start->type == WORD)
+			count++;
+		start = start->next;
 	}
-	return (EXIT_SUCCESS);
+	return (count);
 }

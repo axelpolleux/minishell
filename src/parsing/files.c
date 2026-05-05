@@ -1,37 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fnc_gen4.c                                         :+:      :+:    :+:   */
+/*   files.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/24 10:43:28 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/28 19:14:07 by ethutin-         ###   ########.fr       */
+/*   Created: 2026/04/29 15:41:59 by apolleux          #+#    #+#             */
+/*   Updated: 2026/05/05 17:55:55 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_strjoin_upd(char *s1, char *s2)
+void	io_manager(t_cmd *commands)
 {
-	char	*str;
-
-	str = ft_strjoin(s1, s2);
-	free(s1);
-	if (!str)
-		return (NULL);
-	return (str);
-}
-
-int	word_size(char *str, char charset)
-{
-	int	i;
-
-	i = 0;
-	while (*str && *str != charset)
-	{
-		i++;
-		str++;
-	}
-	return (i);
+	(void)commands;
 }

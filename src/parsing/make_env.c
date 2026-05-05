@@ -6,69 +6,79 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 15:29:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/23 18:44:50 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/05 17:55:40 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	no_minim_env(char **env)
-{
-	int		i;
-	int		error;
-
-	if (!env || !(*env))
-		return (-1);
-	error = 0;
-	i = -1;
-	if (not_in_original_en(env, PWD))
-		error += 2;
-	if (not_in_original_en(env, OLDPWD))
-		error += 1;
-	return (error);
-}
-
 int	make_pwd(t_data *data, t_env *new)
 {
 	char	*pwd;
-	char	*line;
+	char	*new_var;
+	char	*new_arg;
+	char	*new_key;
 
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 		return (EXIT_FAILURE);
-	line = ft_strjoin("PWD=", pwd);
+	new_var = NULL;
+	new_arg = NULL;
+	new_key = NULL;
+	data->line_env = ft_strjoin("PWD=", pwd);
 	free (pwd);
-	if (!line)
+	if (!data->line_env)
 		return (EXIT_FAILURE);
-	new = new_env(line, 1);
+	if (init_champ_env(data, &new_var, &new_arg, &new_key))
+		init_env_fail_n(new_var, new_arg, new_key);
+	new = new_env(new_var, new_arg, new_key, 1);
 	if (!new)
-	{
-		free(line);
-		return (EXIT_FAILURE);
-	}
-	add_to_bottom_env(&data->t_env, new);
+		init_env_fail_n(new_var, new_arg, new_key);
+	add_to_bottom_env (&data->t_env, new);
+	free(data->line);
+	data->line = NULL;
 	return (EXIT_SUCCESS);
 }
 
-int	make_oldpwd(t_data *data, t_env *new, char **env)
+char	*get_oldpwd(t_data *data, char **env)
 {
 	char	*line;
 
 	if (!env)
 	{
-		line = ft_strjoin("OLDPWD=", get_var_env(data, PWD));
+		line = ft_strjoin("OLDPWD=", get_arg_env(data, PWD));
 		if (!line)
-			return (EXIT_FAILURE);
+			return (NULL);
 	}
 	else
-		line = var_env(env,"PWD=", ft_strlen("PWD="));
-	new = new_env(line, 1);
-	if (!new)
 	{
-		free(line);
-		return (EXIT_FAILURE);
+		line = ft_strdup(arg_env(env, "PWD=", ft_strlen("PWD=")));
+		if (!line)
+			return (NULL);
 	}
-	add_to_bottom_env(&data->t_env, new);
+	return (line);
+}
+
+int	make_oldpwd(t_data *data, t_env *new, char **env)
+{
+	char	*new_var;
+	char	*new_arg;
+	char	*new_key;
+
+	new_var = NULL;
+	new_arg = NULL;
+	new_key = NULL;
+	data->line = get_oldpwd(data, env);
+	if (!data->line)
+		return (EXIT_FAILURE);
+	if (init_champ_env(data, &new_var, &new_arg, &new_key))
+		init_env_fail_n(new_var, new_arg, new_key);
+	new = new_env(new_var, new_arg, new_key, 1);
+	if (!new)
+		init_env_fail_n(new_var, new_arg, new_key);
+	add_to_bottom_env (&data->t_env, new);
+	free(data->line);
+	data->line = NULL;
 	return (EXIT_SUCCESS);
 }
 
@@ -92,26 +102,18 @@ int	make_built_env(t_data *data, t_env *new, char **env)
 	error = no_minim_env(env);
 	if (error == -1)
 		return (EXIT_FAILURE);
-	// printf("ERR=%d\n", error);
 	if (error == 3)
 	{
-		// printf("les deux n'existe pas\n");
 		if (make_pwd(data, new))
 			data_malloc_error(data);
 		if (make_oldpwd(data, new, NULL))
 			data_malloc_error(data);
 	}
 	if (error == 2)
-	{
-		// printf("PWD existe pas\n");
 		if (make_pwd(data, new))
 			data_malloc_error(data);
-	}
 	if (error == 1)
-	{
-		// printf("OLDPWD existe pas\n");
 		if (make_oldpwd(data, new, env))
 			data_malloc_error(data);
-	}
 	return (EXIT_SUCCESS);
 }

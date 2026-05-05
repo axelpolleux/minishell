@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/23 11:02:59 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/24 10:43:56 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/05 17:48:40 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ char	**tab_env(t_env *env, int i)
 	char	**tab_env;
 	char	*tmp;
 
-	tab_env = ft_calloc(sizeof(char *), ft_lstsize_e(env) + 1);
+	cop = env;
+	tab_env = ft_calloc(sizeof(char *), count_export(cop) + 1);
 	if (!tab_env)
 		return (NULL);
-	cop = env;
 	while (cop)
 	{
 		if (cop->export)
@@ -44,8 +44,7 @@ char	**tab_env(t_env *env, int i)
 			}
 			tab_env[++i] = tmp;
 		}
-		else
-			cop = cop->next;
+		cop = cop->next;
 	}
 	return (tab_env);
 }
@@ -68,7 +67,7 @@ void	add_to_bottom_cmd(t_cmd **node, t_cmd *new_bot)
 	new_bot->prev = end;
 }
 
-char	*var_env(char **env, char *motif, int len)
+char	*arg_env(char **env, char *motif, int len)
 {
 	char	*var;
 	int		i;

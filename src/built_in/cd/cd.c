@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 16:06:43 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/23 18:29:17 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/05 18:10:27 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,12 @@ int	exec_chdir(char *path, char *new_pwd, size_t size)
 	return (EXIT_SUCCESS);
 }
 
+// a refaire, pas secu
 int	replace(t_data *data, char *motif, char *path)
 {
 	t_env	*tmp;
 	char	*var;
+	char	*new_old;
 
 	tmp = data->t_env;
 	while (tmp)
@@ -37,19 +39,17 @@ int	replace(t_data *data, char *motif, char *path)
 				data_malloc_error(data);
 			free(tmp->var);
 			tmp->var = var;
-			tmp->arg = path;
+			free(tmp->arg);
+			new_old = ft_strdup(path);
+			if (!new_old)
+    			data_malloc_error(data);
+			tmp->arg = new_old;
 			break ;
 		}
 		tmp = tmp->next;
 	}
 	return (EXIT_SUCCESS);
 }
-
-	// if (!tmp) // dans replacepas sur au cas ou 
-	// {
-	// 	make_env(data, var);
-	// 	replace(data, motif, path);
-	// }
 
 int	update_var(t_data *data, char *new_pwd, char *old_pwd)
 {
@@ -69,13 +69,13 @@ char	*path_env(t_data *data, char **cmd)
 	path = NULL;
 	if (!cmd[1])
 	{
-		path = get_var_env(data, HOME);
+		path = get_arg_env(data, HOME);
 		if (!path)
 			error_perror (HOME_NSET, P_ERROR, 2);
 	}
 	else if (!strcmp(cmd[1], "-"))
 	{
-		path = get_var_env(data, OLDPWD);
+		path = get_arg_env(data, OLDPWD);
 		if (!path)
 			error_perror (OLDP_NSET, P_ERROR, 2);
 		else

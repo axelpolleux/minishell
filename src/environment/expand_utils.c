@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 14:01:58 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/28 19:17:20 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/05 17:45:41 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ char	*get_dollar(t_data *data, char *line, int *i, char *n_line)
 	char	*tmp;
 
 	(*i)++;
-	printf("pre_expand: {%s}\n", line);
 	tmp = dollar_expand(data, line, i);
 	if (!tmp)
 		return (NULL);
@@ -36,7 +35,6 @@ int	count_word_quot(char **arr, char c)
 	i = -1;
 	while (arr[++i])
 	{
-		printf ("line:{%s}\n", arr[i]);
 		j = 0;
 		while (arr[i][j])
 		{
@@ -46,16 +44,15 @@ int	count_word_quot(char **arr, char c)
 				count++;
 			}
 			else if (arr[i][j] == c)
-			j++;	
+				j++;
 		}
 	}
-	printf ("count:{%d}\n", count);
 	return (count);
 }
 
 void	place_space(char **arr)
 {
-	int i;
+	int	i;
 	int	j;
 
 	i = -1;

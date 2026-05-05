@@ -1,6 +1,3 @@
 [submodule "includes/get_next_line"]
 	path = includes/get_next_line
 	url = git@github.com:axelpolleux/get_next_line.git
-[submodule "includes/libft"]
-	path = includes/libft
-	url = git@github.com:axelpolleux/libft.git

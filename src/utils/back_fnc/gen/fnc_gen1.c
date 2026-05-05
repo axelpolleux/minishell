@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 11:53:33 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/20 17:50:03 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/04 10:37:42 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int	ft_strcmp(char *s1, char *s2)
 {
 	int	i;
 
+	if (!s1 || !s2)
+		return (EXIT_FAILURE);
 	i = 0;
 	while (s1[i] || s2[i])
 	{
