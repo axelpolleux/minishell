@@ -6,7 +6,7 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 17:10:40 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/06 15:42:47 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/06 20:03:06 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,12 @@ t_cmd	*parse_commands(t_token *tokens)
 			if (!new)
 				return (free_cmd(cmds), NULL);
 			new->cmd = tokens_to_argv(start, tokens);
+			if (!new->cmd)
+			{
+				free(new);
+				free_cmd(cmds);
+				return (NULL);
+			}
 			add_cmd_back(&cmds, new);
 			start = tokens->next;
 		}
@@ -92,6 +98,12 @@ t_cmd	*parse_commands(t_token *tokens)
 		if (!new)
 			return (free_cmd(cmds), NULL);
 		new->cmd = tokens_to_argv(start, NULL);
+		if (!new->cmd)
+		{
+			free(new);
+			free_cmd(cmds);
+			return (NULL);
+		}
 		add_cmd_back(&cmds, new);
 	}
 	return (cmds);
