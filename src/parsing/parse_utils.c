@@ -6,7 +6,7 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 14:01:10 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/29 14:03:01 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/06 16:54:17 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	count_words(t_token *start, t_token *end)
 	count = 0;
 	while (start && start != end)
 	{
-		if (start->type == WORD)
+		if (start->type != PIPE)
 			count++;
 		start = start->next;
 	}

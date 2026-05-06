@@ -6,7 +6,7 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 17:10:40 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/29 16:07:26 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/06 15:42:47 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	**tokens_to_argv(t_token *start, t_token *end)
 	i = 0;
 	while (start && start != end)
 	{
-		if (start->type == WORD)
+		if (start->type != PIPE)
 		{
 			argv[i] = ft_strdup(start->cmd);
 			if (!argv[i])

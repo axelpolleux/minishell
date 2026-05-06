@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/30 11:48:59 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/06 13:30:06 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,15 @@ void	display_cmd(t_cmd *view)
 	while (view)
 	{
 		printf("============================\n");
-		printf("{");
+		printf("cmd => ");
 		while (view->cmd[i])
 		{
-			printf("cmd => %s", view->cmd[i]);
+			printf("[%s]", view->cmd[i]);
 			if (view->next)
 				printf(", ");
+			i++;
 		}
-		printf("}\n");
+		printf("\n");
 		printf("cmd_path => %s\n", view->cmd_path);
 		printf("full_cmd => %s\n", view->full_cmd);
 		printf("input => %d\n", view->input);
