@@ -6,14 +6,14 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/06 13:30:06 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/07 09:22:44 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 //=======a degager a la fin==========//
-void display_env(t_env *view)
+void	display_env(t_env *view)
 {
 	while (view)
 	{
@@ -25,6 +25,7 @@ void display_env(t_env *view)
 		view = view->next;
 	}
 }
+
 void	display_cmd(t_cmd *view)
 {
 	int	i;

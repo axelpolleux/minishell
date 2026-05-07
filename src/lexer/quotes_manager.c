@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/08 16:01:08 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/29 18:32:51 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/07 09:23:11 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	double_quotes(t_data *data, t_token **tokens, char *input, int *index)
 	new = token_new(input, &start, i + 1, WORD);
 	if (!new)
 		data_malloc_error(data);
-
 	ft_token_add_back(tokens, new);
 	(*index) += (i + 1);
 }

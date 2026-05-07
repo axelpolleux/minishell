@@ -272,11 +272,11 @@ int				not_in_original_en(char **env, char *name);
 int				make_oldpwd(t_data *data, t_env *new, char **env);
 int				make_pwd(t_data *data, t_env *new);
 int				no_minim_env(char **env);
-t_cmd	*parse_commands(t_token *tokens);
-int		count_words(t_token *start, t_token *end);
-t_cmd	*new_cmd_node(void);
-void	add_cmd_back(t_cmd **lst, t_cmd *new);
-char	**tokens_to_argv(t_token *start, t_token *end);
+t_cmd			*parse_commands(t_token *tokens);
+int				count_words(t_token *start, t_token *end);
+t_cmd			*new_cmd_node(void);
+void			add_cmd_back(t_cmd **lst, t_cmd *new);
+char			**tokens_to_argv(t_token *start, t_token *end);
 
 //======================================================//
 

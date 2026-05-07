@@ -16,8 +16,8 @@ GNL_SRCS		:= $(GNL_DIR)get_next_line.c	\
 
 #Files
 BUILDS_DIR		:= builds
-SRCS := $(shell find src -type f -name "*.c") \
-        $(GNL_SRCS)
+SRCS 			:= $(shell find src -type f -name "*.c") \
+        			$(GNL_SRCS)
 OBJS			:= $(patsubst %.c, $(BUILDS_DIR)/%.o, $(SRCS))
 DEPS			:= $(OBJS:.o=.d)
 

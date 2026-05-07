@@ -6,7 +6,7 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 15:41:59 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/29 16:05:38 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/07 09:24:44 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,4 @@
 void	io_manager(t_cmd *commands)
 {
 	(void)commands;
-	
 }

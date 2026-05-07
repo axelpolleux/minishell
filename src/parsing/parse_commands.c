@@ -6,7 +6,7 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 17:10:40 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/06 20:03:06 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/07 11:25:26 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,11 @@ char	**tokens_to_argv(t_token *start, t_token *end)
 		start = start->next;
 	}
 	return (argv);
+}
+
+void	token_pipe()
+{
+
 }
 
 t_cmd	*parse_commands(t_token *tokens)
