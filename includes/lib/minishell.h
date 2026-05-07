@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/05 16:23:55 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/07 17:17:59 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,13 @@
 
 typedef struct s_cmd
 {
-	char			**cmd;
+	char			*command;
+	char			**args;
 	char			*cmd_path;
 	char			*full_cmd;
 
-	int				type;
-	int				input;
-	int				output;
+	char			**input;
+	char			**output;
 
 	struct s_cmd	*next;
 	struct s_cmd	*prev;

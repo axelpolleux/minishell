@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 11:17:43 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/04 17:10:46 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/07 18:23:24 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,23 +29,6 @@ void	free_token(t_token *node)
 	node = NULL;
 }
 
-void	free_env(t_env *node)
-{
-	t_env	*tmp;
-
-	if (node == NULL)
-		return ;
-	while (node)
-	{
-		free(node->var);
-		free(node->key);
-		free(node);
-		node = tmp;
-		tmp = (node)->next;
-	}
-	node = NULL;
-}
-
 void	free_cmd(t_cmd *node)
 {
 	t_cmd	*tmp;
@@ -55,8 +38,8 @@ void	free_cmd(t_cmd *node)
 	while (node)
 	{
 		tmp = node->next;
-		if (node->cmd)
-			free_arr(node->cmd);
+		if (node->command)
+			free_arr(&node->command);
 		if (node->cmd_path)
 			free(node->cmd_path);
 		if (node->full_cmd)
@@ -82,8 +65,6 @@ void	free_data(t_data *data)
 			free(data->line);
 		if (data->token)
 			free_token(data->token);
-		if (data->t_env)
-			free_env(data->t_env);
 		if (data->cmd)
 			free_cmd(data->cmd);
 		free(data);

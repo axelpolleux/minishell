@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:04:56 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/07 16:13:38 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/07 18:29:45 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,11 @@ void	main_reading(t_data *data, char *title)
 			printf("exit\n");
 			break ;
 		}
-		if (data->line && *(data->line) && !full_void(data->line))
+		if (data->line && *(data->line))
 			add_history(data->line);
 		main_parser(data);
+		free(data->line);
+		data->line = 0;
 	}
 	clear_history();
 }

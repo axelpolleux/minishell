@@ -15,6 +15,4 @@
 void	main_parser(t_data *data)
 {
 	data->token = tokeniser(data, data->line);
-	// data->cmd = parse_commands(data->token);
-	// if (!data->cmd)
 }

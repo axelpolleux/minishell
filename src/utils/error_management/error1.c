@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 09:51:16 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/24 16:04:14 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/07 18:05:13 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	open_error(t_data *data)
 {
-	closes(-1, data->fd_storage);
+	// closes(-1, data->fd_storage);
 	write(2, "minishell: ", 12);
-	perror(data->cmd->cmd[1]);
+	perror(&data->cmd->command[1]);
 	free_data(data);
 	exit(EXIT_FAILURE);
 }

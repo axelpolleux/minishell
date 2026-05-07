@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 11:06:42 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/05 16:05:59 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/07 18:07:35 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,5 @@ t_token	*tokeniser(t_data *data, char *input)
 		else if (!is_space(input[index]))
 			add_word(data, &tokens, input, &index);
 	}
-	free(data->line);
 	return (tokens);
 }
