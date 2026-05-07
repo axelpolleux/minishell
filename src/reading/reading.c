@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:04:56 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/07 09:26:18 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/07 16:13:38 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	main_reading(t_data *data, char *title)
 		{
 			free_data(data);
 			printf("exit\n");
-			exit(0);
+			break ;
 		}
 		if (data->line && *(data->line) && !full_void(data->line))
 			add_history(data->line);

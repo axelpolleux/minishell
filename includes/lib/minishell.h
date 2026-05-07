@@ -254,7 +254,7 @@ int				full_void(char *line);
 
 //===========================================================//
 
-//========================<for the parsing>=========================//
+//========================<tokeniser>=========================//
 void			main_reading(t_data *data, char *title);
 void			display_tokens(t_token *token);
 void			main_parser(t_data *data);
@@ -265,13 +265,9 @@ void			double_quotes(t_data *data, t_token **tokens,	\
 								char *input, int *index);
 void			single_quotes(t_data *data, t_token **tokens,	\
 								char *input, int *index);
-
 int				is_space(int c);
-int				no_minim_env(char **env);
-int				not_in_original_en(char **env, char *name);
-int				make_oldpwd(t_data *data, t_env *new, char **env);
-int				make_pwd(t_data *data, t_env *new);
-int				no_minim_env(char **env);
+
+//========================<parser>=========================//
 t_cmd			*parse_commands(t_token *tokens);
 int				count_words(t_token **start, t_token *end);
 t_cmd			*new_cmd_node(void);

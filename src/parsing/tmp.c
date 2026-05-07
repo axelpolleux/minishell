@@ -1,16 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_commands.c                                   :+:      :+:    :+:   */
+/*   tmp.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/28 17:10:40 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/07 15:02:00 by apolleux         ###   ########.fr       */
+/*   Created: 2026/05/07 16:01:14 by apolleux          #+#    #+#             */
+/*   Updated: 2026/05/07 16:01:28 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	count_words(t_token **start, t_token *end)
+{
+	int		count;
+	t_token	*tmp;
+
+	count = 0;
+	tmp = *start;
+	while (tmp && tmp != end)
+	{
+		if (tmp->type != PIPE)
+			count++;
+		tmp = tmp->next;
+	}
+	return (count);
+}
 
 t_cmd	*new_cmd_node(void)
 {
