@@ -6,7 +6,7 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 17:10:40 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/07 11:25:26 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/07 15:02:00 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,32 +42,29 @@ void	add_cmd_back(t_cmd **lst, t_cmd *new)
 	new->prev = tmp;
 }
 
-char	**tokens_to_argv(t_token *start, t_token *end)
+char	**tokens_to_argv(t_token **start, t_token *end)
 {
+	t_token	*tmp;
 	char	**argv;
 	int		i;
 
-	argv = ft_calloc(count_words(start, end) + 1, sizeof(char *));
+	tmp = *start;
+	argv = ft_calloc(count_words(&tmp, end) + 1, sizeof(char *));
 	if (!argv)
 		return (NULL);
 	i = 0;
-	while (start && start != end)
+	while (tmp && tmp != end)
 	{
-		if (start->type != PIPE)
+		if (tmp->type != PIPE)
 		{
-			argv[i] = ft_strdup(start->cmd);
+			argv[i] = ft_strdup(tmp->cmd);
 			if (!argv[i])
 				return (free_arr(argv));
 			i++;
 		}
-		start = start->next;
+		tmp = tmp->next;
 	}
 	return (argv);
-}
-
-void	token_pipe()
-{
-
 }
 
 t_cmd	*parse_commands(t_token *tokens)
@@ -85,7 +82,7 @@ t_cmd	*parse_commands(t_token *tokens)
 			new = new_cmd_node();
 			if (!new)
 				return (free_cmd(cmds), NULL);
-			new->cmd = tokens_to_argv(start, tokens);
+			new->cmd = tokens_to_argv(&start, tokens);
 			if (!new->cmd)
 			{
 				free(new);
@@ -102,7 +99,7 @@ t_cmd	*parse_commands(t_token *tokens)
 		new = new_cmd_node();
 		if (!new)
 			return (free_cmd(cmds), NULL);
-		new->cmd = tokens_to_argv(start, NULL);
+		new->cmd = tokens_to_argv(&start, NULL);
 		if (!new->cmd)
 		{
 			free(new);

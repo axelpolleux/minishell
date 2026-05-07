@@ -12,16 +12,18 @@
 
 #include "minishell.h"
 
-int	count_words(t_token *start, t_token *end)
+int	count_words(t_token **start, t_token *end)
 {
-	int	count;
+	int		count;
+	t_token	*tmp;
 
 	count = 0;
-while (start && start != end)
+	tmp = *start;
+	while (tmp && tmp != end)
 	{
-		if (start->type != PIPE)
+		if (tmp->type != PIPE)
 			count++;
-		start = start->next;
+		tmp = tmp->next;
 	}
 	return (count);
 }
