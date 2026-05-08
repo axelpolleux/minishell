@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/05 18:08:49 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/08 18:28:47 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <sys/wait.h>
 # include <sys/types.h>
+# include <sys/stat.h>//
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -29,6 +30,7 @@
 # include <term.h>
 # include <signal.h>
 # include <limits.h>
+# include <dirent.h>
 
 /* respecter l'ordre
 	char
@@ -38,6 +40,7 @@
 	int
 	long
 	size_t
+	bool
 	strcut
 */
 
@@ -128,9 +131,10 @@ typedef struct s_data
 	int			last_fd;
 	int			exit;
 	int			quote;
-	
+	int			pipe;
+	int			flag;
 
-	//pid_t		*pid;
+	pid_t		*pid;
 
 	t_token		*token;
 	t_env		*t_env;
@@ -146,12 +150,14 @@ void			fork_error(t_data *data);
 void			error_perror(char *error, int error_p, int fd);
 void			error_export(char *error);
 void			error_exit(t_data *data, char *error);
-void			error_quote(void);
 //void			error_signal(int signal);
 void			exec_fail(t_data *data);
 void			init_env_fail(t_data *data, char *new_env, char *new_arg, char *new_key);
 void			init_env_fail_n(char *new_env, char *new_arg, char *new_key);
+void			opendir_error(t_data *data, char *error);
+void			error_cnf(t_data *data, char *error);
 
+int				error_quote(void);
 int				data_malloc_error(t_data *data);
 int				open_error(t_data *data);
 //=======================================================//
@@ -171,7 +177,6 @@ void			free_cmd(t_cmd *node);
 void			add_to_bottom_env(t_env **node, t_env *new_bot);
 void			add_to_bottom_cmd(t_cmd **node, t_cmd *new_bot);
 void			env_new_node(t_data *data, char *line);
-//void			reset(t_data *data);
 //================================================================//
 void			display_env(t_env *view);// a degager
 void			display_token(t_token *view);//
@@ -190,7 +195,6 @@ int 			init_champ_env(t_data *data, char **new_var, char **new_arg, char **new_k
 
 t_data			*init_data(int ac, char **av);
 t_env			*new_env(char *new_var, char *new_arg, char *new_key, int export);
-t_env			*make_new_env(char *line, char *name, int export, int key);
 t_env			*make_new_env_name(char *line, int export);
 //======================================================//
 
@@ -217,15 +221,14 @@ char			*get_arg_env(t_data *data, char *motif);
 char			*path_env(t_data *data, char **cmd);
 
 void			print_flag(char **cmd, int start);
-void			built_choice(t_data *data, t_cmd *cmd);
+void			built_child(t_data *data, t_cmd *cmd);
 void			built_parent(t_data *data, t_cmd *cmd);
 void			unset_place(t_data *data, char *motif);
 void			exec_exit(t_data *data, t_cmd *g_cmd, char **cmd);
-void			exec_built(t_data *data, t_cmd *cmd);
+void			exec_built(t_data *data, t_cmd *cmd); 
 void			manage_export(t_data *data, char *line);
 void			make_export(t_data *data, char *key);
 void			change_arg(t_data *data, char *line, char *name, int start);
-//void			make_export_equal(t_data *data, char *key);
 
 int				make_built_env(t_data *data, t_env *new, char **env);
 int				is_builtin(char **built_in, char *cmd);
@@ -239,37 +242,40 @@ int				central_export(t_data *data, char **cmd);
 int				exec_unset(t_data *data, char **cmd);
 int				exec_env(t_data *data);
 int				update_var(t_data *data, char *new_pwd, char *old_pwd);
-int				replace(t_data *data, char *motif, char *path);
+int				replace(t_data *data, char *name, char *var);
 int				only_export(t_data *data, char **cmd);
 int				word_size(char *str, char charset);
 int				count_export(t_env *env);
 int				only_key_equal(char *line);
 int				realoc_arg(t_env *tmp, char *line, char *name, int start);
+int				update_cd(t_data *data, char *new_var, char *new_key, char *new_arg);
 //===============================================================//
 
 //========================<for exec>=========================//
-char			**get_path(t_data *data, int len);
-
-void			verif_command(t_data *data, t_cmd *cmd);
+void			get_path(t_data *data);
+//void			verif_command(t_data *data, t_cmd *cmd);
 void			children(t_data *data, t_cmd *cmd);
-void			cmd_whith_path(t_data *data, char *command);
-void			full_cmd(t_data *data, char *command);
-void			exec_command(t_data *data, char **env);
+void			cmd_with_path(t_data *data, t_cmd *cmd, char *command);
+void			full_cmd(t_data *data, t_cmd *cmd, char *command, int i);
+void			exec_command(t_data *data, t_cmd *cmd, char **env);
 void			parent(t_data *data, t_cmd *cmd);
 void			manage_process(t_data *data, t_cmd *cmd);
-void			wait_end(t_data *data);
+//void			wait_end(t_data *data);
+void			wait_end(t_data *data, int count);
 void			manage_redir(t_data *data, t_cmd *cmd);
 void			in_hre(t_data *data, int fd[2]);
 void			exec(t_data *data);
 
-int				get_cmd_path(t_data *data, t_cmd *cmd);
+int				check_directory(t_data *data, char *path);
+int				check_cmd(t_data *data, t_cmd *cmd);
 int				here_doc_manage(t_data *data);
 int				verif_file(char *line, int doc);
-int				nb_process(t_cmd *cmd);
+//int				nb_process(t_cmd *cmd);
 int				only_quote(char *line);
 int				get_enof(t_data *data, char *line);
 int				full_void(char *line);
 
+bool			fcext(t_data *data, t_cmd *cmd, char *path, char *command);
 //===========================================================//
 
 //========================<for the parsing>=========================//
@@ -278,12 +284,12 @@ char			**tokens_to_argv(t_token *start, t_token *end);
 void			main_reading(t_data *data, char *title);
 void			display_tokens(t_token *token);
 void			ft_token_add_back(t_token **lst, t_token *new);
-void			double_quotes(t_data *data, t_token **tokens,	\
-								char *input, int *index);
-void			single_quotes(t_data *data, t_token **tokens,	\
-								char *input, int *index);
 void			add_cmd_back(t_cmd **lst, t_cmd *new);
 
+int				double_quotes(t_data *data, t_token **tokens,	\
+								char *input, int *index);
+int				single_quotes(t_data *data, t_token **tokens,	\
+								char *input, int *index);
 int				main_parser(t_data *data);
 int				is_space(int c);
 int				not_in_original_en(char **env, char *name);

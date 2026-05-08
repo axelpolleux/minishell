@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/05 17:44:11 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/08 18:47:02 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int	main(int ac, char **av, char **env)
 	if (!data->built_in)
 		data_malloc_error(data);
 	init_env(data, env, -1);
-	display_env(data->t_env);
+	//display_env(data->t_env);
 	main_reading(data, "pastishell$ ");
 	return (0);
 }

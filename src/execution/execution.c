@@ -6,16 +6,19 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:43:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/05 18:17:07 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/08 18:47:13 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//data->cmd->cmd ne fonctinera pas [0] = cmd
-void	exec_command(t_data *data, char **env)
+void	exec_command(t_data *data, t_cmd *cmd, char **env)
 {
-	if (execve(data->cmd->cmd_path, data->cmd->cmd, env) == -1)
+	//display_cmd(data->cmd);
+	// int i = -1;
+	// while (env[++i])
+	// 	printf("%s\n", env[i]);
+	if (execve(cmd->cmd_path, cmd->cmd, env) == -1)
 	{
 		free_arr(env);
 		perror("minishell");
@@ -28,7 +31,7 @@ void	exec_command(t_data *data, char **env)
 		exit (data->exit);
 	}
 	free_arr(env);
-	exit (data->exit);
+
 }
 
 void	children(t_data *data, t_cmd *cmd)
@@ -36,11 +39,8 @@ void	children(t_data *data, t_cmd *cmd)
 	char	**env;
 
 	if (is_builtin(data->built_in, cmd->cmd[0]))
-	{
-		exec_built(data, cmd);
-		return ;
-	}
-	if (get_cmd_path(data, cmd))
+		built_child(data, cmd);
+	else if (!check_cmd(data, cmd))
 	{
 		manage_redir(data, cmd);
 		if (cmd->next)
@@ -52,19 +52,17 @@ void	children(t_data *data, t_cmd *cmd)
 		env = tab_env(data->t_env, -1);
 		if (!env)
 			data_malloc_error(data);
-		exec_command(data, env);
+		exec_command(data, cmd, env);
 	}
-	else
-	{
-		data->exit = 1;
-		exit (data->exit);
-	}
+	exit(data->exit);
 }
 
 void	parent(t_data *data, t_cmd *cmd)
 {
-	if (data->exit > -2)
+	if (data->flag)
 		cmd->input = data->fd_storage[0];
+	else 
+		data->flag = 1;
 	close(data->fd_storage[1]);
 	if (data->last_fd != -1)
 		close(data->last_fd);
@@ -75,55 +73,50 @@ void	parent(t_data *data, t_cmd *cmd)
 	}
 	else
 		close(data->fd_storage[0]);
-
-	// if (data->last_fd != -1)
-	// {
-	// 	if (dup2(data->last_fd, STDIN_FILENO) == -1)
-	// 		dup_error(data);
-	// 	close(data->last_fd);
-	// }
 }
 
 void	manage_process(t_data *data, t_cmd *cmd)
 {
+	int	i;
+
+	i = 0;
 	data->last_fd = -1;
 	while (cmd)
 	{
-		if (pipe(data->fd_storage) == -1)//a amelioer pour faire un semi heredoc pour pipe end
-			pipe_error(data);//
-		g_signal = fork();
-		if (g_signal < 0)
+		if (data->pipe-- > 0)
+			if (pipe(data->fd_storage) == -1)
+				pipe_error(data);
+		data->pid[i] = fork();
+		if (data->pid[i] < 0)
 			fork_error(data);
-		if (g_signal == 0)
+		else if (data->pid[i] == 0)
 			children(data, cmd);
 		else
 			parent(data, cmd);
 		cmd = cmd->next;
+		i++;
 	}
 }
 
-void	wait_end(t_data *data)
+void	wait_end(t_data *data, int count)
 {
-	t_cmd	*tmp;
-	int		error;
-	int		size_c;
+	int	i;
+	int	error;
 
-	tmp = data->cmd;
-	size_c = ft_lstsize_c(tmp);
-	while (size_c--)
-	{
-		if (waitpid(0, &error, 0) == g_signal)
-		{
-			if (WIFEXITED(error))
-				data->exit = WEXITSTATUS(error);
-		}
-		tmp = tmp->next;
-	}
+	i = -1;
+	while (++i < count)
+		if (waitpid(data->pid[i], &error, 0) == -1)
+			wait_error(data);
+	if (WIFEXITED(error))
+		data->exit = (WEXITSTATUS(error));
+	free(data->pid);
+	data->pid = NULL;
 }
 
 void	exec(t_data *data)
 {
 	t_cmd	*t_cmd;
+	int		count;
 
 	t_cmd = data->cmd;
 	get_expand(data, t_cmd);
@@ -132,6 +125,30 @@ void	exec(t_data *data)
 		exec_built(data, t_cmd);
 		return	;
 	}
-	// manage_process(data, t_cmd);
-	// wait_end(data);
+	count = ft_lstsize_c(t_cmd);
+	data->pid = ft_calloc(sizeof(pid_t), count);
+	if (!data->pid)
+		data_malloc_error(data);
+	manage_process(data, t_cmd);
+	wait_end(data, count);
 }
+
+
+// void	wait_end(t_data *data)
+// {
+// 	t_cmd	*tmp;
+// 	int		error;
+// 	int		size_c;
+
+// 	tmp = data->cmd;
+// 	size_c = ft_lstsize_c(tmp);
+// 	while (size_c--)
+// 	{
+// 		if (waitpid(0, &error, 0) == g_signal)
+// 		{
+// 			if (WIFEXITED(error))
+// 				data->exit = WEXITSTATUS(error);
+// 		}
+// 		tmp = tmp->next;
+// 	}
+// }

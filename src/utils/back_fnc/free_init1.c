@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 11:17:43 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/05 17:46:59 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/08 18:31:56 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ void	free_data(t_data *data)
 			free_arr(data->built_env);
 		if (data->built_in)
 			free(data->built_in);
+		if (data->pid)
+			free(data->pid);
 		if (data->line)
 			free(data->line);
 		if (data->token)
@@ -105,8 +107,10 @@ t_data	*init_data(int ac, char **av)
 	data->t_env = NULL;
 	data->token = NULL;
 	data->cmd = NULL;
-	data->exit = -2;
+	data->exit = 0;
 	data->quote = NQUOT;
+	data->pipe = 0;
+	data->flag = 0;
 	(void)av;
 	(void)ac;
 	return (data);

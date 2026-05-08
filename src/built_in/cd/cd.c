@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 16:06:43 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/05 18:10:27 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/06 12:51:14 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,32 +22,24 @@ int	exec_chdir(char *path, char *new_pwd, size_t size)
 	return (EXIT_SUCCESS);
 }
 
-// a refaire, pas secu
-int	replace(t_data *data, char *motif, char *path)
+int	replace(t_data *data, char *name, char *var)
 {
-	t_env	*tmp;
-	char	*var;
-	char	*new_old;
+	char	*new_var;
+	char	*new_key;
+	char	*new_arg;
 
-	tmp = data->t_env;
-	while (tmp)
+	data->line_env = ft_strjoin(name, var);
+	if (!data->line_env)
+		data_malloc_error(data);
+	if (init_champ_env(data, &new_var, &new_arg, &new_key))
+		data_malloc_error(data);
+	if (update_cd(data, new_var, new_key, new_arg))
 	{
-		if (!ft_strncmp(tmp->var, motif, ft_strlen(motif)))
-		{
-			var = ft_strjoin(motif, path);
-			if (!var)
-				data_malloc_error(data);
-			free(tmp->var);
-			tmp->var = var;
-			free(tmp->arg);
-			new_old = ft_strdup(path);
-			if (!new_old)
-    			data_malloc_error(data);
-			tmp->arg = new_old;
-			break ;
-		}
-		tmp = tmp->next;
+		free(data->line);
+		init_env_fail_n(new_var, new_arg, new_key);
+		return (EXIT_FAILURE);
 	}
+	free(data->line_env);
 	return (EXIT_SUCCESS);
 }
 
@@ -55,9 +47,9 @@ int	update_var(t_data *data, char *new_pwd, char *old_pwd)
 {
 	if (!new_pwd || !old_pwd)
 		return (EXIT_FAILURE);
-	if (replace(data, OLDPWD, old_pwd) == -1)
+	if (replace(data, "OLDPWD=", old_pwd))
 		return (EXIT_FAILURE);
-	if (replace(data, PWD, new_pwd) == -1)
+	if (replace(data, "PWD=", new_pwd))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -107,7 +99,7 @@ int	exec_cd(t_data *data, char **cmd)
 		return (EXIT_FAILURE);
 	if (exec_chdir(path, new_pwd, sizeof(new_pwd)))
 		return (EXIT_FAILURE);
-	if (update_var(data, new_pwd, old_pwd) == -1)
+	if (update_var(data, new_pwd, old_pwd))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

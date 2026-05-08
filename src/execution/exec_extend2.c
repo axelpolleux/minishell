@@ -6,78 +6,75 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:40:43 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/05 18:13:13 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/08 17:06:02 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	nb_process(t_cmd *cmd)
-{
-	t_cmd	*tmp;
-	int		count;
+// int	nb_process(t_cmd *cmd)
+// {
+// 	t_cmd	*tmp;
+// 	int		count;
 
-	count = 0;
-	tmp = cmd;
-	while (tmp)
+// 	count = 0;
+// 	tmp = cmd;
+// 	while (tmp)
+// 	{
+// 		if (tmp->type == CMD)
+// 			count++;
+// 		tmp = tmp->next;
+// 	}
+// 	return (count);
+// }
+
+bool fcext(t_data *data, t_cmd *cmd, char *path, char *command)
+{
+	if (access(path, F_OK) == 0)
 	{
-		if (tmp->type == CMD)
-			count++;
-		tmp = tmp->next;
+		if (check_directory(data, cmd->cmd_path))
+			return (true);
+		if (access(path, X_OK) == 0)
+		{
+			cmd->cmd_path = path;
+			return (true);
+		}
+		perror(command);
+		free(path);
+		data->exit = 126;
+		return (true);
 	}
-	return (count);
+	return (false);
 }
 
-void	full_cmd(t_data *data, char *command)
+void	manage_redir(t_data *data, t_cmd *cmd)
 {
-	char	*tmp;
-	int		i;
-
-	i = -1;
-	while (data->path && data->path[++i])
+	if (cmd->next)
+		close(data->fd_storage[0]);
+	if (cmd->input != -1)
 	{
-		if (data->path[i][0] == '\0')
-			tmp = ft_strdup("./");
-		else
-			tmp = ft_strjoin(data->path[i], "/");
-		if (!tmp)
-			data_malloc_error(data);
-		data->cmd->cmd_path = ft_strjoin(tmp, command);
-		free(tmp);
-		if (!data->cmd->cmd_path)
-			data_malloc_error(data);
-		if (!access(data->cmd->cmd_path, F_OK | X_OK))
-			return ;
-		else
-		{
-			//perror(command);
-			data->exit = 126;
-		}
+		if (dup2(cmd->input, STDIN_FILENO) == -1)
+			dup_error(data);
+		close(cmd->input);
+	}
+	if (cmd->output != -1)
+	{
+		if (dup2(cmd->output, STDOUT_FILENO) == -1)
+			dup_error(data);
+		close(cmd->output);
 	}
 }
 
-char	**get_path(t_data *data, int len)
+int	verif_file(char *file, int doc)
 {
-	t_env	*tmp;
-	char	**path;
+	int	fd;
 
-	tmp = data->t_env;
-	while (tmp)
-	{
-		if (!ft_strncmp(tmp->key, PATH, len))
-		{
-			if (tmp->var[0] == '\0')
-			{
-				data->exit = 127;
-				return (NULL);
-			}
-			path = ft_split(tmp->var + len, ':');
-			if (!path)
-				data_malloc_error(data);
-			return (path);
-		}
-		tmp = tmp->next;
-	}
-	data->exit = 127;
-	return (NULL);
+	fd = -1;
+	if (doc == HEREDOC || doc == APPEND)
+		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	else if (doc == RED_OUT)
+		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else if (doc == RED_IN)
+		fd = open(file, O_RDONLY);
+	return (fd);
 }

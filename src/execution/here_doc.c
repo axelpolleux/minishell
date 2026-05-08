@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 15:16:58 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/24 16:14:39 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/07 09:51:21 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	hre_arg(t_data *data)
 	return (1);
 }
 
-int	here_doc_manage(t_data *data)// les signaux a faire
+int	here_doc_manage(t_data *data)// completement obsolete, les signaux a faire
 {
 	int		fd[2];
 	int		error;

@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 09:51:16 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/01 15:50:22 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/08 18:02:33 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,9 @@ void	fork_error(t_data *data)
 	exit (-1);
 }
 
-void	error_quote(void)
+int	error_quote(void)
 {
+	ft_putstr_fd("from error_quote: ", 2);
 	ft_putstr_fd(QUOT_ER, 2);
-	exit (0);
+	return (EXIT_FAILURE);
 }

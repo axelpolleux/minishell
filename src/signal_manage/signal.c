@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 13:23:20 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/01 15:13:56 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/06 09:53:14 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,16 +73,6 @@
 // 	rl_redisplay();
 // 	signal(SIGINT, signal_manage);
 // }
-
-
-
-
-
-
-
-
-
-
 
 // char	*ft_searchsterr(void)
 // {
@@ -155,4 +145,3 @@
 // 	}
 // 	return (str);
 // }
-
