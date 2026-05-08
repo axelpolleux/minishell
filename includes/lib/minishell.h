@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/07 17:17:59 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/08 14:02:17 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,7 +257,7 @@ int				full_void(char *line);
 //========================<tokeniser>=========================//
 void			main_reading(t_data *data, char *title);
 void			display_tokens(t_token *token);
-void			main_parser(t_data *data);
+int				main_parser(t_data *data);
 t_token			*tokeniser(t_data *data, char *input);
 t_token			*token_new(char *input, int *index, int len, int type);
 void			ft_token_add_back(t_token **lst, t_token *new);
