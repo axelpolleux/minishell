@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:43:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/08 18:47:13 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/11 10:21:31 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	children(t_data *data, t_cmd *cmd)
 	exit(data->exit);
 }
 
-void	parent(t_data *data, t_cmd *cmd)
+void	parent(t_data *data, t_cmd *cmd) //pas finis
 {
 	if (data->flag)
 		cmd->input = data->fd_storage[0];
@@ -113,7 +113,7 @@ void	wait_end(t_data *data, int count)
 	data->pid = NULL;
 }
 
-void	exec(t_data *data)
+int	exec(t_data *data)
 {
 	t_cmd	*t_cmd;
 	int		count;
@@ -151,4 +151,25 @@ void	exec(t_data *data)
 // 		}
 // 		tmp = tmp->next;
 // 	}
+// int	exec(t_data *data)
+// {
+// 	t_cmd	*t_cmd;
+// 	int		count;
+
+// 	t_cmd = data->cmd;
+// 	count = nb_process(t_cmd);// = nombre de cmd ft_lstsize
+// 	if (count == 0)
+// 		return ;
+// 	data->pid = ft_calloc(sizeof(pid_t), count); //statique on vas utiliser de manier plus fluide
+// 	if (!data->pid)
+// 		data_malloc_error(data);
+// 	get_expand(data, t_cmd);
+// 	if (is_builtin(data->built_in, t_cmd->cmd[0]) && !t_cmd->next)
+// 	{
+// 		exec_built(data, t_cmd);
+// 		return (data->exit);
+// 	}
+// 	parent(data, t_cmd);
+// 	wait_end(data);
+// 	return (data->exit);
 // }
