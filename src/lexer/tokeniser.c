@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 11:06:42 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/11 15:24:28 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/11 18:17:10 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,14 +84,13 @@ void	add_word(t_data *data, t_token **tokens, char *input, int *index)
 	{
 		if (input[*index + len] == '"' || input[*index + len] == '\'')
 		{
-			quote = input[*index + len];
-			len++;
+			quote = input[*index + len++];
 			while (input[*index + len] && input[*index + len] != quote)
 				len++;
 			if (!input[*index + len])
 			{
 				error_quote();
-				return ;
+				break ;
 			}
 		}
 		len++;

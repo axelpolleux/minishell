@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/08 16:01:08 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/08 16:29:02 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/11 17:59:31 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,10 @@ int	single_quotes(t_data *data, t_token **tokens, char *input, int *index)
 
 int	quotes_manager(t_data *data, t_token **tokens, char *input, int *index)
 {
-	// double_quotes(data, &tokens, input, &index);
-	// single_quotes(data, &tokens, input, &index);
 	if (input[*index] == '"' && !double_quotes(data, tokens, input, index))
 		return (0);
-	else if (input[*index] == '\'' && !single_quotes(data, tokens, input, index))
+	else if (input[*index] == '\''
+		&& !single_quotes(data, tokens, input, index))
 		return (0);
 	return (1);
 }
