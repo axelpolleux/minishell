@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/08 14:02:17 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/08 16:12:58 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,9 +261,10 @@ int				main_parser(t_data *data);
 t_token			*tokeniser(t_data *data, char *input);
 t_token			*token_new(char *input, int *index, int len, int type);
 void			ft_token_add_back(t_token **lst, t_token *new);
-void			double_quotes(t_data *data, t_token **tokens,	\
+int				quotes_manager(t_data *data, t_token **tokens, char *input, int *index);
+int				double_quotes(t_data *data, t_token **tokens,	\
 								char *input, int *index);
-void			single_quotes(t_data *data, t_token **tokens,	\
+int				single_quotes(t_data *data, t_token **tokens,	\
 								char *input, int *index);
 int				is_space(int c);
 

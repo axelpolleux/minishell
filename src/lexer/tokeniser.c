@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 11:06:42 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/08 15:11:48 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/11 15:24:28 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,12 @@ void	add_word(t_data *data, t_token **tokens, char *input, int *index)
 			while (input[*index + len] && input[*index + len] != quote)
 				len++;
 			if (!input[*index + len])
+			{
 				error_quote();
-			len++;
+				return ;
+			}
 		}
-		else
-			len++;
+		len++;
 	}
 	new = token_new(input, index, len, WORD);
 	if (!new)
@@ -116,10 +117,11 @@ t_token	*tokeniser(t_data *data, char *input)
 			break ;
 		else if (ft_strchr("|<", input[index]))
 			add_in(data, &tokens, input, &index);
-		else if (input[index] == '"')
-			double_quotes(data, &tokens, input, &index);
-		else if (input[index] == '\'')
-			single_quotes(data, &tokens, input, &index);
+		else if (input[index] == '"' || input[index] == '\'')
+		{
+			if (!quotes_manager(data, &tokens, input, &index))
+				break ;
+		}
 		else if (ft_strchr(">", input[index]))
 			add_out(data, &tokens, input, &index);
 		else if (!is_space(input[index]))
