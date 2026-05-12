@@ -6,11 +6,39 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 10:09:53 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/12 10:33:57 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/12 16:59:27 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	display_cmd(t_cmd *commands)
+{
+	int	i;
+
+	(void)i;
+	printf(">===========<\ncommand: [%s]", commands->command);
+	i = 0;
+	while (commands->args[i])
+	{
+		printf("[%s]", commands->args[i]);
+		i++;
+	}
+	printf("\ncmd_path: [%s]\nfull_cmd: [%s]", commands->cmd_path, commands->full_cmd);
+	i = 0;
+	while (commands->input[i])
+	{
+		printf("[%s]", commands->input[i]);
+		i++;
+	}
+	i = 0;
+	while (commands->output[i])
+	{
+		printf("[%s]", commands->output[i]);
+		i++;
+	}
+	commands = commands->next;
+}
 
 void	display_tokens(t_token *token)
 {
@@ -35,10 +63,13 @@ int	main_parser(t_data *data)
 	data->token = tokeniser(data, data->line);
 	if (!data->token)
 		return (EXIT_FAILURE);
-	if (data->cmd)
-	{
-		free_cmd(data->cmd);
-		data->cmd = NULL;
-	}
+	// if (data->cmd)
+	// {
+	// 	free_cmd(data->cmd);
+	// 	data->cmd = NULL;
+	// }
+	data->cmd = parse_commands(data->token);
+	// display_cmd(data->cmd);
+	free_cmd(data->cmd);
 	return (EXIT_SUCCESS);
 }

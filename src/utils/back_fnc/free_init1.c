@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 11:17:43 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/07 18:23:24 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/12 17:02:47 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,17 @@ void	free_cmd(t_cmd *node)
 	{
 		tmp = node->next;
 		if (node->command)
-			free_arr(&node->command);
+			free(node->command);
+		if (node->args)
+			free_arr(node->args);
 		if (node->cmd_path)
 			free(node->cmd_path);
 		if (node->full_cmd)
 			free(node->full_cmd);
+		if (node->input)
+			free_arr(node->input);
+		if (node->output)
+			free_arr(node->output);
 		free(node);
 		node = tmp;
 	}
