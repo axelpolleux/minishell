@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/11 10:16:22 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/11 15:55:14 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,7 @@ int				ft_lstsize_c(t_cmd *lst);
 int				nb_arg(char **ar);
 int				no_minim_env(char **env);
 int				key_in_env(t_data *data, char *key);
-int				only_key(char *line); //if only_key succed 0 is return, on error an int representing the number caratere composing the key is return ('=' is not comprise)
+int				only_key(char *line);
 int 			init_champ_env(t_data *data, char **new_var, char **new_arg, char **new_key);
 
 t_data			*init_data(int ac, char **av);
@@ -283,7 +283,6 @@ char			**tokens_to_argv(t_token *start, t_token *end);
 
 void			main_reading(t_data *data, char *title);
 void			display_tokens(t_token *token);
-void			main_parser(t_data *data);
 void			ft_token_add_back(t_token **lst, t_token *new);
 void			add_cmd_back(t_cmd **lst, t_cmd *new);
 

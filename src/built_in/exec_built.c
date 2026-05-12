@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 14:53:34 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/11 10:16:33 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/11 11:52:49 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ void	built_child(t_data *data, t_cmd *cmd)
 
 void	exec_built(t_data *data, t_cmd *cmd)
 {
-	if (cmd->output >= 0)
+	if (cmd->output > -1)
 	{
 		data->last_fd = dup(1);
 		dup2(cmd->output, 1);
 	}
 	built_parent(data, cmd);
-	if (cmd->output >= 0)
+	if (cmd->output > -1)
 	{
 		dup2(data->last_fd, 1);
 		close (data->last_fd);

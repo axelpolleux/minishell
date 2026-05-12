@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 11:48:19 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/11 10:21:39 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/11 15:40:25 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	full_cmd(t_data *data, t_cmd *cmd, char *command, int i)
 
 void	get_path(t_data *data)
 {
-	// write(1, "enter_get_path\n", 15);
 	t_env	*tmp;
 
 	tmp = data->t_env;
@@ -62,7 +61,6 @@ void	get_path(t_data *data)
 
 void	cmd_with_path(t_data *data, t_cmd *cmd, char *command)
 {
-	// write(1, "enter_cmd_with_path\n", 20);
 	if (access(command, F_OK) != 0)
 	{
 		perror(command);
@@ -84,7 +82,6 @@ void	cmd_with_path(t_data *data, t_cmd *cmd, char *command)
 
 int	check_directory(t_data *data, char *path)
 {
-	// write(1, "enter_check_dir\n", 16);
 	struct stat	st;
 
 	if (!path)
@@ -99,27 +96,8 @@ int	check_directory(t_data *data, char *path)
 	return (true);
 }
 
-// void	check_directory(t_data *data, t_cmd *cmd)
-// {
-//     DIR    *dir;
-
-//     dir = opendir(cmd->cmd_path);
-//     if (dir == NULL)
-// 	{
-// 		if (errno == EACCES)
-// 			opendir_error(cmd->cmd_path);
-			
-// 			print_error(cmd);
-// 			print_error(" : Is a directory\n");
-// 			perror("minishell");
-//         data->exit = 126;
-// 	}
-//     closedir(dir);
-// }
-
 int	check_cmd(t_data *data, t_cmd *cmd)
 {
-	// write(1, "enter_check_cmd\n", 16);
 	data->exit = -1;
 	if (!cmd || !cmd->cmd || !cmd->cmd[0])
 		return (EXIT_FAILURE);
@@ -135,4 +113,3 @@ int	check_cmd(t_data *data, t_cmd *cmd)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
-
