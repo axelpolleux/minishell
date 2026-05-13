@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 10:09:53 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/13 11:05:51 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/13 18:34:22 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	display_cmd(t_cmd *commands)
 		printf("[%s]", commands->args[i]);
 		i++;
 	}
-	printf("\ncmd_path: [%s]\nfull_cmd: [%s]", commands->cmd_path, commands->full_cmd);
+	printf("\ncmd_path: [%s]\nfull_cmd: [%s]",
+		commands->cmd_path, commands->full_cmd);
 	i = 0;
 	while (commands->input[i])
 	{
@@ -58,6 +59,6 @@ int	main_parser(t_data *data)
 	data->token = tokeniser(data, data->line);
 	if (!data->token)
 		return (EXIT_FAILURE);
-	// data->cmd = parse_commands(data->token);
+	data->cmd = parse_commands(data->token);
 	return (EXIT_SUCCESS);
 }

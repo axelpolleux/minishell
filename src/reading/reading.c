@@ -40,6 +40,11 @@ void	main_reading(t_data *data, char *title)
 		if (data->line && *(data->line))
 			add_history(data->line);
 		main_parser(data);
+		free_token(data->token);
+		data->token = NULL;
+		free_cmd(data->cmd);
+		data->cmd = NULL;
+		free(data->line);
 		data->line = 0;
 	}
 	clear_history();

@@ -6,7 +6,7 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 14:27:15 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/12 17:44:46 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/13 18:35:15 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 //
 // }
 
-t_cmd	*ft_cmd_new()
+t_cmd	*ft_cmd_new(void)
 {
 	t_cmd	*new;
 
@@ -34,6 +34,11 @@ t_cmd	*parse_commands(t_token *tokens)
 	res = ft_cmd_new();
 	while (tokens->type != WORD)
 		tokens = tokens->next;
-	res->command = tokens->cmd;
+	res->command = ft_strdup(tokens->cmd);
+	if (!res->command)
+	{
+		free(res);
+		return (NULL);
+	}
 	return (res);
 }
