@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 11:17:43 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/12 17:02:47 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/13 11:20:00 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,20 +59,13 @@ void	free_data(t_data *data)
 {
 	if (data)
 	{
-		if (data->path)
-			free_arr(data->path);
-		if (data->built_in)
-			free_arr(data->built_in);
-		if (data->built_env)
-			free_arr(data->built_env);
-		if (data->pid)
-			free(data->pid);
-		if (data->line)
-			free(data->line);
-		if (data->token)
-			free_token(data->token);
-		if (data->cmd)
-			free_cmd(data->cmd);
+		free_arr(data->path);
+		free_arr(data->built_in);
+		free_arr(data->built_env);
+		free(data->line);
+		free(data->pid);
+		free_token(data->token);
+		free_cmd(data->cmd);
 		free(data);
 	}
 }
