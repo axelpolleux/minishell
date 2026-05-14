@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/08 16:01:08 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/11 17:59:31 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/04/21 09:46:16 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,9 @@ int	double_quotes(t_data *data, t_token **tokens, char *input, int *index)
 	while (input[*index + i] && input[*index + i] != 34)
 		i++;
 	if (!input[*index + i])
-	{
-		ft_putstr_fd(QUOT_ER, 2);
-		i++;
-		return (0);
-	}
-	start = *index;
-	new = token_new(input, &start, i + 1, WORD);
+		error_quote();
+	start = *index + 1;
+	new = token_new(input, &start, i - 1, WORD);
 	if (!new)
 		data_malloc_error(data);
 	ft_token_add_back(tokens, new);
@@ -50,9 +46,9 @@ int	single_quotes(t_data *data, t_token **tokens, char *input, int *index)
 	while (input[*index + i] && input[*index + i] != '\'')
 		i++;
 	if (!input[*index + i])
-		return (0);
-	start = *index;
-	new = token_new(input, &start, i + 1, WORD);
+		error_quote();
+	start = *index + 1;
+	new = token_new(input, &start, i - 1, WORD);
 	if (!new)
 		data_malloc_error(data);
 	ft_token_add_back(tokens, new);

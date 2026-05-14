@@ -5,17 +5,46 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/12 14:27:15 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/13 18:35:15 by apolleux         ###   ########.fr       */
+/*   Created: 2026/03/30 17:08:16 by ethutin-          #+#    #+#             */
+/*   Updated: 2026/05/05 15:30:11 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// char	*find_cmd(t_token *tokens)
-// {
-//
-// }
+char	*get_arg_env(t_data *data, char *motif)
+{
+	t_env	*tmp;
+	char	*path;
+
+	tmp = data->t_env;
+	while (tmp)
+	{
+		if (!ft_strcmp(tmp->key, motif))
+		{
+			path = tmp->arg;
+			return (path);
+		}
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
+int	is_builtin(char **built_in, char *cmd)
+{
+	int	i;
+
+	i = 0;
+	if (built_in == NULL)
+		return (0);
+	while (built_in[i])
+	{
+		if (!strcmp(built_in[i], cmd))
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 t_cmd	*ft_cmd_new(void)
 {

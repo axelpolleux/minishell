@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:04:56 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/13 15:43:11 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/05 18:44:17 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ void	main_reading(t_data *data, char *title)
 	signal(SIGINT, handle_signal);
 	while (1)
 	{
+		g_signal = 0;
 		data->line = readline(title);
 		if (!data->line)
 		{
 			free_data(data);
-			data = NULL;
 			printf("exit\n");
-			break ;
+			exit(0);
 		}
 		if (data->line && *(data->line))
 			add_history(data->line);
@@ -47,5 +47,5 @@ void	main_reading(t_data *data, char *title)
 		free(data->line);
 		data->line = 0;
 	}
-	clear_history();
+	free_data(data);
 }

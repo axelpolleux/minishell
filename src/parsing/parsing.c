@@ -6,59 +6,41 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 10:09:53 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/13 18:34:22 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/05 18:44:14 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	display_cmd(t_cmd *commands)
-{
-	int	i;
-
-	(void)i;
-	printf(">===========<\ncommand: [%s]", commands->command);
-	i = 0;
-	while (commands->args[i])
-	{
-		printf("[%s]", commands->args[i]);
-		i++;
-	}
-	printf("\ncmd_path: [%s]\nfull_cmd: [%s]",
-		commands->cmd_path, commands->full_cmd);
-	i = 0;
-	while (commands->input[i])
-	{
-		printf("[%s]", commands->input[i]);
-		i++;
-	}
-	i = 0;
-	while (commands->output[i])
-	{
-		printf("[%s]", commands->output[i]);
-		i++;
-	}
-	commands = commands->next;
-}
-
-void	display_tokens(t_token *token)
-{
-	t_token	*tokens;
-
-	tokens = token;
-	while (tokens)
-	{
-		printf("[%s]", tokens->cmd);
-		tokens = tokens->next;
-	}
-	printf("\n");
-}
-
 int	main_parser(t_data *data)
 {
+	//=============TOKEN==============//
+	if (data->token) //par pure parano
+	{
+		free_token(data->token);
+		data->token = NULL;
+	}
 	data->token = tokeniser(data, data->line);
 	if (!data->token)
 		return (EXIT_FAILURE);
+	if (data->cmd)
+	{
+		free_cmd(data->cmd);
+		data->cmd = NULL;
+	}
 	data->cmd = parse_commands(data->token);
+	if (!data->cmd)
+		return(EXIT_FAILURE);
 	return (EXIT_SUCCESS);
+	//===============================//
+	//
+	// //=============CMD==============//
+	// if (data->cmd) //par pure parano
+	// {
+	// 	free_cmd(data->cmd);
+	// 	data->cmd = NULL;
+	// }
+	// data->cmd = init_cmd(data, data->token);
+	// display_cmd(data->cmd);
+	// //===============================//
 }

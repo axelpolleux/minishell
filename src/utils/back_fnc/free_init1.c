@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 11:17:43 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/13 11:20:00 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/05 18:44:23 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,27 @@ void	free_token(t_token *node)
 		tmp = (node)->next;
 		if (node->cmd)
 			free(node->cmd);
+		free(node);
+		node = tmp;
+	}
+	node = NULL;
+}
+
+void	free_env(t_env *node)
+{
+	t_env	*tmp;
+
+	if (node == NULL)
+		return ;
+	while (node)
+	{
+		tmp = (node)->next;
+		if (node->var)
+			free(node->var);
+		if (node->arg)
+			free(node->arg);
+		if (node->key)
+			free(node->key);
 		free(node);
 		node = tmp;
 	}
@@ -53,21 +74,30 @@ void	free_cmd(t_cmd *node)
 		free(node);
 		node = tmp;
 	}
+	node = NULL;
 }
 
 void	free_data(t_data *data)
 {
 	if (data)
 	{
-		free_arr(data->path);
-		free_arr(data->built_in);
-		free_arr(data->built_env);
-		free(data->line);
-		free(data->pid);
-		free_token(data->token);
-		free_cmd(data->cmd);
+		if (data->path)
+			free_arr(data->path);
+		if (data->built_env)
+			free_arr(data->built_env);
+		if (data->built_in)
+			free(data->built_in);
+		if (data->line)
+			free(data->line);
+		if (data->token)
+			free_token(data->token);
+		if (data->t_env)
+			free_env(data->t_env);
+		if (data->cmd)
+			free_cmd(data->cmd);
 		free(data);
 	}
+	rl_clear_history();
 }
 
 t_data	*init_data(int ac, char **av)
