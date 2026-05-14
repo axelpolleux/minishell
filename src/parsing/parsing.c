@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 10:09:53 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/11 10:17:46 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/14 15:18:00 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,7 @@ int	main_parser(t_data *data)
 		data->cmd = NULL;
 	}
 	data->cmd = init_cmd(data->token);
-	if (!data->cmd )//|| data->cmd->cmd || !data->cmd->cmd[0]
-		return(EXIT_FAILURE);
-	//display_cmd(data->cmd);
-	//display_token(data->token);
+	if (!data->cmd)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

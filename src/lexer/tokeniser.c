@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 11:06:42 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/11 10:17:42 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/14 15:14:26 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,37 @@ void	skip_spaces(char *input, int *index)
 		(*index)++;
 }
 
+// void	add_in(t_data *data, t_token **tokens, char *input, int *index)
+// {
+// 	t_token	*new;
+// 	int		type;
+// 	int		len;
+
+// 	len = 1;
+// 	if (input[*index] == '|')
+// 	{
+// 		type = PIPE;
+// 		data->pipe++;
+// 	}
+// 	else if (input[*index] == '<')
+// 	{
+// 		if (input[*index + 1] && input[*index + 1] == '<')
+// 		{
+// 			type = HEREDOC;
+// 			len = 2;
+// 		}
+// 		else
+// 			type = RED_IN;
+// 	}
+// 	else
+// 		type = WORD;
+// 	new = token_new(input, index, len, type);
+// 	if (!new)
+// 		data_malloc_error(data);
+// 	ft_token_add_back(tokens, new);
+// 	(*index) += len;
+// }
+
 void	add_in(t_data *data, t_token **tokens, char *input, int *index)
 {
 	t_token	*new;
@@ -25,21 +56,15 @@ void	add_in(t_data *data, t_token **tokens, char *input, int *index)
 	int		len;
 
 	len = 1;
-	if (input[*index] == '|')
-	{
+	if (input[*index] == '|' && ++data->pipe)
 		type = PIPE;
-		data->pipe++;
+	else if (input[*index] == '<' && input[*index + 1] == '<')
+	{
+		type = HEREDOC;
+		len = 2;
 	}
 	else if (input[*index] == '<')
-	{
-		if (input[*index + 1] && input[*index + 1] == '<')
-		{
-			type = HEREDOC;
-			len = 2;
-		}
-		else
-			type = RED_IN;
-	}
+		type = RED_IN;
 	else
 		type = WORD;
 	new = token_new(input, index, len, type);
@@ -104,19 +129,15 @@ t_token	*tokeniser(t_data *data, char *input)
 		skip_spaces(input, &index);
 		if (!input[index])
 			break ;
-		else if (ft_strchr("|<", input[index]))
+		if (ft_strchr("|<", input[index]))
 			add_in(data, &tokens, input, &index);
-		else if (input[index] == '"')
-		{
-			if (double_quotes(data, &tokens, input, &index))
-				return (NULL);
-		}
-		else if (input[index] == '\'')
-		{
-			if (single_quotes(data, &tokens, input, &index))
-				return (NULL);
-		}
-		else if (ft_strchr(">", input[index]))
+		else if (input[index] == '"' && double_quotes(data, &tokens,
+				input, &index))
+			return (NULL);
+		else if (input[index] == '\'' && single_quotes(data, &tokens,
+				input, &index))
+			return (NULL);
+		else if (input[index] == '>')
 			add_out(data, &tokens, input, &index);
 		else if (!is_space(input[index]))
 			add_word(data, &tokens, input, &index);

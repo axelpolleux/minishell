@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/05 18:26:35 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/11 10:17:51 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/14 15:02:59 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ int	data_malloc_error(t_data *data)
 	exit (EXIT_FAILURE);
 }
 
-//refaire la gestion de toute les erreur en utilsant que error_perror et error_exit
+//refaire la gestion de toute les erreur en 
+//utilsant que error_perror et error_exit
 void	error_perror(char *error, int error_p, int fd)
 {
 	if (error_p)

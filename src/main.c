@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/11 10:16:31 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/14 15:01:38 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,6 @@ void	display_cmd(t_cmd *view)
 		printf("input => %d\n", view->input);
 		printf("output => %d\n", view->output);
 		view = view->next;
-	}
-}
-
-void	display_tokens(t_token *token)
-{
-	int	i;
-
-	i = 0;
-	while (token)
-	{
-		printf("%d: {%s - %d}\n", i, token->cmd, token->type);
-		i++;
-		token = token->next;
 	}
 }
 
@@ -114,7 +101,6 @@ void	init_env(t_data *data, char **env, int i)
 
 int	main(int ac, char **av, char **env)
 {
-
 	t_data	*data;
 
 	data = init_data(ac, av);
@@ -122,7 +108,6 @@ int	main(int ac, char **av, char **env)
 	if (!data->built_in)
 		data_malloc_error(data);
 	init_env(data, env, -1);
-	//display_env(data->t_env);
 	main_reading(data, "pastishell$ ");
 	return (0);
 }

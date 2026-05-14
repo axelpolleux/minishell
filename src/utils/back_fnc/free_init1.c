@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 11:17:43 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/11 10:17:49 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/14 15:02:26 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,22 @@ void	free_env(t_env *node)
 	node = NULL;
 }
 
+void	free_redir(t_redir_her *node)
+{
+	t_redir_her	*tmp;
+
+	while (node)
+	{
+		tmp = node->next;
+		if (node->file)
+			free(node->file);
+		if (node->fd != -1)
+			close(node->fd);
+		free(node);
+		node = tmp;
+	}
+}
+
 void	free_cmd(t_cmd *node)
 {
 	t_cmd	*tmp;
@@ -65,6 +81,8 @@ void	free_cmd(t_cmd *node)
 			free(node->cmd_path);
 		if (node->full_cmd)
 			free(node->full_cmd);
+		if (node->redir)
+			free_redir(node->redir);
 		free(node);
 		node = tmp;
 	}
@@ -93,25 +111,4 @@ void	free_data(t_data *data)
 		free(data);
 	}
 	rl_clear_history();
-}
-
-t_data	*init_data(int ac, char **av)
-{
-	t_data	*data;
-
-	data = ft_calloc(sizeof(t_data), 1);
-	if (!data)
-		data_malloc_error(data);
-	data->fd_storage[0] = -1;
-	data->fd_storage[1] = -1;
-	data->t_env = NULL;
-	data->token = NULL;
-	data->cmd = NULL;
-	data->exit = 0;
-	data->quote = NQUOT;
-	data->pipe = 0;
-	data->flag = 0;
-	(void)av;
-	(void)ac;
-	return (data);
 }

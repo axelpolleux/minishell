@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:04:56 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/05 18:44:17 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/14 11:42:28 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ void	main_reading(t_data *data, char *title)
 		}
 		exec(data);
 		free(data->line);
-		// if (data->exit != 0)
-		// 	exec_fail(data);
 	}
 	free_data(data);
 }

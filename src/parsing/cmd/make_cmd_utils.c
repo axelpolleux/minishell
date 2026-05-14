@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   make _command.c                                    :+:      :+:    :+:   */
+/*   make_cmd_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/28 17:10:40 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/30 13:39:35 by ethutin-         ###   ########.fr       */
+/*   Created: 2026/05/12 16:44:26 by ethutin-          #+#    #+#             */
+/*   Updated: 2026/05/14 11:33:53 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_cmd	*new_cmd_node(void)
 {
 	t_cmd	*new;
 
-	new = ft_calloc(1, sizeof(t_cmd));
+	new = ft_calloc(sizeof(t_cmd), 1);
 	if (!new)
 		return (NULL);
 	new->input = -1;
@@ -42,57 +42,29 @@ void	add_cmd_back(t_cmd **lst, t_cmd *new)
 	new->prev = tmp;
 }
 
-char	**tokens_to_argv(t_token *start, t_token *end)
+char	**tokens_to_argv(t_token *start, t_token *end, int i)
 {
 	char	**argv;
-	int		i;
 
-	argv = ft_calloc(count_words(start, end) + 1, sizeof(char *));
+	argv = ft_calloc(sizeof(char *), count_words(start, end) + 1);
 	if (!argv)
 		return (NULL);
-	i = 0;
 	while (start && start != end)
 	{
 		if (start->type == WORD)
 		{
-			argv[i] = ft_strdup(start->cmd);
-			if (!argv[i])
-				return (free_arr(argv));
-			i++;
+			if (!start->prev || !is_redir(start->prev->type))
+			{
+				argv[i] = ft_strdup(start->cmd);
+				if (!argv[i])
+				{
+					free_arr(argv);
+					return (NULL);
+				}
+				i++;
+			}
 		}
 		start = start->next;
 	}
 	return (argv);
-}
-
-t_cmd	*init_cmd(t_token *tokens)
-{
-	t_cmd	*cmds;
-	t_cmd	*new;
-	t_token	*start;
-
-	cmds = NULL;
-	start = tokens;
-	while (tokens)
-	{
-		if (tokens->type == PIPE)
-		{
-			new = new_cmd_node();
-			if (!new)
-				return (free_cmd(cmds), NULL);
-			new->cmd = tokens_to_argv(start, tokens);
-			add_cmd_back(&cmds, new);
-			start = tokens->next;
-		}
-		tokens = tokens->next;
-	}
-	if (start)
-	{
-		new = new_cmd_node();
-		if (!new)
-			return (free_cmd(cmds), NULL);
-		new->cmd = tokens_to_argv(start, NULL);
-		add_cmd_back(&cmds, new);
-	}
-	return (cmds);
 }

@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/08 16:01:08 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/08 18:50:42 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/14 15:04:12 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ int	double_quotes(t_data *data, t_token **tokens, char *input, int *index)
 {
 	t_token	*new;
 	int		i;
-	int	start;
+	int		start;
+
 	if (input[*index] != '\"')
 		return (EXIT_SUCCESS);
 	i = 1;
@@ -33,9 +34,6 @@ int	double_quotes(t_data *data, t_token **tokens, char *input, int *index)
 	return (EXIT_SUCCESS);
 }
 
-
-
-
 int	single_quotes(t_data *data, t_token **tokens, char *input, int *index)
 {
 	t_token	*new;
@@ -48,7 +46,7 @@ int	single_quotes(t_data *data, t_token **tokens, char *input, int *index)
 	while (input[*index + i] && input[*index + i] != '\'')
 		i++;
 	if (!input[*index + i])
-		return(error_quote());
+		return (error_quote());
 	start = *index;
 	new = token_new(input, &start, i + 1, WORD);
 	if (!new)

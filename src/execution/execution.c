@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:43:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/12 10:06:40 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/14 15:00:48 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@
 
 void	exec_command(t_data *data, t_cmd *cmd, char **env)
 {
-	//display_cmd(data->cmd);
-	// int i = -1;
-	// while (env[++i])
-	// 	printf("%s\n", env[i]);
 	if (execve(cmd->cmd_path, cmd->cmd, env) == -1)
 	{
 		free_arr(env);
@@ -31,7 +27,6 @@ void	exec_command(t_data *data, t_cmd *cmd, char **env)
 		exit (data->exit);
 	}
 	free_arr(env);
-
 }
 
 void	children(t_data *data, t_cmd *cmd)
@@ -43,22 +38,12 @@ void	children(t_data *data, t_cmd *cmd)
 	else if (!check_cmd(data, cmd))
 	{
 		manage_redir(data, cmd);
-		printf("storage:0:%d\nstorage:1:%d\n", data->fd_storage[0], data->fd_storage[1]);
 		if (cmd->next)
 			close (data->fd_storage[1]);
 		if (cmd->input != STDIN_FILENO && cmd->input >= 0)
 			close(cmd->input);
 		if (cmd->next)
 			close(data->fd_storage[0]);
-		// if (cmd->next)
-		// {
-		// 	if (dup2(data->fd_storage[1], STDOUT_FILENO) == -1)
-		// 	{
-		// 		printf("in children\n");
-		// 		dup_error(data);
-		// 	}
-		// 	close(data->fd_storage[1]);
-		// }
 		env = tab_env(data->t_env, -1);
 		if (!env)
 			data_malloc_error(data);
@@ -66,22 +51,6 @@ void	children(t_data *data, t_cmd *cmd)
 	}
 	exit(data->exit);
 }
-
-// void	parent(t_data *data, t_cmd *cmd) //pas finis
-// {
-// 	if (data->flag)
-// 		cmd->input = data->fd_storage[0];
-// 	else 
-// 		data->flag = 1;
-// 	close(data->fd_storage[1]);
-// 	if (cmd->next)
-// 	{
-// 		close(data->fd_storage[1]);
-// 		data->last_fd = data->fd_storage[0];
-// 	}
-// 	else
-// 		close(data->fd_storage[1]);
-// }
 
 void	parent(t_data *data, t_cmd *cmd)
 {
@@ -97,17 +66,13 @@ void	manage_process(t_data *data, t_cmd *cmd)
 	int	i;
 
 	i = 0;
-	//data->last_fd = -1;
 	while (cmd)
 	{
 		if (cmd->prev)
 			get_expand(data, cmd);
-		if (data->pipe-- > 0) // a degager par un rai gestion 
+		if (data->pipe-- > 0)
 			if (pipe(data->fd_storage) == -1)
 				pipe_error(data);
-		// if (cmd->next)
-		// 	if (pipe(data->fd_storage) == -1)
-		// 		pipe_error(data);
 		data->pid[i] = fork();
 		if (data->pid[i] < 0)
 			fork_error(data);
@@ -120,22 +85,7 @@ void	manage_process(t_data *data, t_cmd *cmd)
 	}
 }
 
-void	wait_end(t_data *data, int count)
-{
-	int	i;
-	int	error;
-
-	i = -1;
-	while (++i < count)
-		if (waitpid(data->pid[i], &error, 0) == -1)
-			wait_error(data);
-	if (WIFEXITED(error))
-		data->exit = (WEXITSTATUS(error));
-	free(data->pid);
-	data->pid = NULL;
-}
-
-void	exec(t_data *data) // oublie pas de je gerer les cas comme ls | 
+void	exec(t_data *data)
 {
 	t_cmd	*t_cmd;
 	int		count;
@@ -145,12 +95,13 @@ void	exec(t_data *data) // oublie pas de je gerer les cas comme ls |
 	if (is_builtin(data->built_in, t_cmd->cmd[0]) && !t_cmd->next)
 	{
 		exec_built(data, t_cmd);
-		return	;
+		return ;
 	}
 	count = ft_lstsize_c(t_cmd);
 	data->pid = ft_calloc(sizeof(pid_t), count);
 	if (!data->pid)
 		data_malloc_error(data);
+	heredoc_manage(data->cmd);
 	manage_process(data, t_cmd);
 	wait_end(data, count);
 }

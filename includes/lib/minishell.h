@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/11 15:55:14 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/14 15:19:44 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <unistd.h>
 # include <sys/wait.h>
 # include <sys/types.h>
-# include <sys/stat.h>//
+# include <sys/stat.h>
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -43,8 +43,8 @@
 	bool
 	strcut
 */
-
 //=============<for general utility>=============//
+
 extern volatile int	g_signal;
 
 # define ERROR		0
@@ -82,15 +82,26 @@ extern volatile int	g_signal;
 
 //====================<for all struct>===================//<<<<
 
+typedef struct s_redir_her
+{
+	char				*file;
+
+	int					type;
+	int					fd;
+
+	struct s_redir_her	*next;
+}	t_redir_her;
+
 typedef struct s_cmd
 {
 	char			**cmd;
 	char			*cmd_path;
 	char			*full_cmd;
 
-	int				type;
 	int				input;
 	int				output;
+
+	t_redir_her		*redir;
 
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
@@ -150,9 +161,8 @@ void			fork_error(t_data *data);
 void			error_perror(char *error, int error_p, int fd);
 void			error_export(char *error);
 void			error_exit(t_data *data, char *error);
-//void			error_signal(int signal);
-void			exec_fail(t_data *data);
-void			init_env_fail(t_data *data, char *new_env, char *new_arg, char *new_key);
+void			init_env_fail(t_data *data, char *new_env, \
+char *new_arg, char *new_key);
 void			init_env_fail_n(char *new_env, char *new_arg, char *new_key);
 void			opendir_error(t_data *data, char *error);
 void			error_cnf(t_data *data, char *error);
@@ -168,14 +178,16 @@ char			*arg_env(char **env, char *motif, int len);
 char			*ft_charjoin(char *str, char c);
 char			*ft_strjoin_upd(char *s1, char *s2);
 
-void			*free_arr(char **str);
 void			closes(int fd, int *fd_storage);
+void			*free_arr(char **str);
 void			free_data(t_data *data);
 void			free_env(t_env *node);
 void			free_token(t_token *node);
 void			free_cmd(t_cmd *node);
+void			free_redir(t_redir_her *node);
 void			add_to_bottom_env(t_env **node, t_env *new_bot);
 void			add_to_bottom_cmd(t_cmd **node, t_cmd *new_bot);
+void			add_redir_back(t_redir_her **lst, t_redir_her *new);
 void			env_new_node(t_data *data, char *line);
 //================================================================//
 void			display_env(t_env *view);// a degager a la fin
@@ -191,10 +203,12 @@ int				nb_arg(char **ar);
 int				no_minim_env(char **env);
 int				key_in_env(t_data *data, char *key);
 int				only_key(char *line);
-int 			init_champ_env(t_data *data, char **new_var, char **new_arg, char **new_key);
+int				init_champ_env(t_data *data, char **new_var, \
+char **new_arg, char **new_key);
 
 t_data			*init_data(int ac, char **av);
-t_env			*new_env(char *new_var, char *new_arg, char *new_key, int export);
+t_env			*new_env(char *new_var, char *new_arg, \
+char *new_key, int export);
 t_env			*make_new_env_name(char *line, int export);
 //======================================================//
 
@@ -225,7 +239,7 @@ void			built_child(t_data *data, t_cmd *cmd);
 void			built_parent(t_data *data, t_cmd *cmd);
 void			unset_place(t_data *data, char *motif);
 void			exec_exit(t_data *data, t_cmd *g_cmd, char **cmd);
-void			exec_built(t_data *data, t_cmd *cmd); 
+void			exec_built(t_data *data, t_cmd *cmd);
 void			manage_export(t_data *data, char *line);
 void			make_export(t_data *data, char *key);
 void			change_arg(t_data *data, char *line, char *name, int start);
@@ -248,38 +262,35 @@ int				word_size(char *str, char charset);
 int				count_export(t_env *env);
 int				only_key_equal(char *line);
 int				realoc_arg(t_env *tmp, char *line, char *name, int start);
-int				update_cd(t_data *data, char *new_var, char *new_key, char *new_arg);
+int				update_cd(t_data *data, char *new_var, \
+char *new_key, char *new_arg);
 //===============================================================//
 
 //========================<for exec>=========================//
 void			get_path(t_data *data);
-//void			verif_command(t_data *data, t_cmd *cmd);
 void			children(t_data *data, t_cmd *cmd);
 void			cmd_with_path(t_data *data, t_cmd *cmd, char *command);
 void			full_cmd(t_data *data, t_cmd *cmd, char *command, int i);
 void			exec_command(t_data *data, t_cmd *cmd, char **env);
 void			parent(t_data *data, t_cmd *cmd);
 void			manage_process(t_data *data, t_cmd *cmd);
-//void			wait_end(t_data *data);
 void			wait_end(t_data *data, int count);
 void			manage_redir(t_data *data, t_cmd *cmd);
-void			in_hre(t_data *data, int fd[2]);
 void			exec(t_data *data);
+void			heredoc_manage(t_cmd *cmd);
 
 int				check_directory(t_data *data, char *path);
 int				check_cmd(t_data *data, t_cmd *cmd);
-int				here_doc_manage(t_data *data);
 int				verif_file(char *line, int doc);
-//int				nb_process(t_cmd *cmd);
 int				only_quote(char *line);
-int				get_enof(t_data *data, char *line);
 int				full_void(char *line);
+int				init_heredoc(t_redir_her *doc);
 
 bool			fcext(t_data *data, t_cmd *cmd, char *path, char *command);
 //===========================================================//
 
 //========================<for the parsing>=========================//
-char			**tokens_to_argv(t_token *start, t_token *end);
+char			**tokens_to_argv(t_token *start, t_token *end, int i);
 
 void			main_reading(t_data *data, char *title);
 void			display_tokens(t_token *token);
@@ -297,13 +308,17 @@ int				make_oldpwd(t_data *data, t_env *new, char **env);
 int				make_pwd(t_data *data, t_env *new);
 int				no_minim_env(char **env);
 int				count_words(t_token *start, t_token *end);
+int				is_redir(int type);
+int				tok_to_cmd(t_token *token, t_cmd *new, \
+t_token	**start, t_cmd **cmds);
+int				tok_start(t_cmd *new, t_token *start, t_cmd **cmds);
+int				parse_redirections(t_cmd *cmd, t_token *tok, t_token *end);
 
 t_cmd			*new_cmd_node(void);
-t_cmd			*init_cmd(t_token *tokens);
+t_cmd			*init_cmd(t_token *token);
 t_token			*tokeniser(t_data *data, char *input);
 t_token			*token_new(char *input, int *index, int len, int type);
-
-
+t_redir_her		*new_redirection(int type, char *file);
 //======================================================//
 
 //===================<for sig usage>===============//
@@ -311,26 +326,9 @@ void			ft_signal_d(t_env *env);
 void			ft_sigint_heredoc(int pid);
 void			ft_sigint_cmd(int pid);
 void			ft_sigint_interactive(int pid);
+void			handle_signal(int signal);
 
 int				signal_manage(void);
 //===============================================//
-
-//==========================<Get Next Line>=====================//
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
-# endif
-
-char			*get_next_line(int fd, size_t i);
-char			*line_add(char const *s1, char const *s2, size_t size);
-char			*read_line(int fd, char **buffer_ptr, char *line, size_t i);
-char			*verif_read_line(ssize_t r, char *line, char **buf_ptr);
-char			*clean_buff(char *buffer);
-
-void			*ft_memset(void *s, int c, size_t n);
-void			free_line(char **line, char *new_line);
-void			buffer_left(char *buffer, size_t start);
-
-int				init_buff(char **buffer);
-//=============================================================//
 
 #endif

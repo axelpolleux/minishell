@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 14:53:34 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/11 11:52:49 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/14 14:57:51 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	built_child(t_data *data, t_cmd *cmd)
 		data->exit = exec_env(data);
 	else if (!ft_strncmp("exit", cmd->cmd[0], 4))
 		exec_exit(data, cmd, cmd->cmd);
-
 }
 
 void	exec_built(t_data *data, t_cmd *cmd)
