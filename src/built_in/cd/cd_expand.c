@@ -1,35 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   cd_expand.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/19 10:09:53 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/15 15:19:17 by ethutin-         ###   ########.fr       */
+/*   Created: 2026/05/06 12:50:48 by ethutin-          #+#    #+#             */
+/*   Updated: 2026/05/06 12:51:17 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main_parser(t_data *data)
+int	update_cd(t_data *data, char *new_var, char *new_key, char *new_arg)
 {
-	if (data->token)
-	{
-		free_token(data->token);
-		data->token = NULL;
-	}
-	data->token = tokeniser(data, data->line);
-	if (!data->token)
-		return (EXIT_FAILURE);
-	// if (data->cmd)
-	// {
-	// 	free_cmd(data->cmd);
-	// 	data->cmd = NULL;
-	// }
-	// data->cmd = parse_commands(data->token);
-	// if (!data->cmd)
-	// 	return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
-}
+	t_env	*tmp;
 
+	tmp = data->t_env;
+	while (tmp)
+	{
+		if (!ft_strcmp(new_key, tmp->key))
+		{
+			if (tmp->var)
+				free(tmp->var);
+			if (tmp->arg)
+				free(tmp->arg);
+			if (tmp->key)
+				free(tmp->key);
+			tmp->var = new_var;
+			tmp->arg = new_arg;
+			tmp->key = new_key;
+			tmp->export = 1;
+			return (EXIT_SUCCESS);
+		}
+		tmp = tmp->next;
+	}
+	return (EXIT_FAILURE);
+}

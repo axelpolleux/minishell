@@ -6,20 +6,20 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 10:52:20 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/05 17:53:39 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/08 17:42:26 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	exec_fail(t_data *data)
-{
-	int	exit_exec;
+// void	exec_fail(t_data *data)
+// {
+// 	int	exit_exec;
 
-	exit_exec = data->exit;
-	free_data(data);
-	exit (exit_exec);
-}
+// 	exit_exec = data->exit;
+// 	free_data(data);
+// 	exit (exit_exec);
+// }
 
 void	init_env_fail(t_data *data, char *new_env, char *new_arg, char *new_key)
 {
@@ -40,6 +40,21 @@ void	init_env_fail_n(char *new_env, char *new_arg, char *new_key)
 		free(new_arg);
 	if (new_key)
 		free(new_key);
+}
+
+void	opendir_error(t_data *data, char *error)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(error, 2);
+	ft_putstr_fd(" : Is a directory\n", 2);
+	data->exit = 126;
+}
+
+void	error_cnf(t_data *data, char *error)
+{
+	ft_putstr_fd(error, 2);
+	ft_putstr_fd(": command not found\n", 2);
+	data->exit = 127;
 }
 
 // hugo ma prensenter une de ces gestion de signaux, je la mais la pour voire

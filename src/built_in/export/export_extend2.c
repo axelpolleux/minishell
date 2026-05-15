@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/04 17:14:51 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/05 18:01:01 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/06 11:43:46 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	realoc_arg(t_env *tmp, char *line, char *name, int start)
 		return (EXIT_FAILURE);
 	}
 	new_arg = ft_strdup(new_var + start + 1);
-	if (!new_var)
+	if (!new_arg)
 	{
 		free(name);
 		free(new_var);

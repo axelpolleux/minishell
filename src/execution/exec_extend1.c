@@ -6,79 +6,110 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 11:48:19 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/05 18:43:37 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/14 14:58:24 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	verif_file(char *file, int doc)
+void	full_cmd(t_data *data, t_cmd *cmd, char *command, int i)
 {
-	int	fd;
+	char	*tmp;
+	char	*path;
 
-	fd = -1;
-	if (doc == HEREDOC || doc == APPEND)
-		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0777);
-	else if (doc == RED_OUT)
-		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
-	else if (doc == RED_IN)
-		fd = open(file, O_RDONLY);
-	return (fd);
+	while (data->path && data->path[++i])
+	{
+		if (data->path[i][0] == '\0')
+			tmp = ft_strdup("./");
+		else
+			tmp = ft_strjoin(data->path[i], "/");
+		if (!tmp)
+			data_malloc_error(data);
+		path = ft_strjoin_upd(tmp, command);
+		if (!path)
+			data_malloc_error(data);
+		if (fcext(data, cmd, path, command))
+			return ;
+		free(path);
+	}
+	error_cnf(data, command);
 }
 
-void	cmd_whith_path(t_data *data, char *command)
+void	get_path(t_data *data)
 {
-	if (access(command, F_OK | X_OK) == 0)
-		data->cmd->cmd_path = command;
-	else
+	t_env	*tmp;
+
+	tmp = data->t_env;
+	while (tmp)
+	{
+		if (!ft_strcmp(tmp->key, PATH))
+		{
+			if (!tmp->arg || tmp->var[0] == '\0')
+			{
+				data->exit = 127;
+				return ;
+			}
+			data->path = ft_split(tmp->arg, ':');
+			if (!data->path)
+				data_malloc_error(data);
+			return ;
+		}
+		tmp = tmp->next;
+	}
+	data->exit = 127;
+}
+
+void	cmd_with_path(t_data *data, t_cmd *cmd, char *command)
+{
+	if (access(command, F_OK) != 0)
+	{
+		perror(command);
+		data->exit = 127;
+		return ;
+	}
+	if (!check_directory(data, command))
+		return ;
+	if (access(command, X_OK) != 0)
 	{
 		perror(command);
 		data->exit = 126;
-	}
-}
-
-void	verif_command(t_data *data, t_cmd *cmd)
-{
-	if (srch_cmd(cmd->cmd[0], '/'))
-	{
-		cmd_whith_path(data, cmd->cmd[0]);
 		return ;
 	}
+	cmd->cmd_path = ft_strdup(command);
+	if (!cmd->cmd_path)
+		data_malloc_error(data);
+}
+
+int	check_directory(t_data *data, char *path)
+{
+	struct stat	st;
+
+	if (!path)
+		return (false);
+	if (stat(path, &st) == -1)
+		return (false);
+	if (S_ISDIR(st.st_mode))
+	{
+		opendir_error(data, path);
+		return (false);
+	}
+	return (true);
+}
+
+int	check_cmd(t_data *data, t_cmd *cmd)
+{
+	data->exit = -1;
+	if (!cmd || !cmd->cmd || !cmd->cmd[0])
+		return (EXIT_FAILURE);
+	if (srch_cmd(cmd->cmd[0], '/'))
+		cmd_with_path(data, cmd, cmd->cmd[0]);
 	else
-		data->path = get_path(data, ft_strlen(PATH));
-	if (data->exit == -1)// pas super depand de l'etat global
-		full_cmd(data, cmd->cmd[0]);
-}
-
-int	get_cmd_path(t_data *data, t_cmd *cmd)
-{
-	if (!cmd->full_cmd || !*cmd->full_cmd)
 	{
-		data->exit = 126;
-		return (EXIT_FAILURE);
+		get_path(data);
+		if (data->exit == -1)
+			full_cmd(data, cmd, cmd->cmd[0], -1);
 	}
-	else if (full_void(cmd->cmd[0]))
-	{
-		data->exit = 127;
+	if (data->exit == 126 || data->exit == 127)
 		return (EXIT_FAILURE);
-	}
-	verif_command(data, cmd);
 	return (EXIT_SUCCESS);
-}
-
-void	manage_redir(t_data *data, t_cmd *cmd)
-{
-	close(data->fd_storage[0]);
-	if (cmd->input != -1)
-	{
-		if (dup2(cmd->input, STDIN_FILENO) == -1)
-			dup_error(data);
-		close(cmd->input);
-	}
-	if (cmd->output != -1)
-	{
-		if (dup2(cmd->output, STDOUT_FILENO) == -1)
-			dup_error(data);
-		close(cmd->output);
-	}
 }

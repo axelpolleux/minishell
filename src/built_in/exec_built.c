@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 14:53:34 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/05 18:43:31 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/14 14:57:51 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,10 @@ void	built_parent(t_data *data, t_cmd *cmd)
 		data->exit = exec_unset(data, cmd->cmd);
 	else if (!ft_strncmp("cd", cmd->cmd[0], 2))
 		data->exit = exec_cd(data, cmd->cmd);
+	built_child(data, cmd);
 }
 
-void	built_choice(t_data *data, t_cmd *cmd)
+void	built_child(t_data *data, t_cmd *cmd)
 {
 	if (!ft_strncmp("echo", cmd->cmd[0], 4))
 		data->exit = exec_echo(cmd->cmd);
@@ -32,18 +33,17 @@ void	built_choice(t_data *data, t_cmd *cmd)
 		data->exit = exec_env(data);
 	else if (!ft_strncmp("exit", cmd->cmd[0], 4))
 		exec_exit(data, cmd, cmd->cmd);
-	built_parent(data, cmd);
 }
 
 void	exec_built(t_data *data, t_cmd *cmd)
 {
-	if (cmd->output >= 0)
+	if (cmd->output > -1)
 	{
 		data->last_fd = dup(1);
 		dup2(cmd->output, 1);
 	}
-	built_choice(data, cmd);
-	if (cmd->output >= 0)
+	built_parent(data, cmd);
+	if (cmd->output > -1)
 	{
 		dup2(data->last_fd, 1);
 		close (data->last_fd);

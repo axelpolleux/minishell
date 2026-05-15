@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free_arr.c                                      :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/16 14:39:21 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/04/16 14:40:40 by ethutin-         ###   ########.fr       */
+/*   Created: 2026/04/09 13:59:12 by ethutin-          #+#    #+#             */
+/*   Updated: 2026/05/05 11:30:38 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void	*free_arr(char **str)
+int	exec_env(t_data *data)
 {
-	int	i;
+	t_env	*tmp;
 
-	if (!str)
-		return (NULL);
-	i = 0;
-	while (str[i] != NULL)
+	tmp = data->t_env;
+	while (tmp)
 	{
-		free(str[i]);
-		i++;
+		if (ft_strchr(tmp->var, '='))
+			printf("%s\n", tmp->var);
+		tmp = tmp->next;
 	}
-	free(str);
-	return (NULL);
+	return (EXIT_SUCCESS);
 }

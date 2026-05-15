@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 11:20:04 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/05 18:44:32 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/15 14:20:51 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,24 @@ t_env	*make_new_env_name(char *line, int export)
 	new_node->key = name;
 	new_node->export = export;
 	return (new_node);
+}
+
+t_data	*init_data(int ac, char **av)
+{
+	t_data	*data;
+
+	data = ft_calloc(sizeof(t_data), 1);
+	if (!data)
+		data_malloc_error(data);
+	data->fd_storage[0] = -1;
+	data->fd_storage[1] = -1;
+	data->t_env = NULL;
+	data->token = NULL;
+	data->cmd = NULL;
+	data->exit = 0;
+	data->quote = NQUOT;
+	data->pipe = 0;
+	(void)av;
+	(void)ac;
+	return (data);
 }

@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 09:50:21 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/05 11:29:54 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/15 15:24:07 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,13 @@ int	pars_export(char *cmd)
 //gerer les pipe "export | " donne rien
 int	central_export(t_data *data, char **cmd)
 {
-	t_env	*tmp;
+	// t_env	*tmp;
 	int		output;
 	int		i;
 
 	i = 0;
 	output = 0;
-	tmp = data->t_env;
+	// tmp = data->t_env;
 	while (cmd[++i])
 	{
 		if (pars_export(cmd[i]))

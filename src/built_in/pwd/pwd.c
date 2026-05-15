@@ -1,41 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils_e.c                            :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/31 09:01:29 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/03/23 09:49:21 by ethutin-         ###   ########.fr       */
+/*   Created: 2026/04/08 14:14:40 by ethutin-          #+#    #+#             */
+/*   Updated: 2026/04/15 13:54:32 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_line(char **line, char *new_line)
+int	exec_pwd(void)
 {
-	if (*line && *line != new_line)
-		free (*line);
-	*line = new_line;
-}
+	char	*pwd;
 
-void	buffer_left(char *buffer, size_t start)
-{
-	size_t	left;
-	size_t	j;
-
-	left = ft_strlen(buffer + start);
-	j = 0;
-	while (j <= left)
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
 	{
-		buffer[j] = buffer[start + j];
-		j++;
+		error_perror (PWD_ER, C_ERROR, NF);
+		return (EXIT_FAILURE);
 	}
-}
-
-char	*clean_buff(char *buffer)
-{
-	free(buffer);
-	buffer = NULL;
-	return (NULL);
+	printf("%s\n", pwd);
+	free (pwd);
+	return (EXIT_SUCCESS);
 }

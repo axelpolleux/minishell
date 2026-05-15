@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 10:43:28 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/05 17:49:37 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/15 15:23:33 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ int	word_size(char *str, char charset)
 int	key_in_env(t_data *data, char *key)
 {
 	t_env	*env;
-	int		i;
+	// int		i;
 
 	env = data->t_env;
-	i = 0;
+	// i = 0;
 	while (env)
 	{
 		if (!strcmp(key, env->key))
