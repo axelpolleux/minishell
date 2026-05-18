@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/05 13:36:37 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/06 12:29:00 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/18 15:08:38 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,11 @@ int	init_champ_env(t_data *data, char **new_var, char **new_arg, char **new_key)
 
 int	no_minim_env(char **env)
 {
-	int		i;
 	int		error;
 
 	if (!env || !(*env))
 		return (-1);
 	error = 0;
-	i = -1;
 	if (not_in_original_en(env, PWD))
 		error += 2;
 	if (not_in_original_en(env, OLDPWD))

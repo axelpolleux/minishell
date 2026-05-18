@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/14 15:19:44 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/18 14:58:33 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,10 @@
 	int
 	long
 	size_t
-	bool
 	strcut
 */
-//=============<for general utility>=============//
 
+//=============<for general utility>=============//
 extern volatile int	g_signal;
 
 # define ERROR		0
@@ -77,6 +76,7 @@ extern volatile int	g_signal;
 # define EXT_ARG	"exit\nminishell: exit: too many arguments\n"
 # define QUOT_ER	"minishell: every quote must be closed\n"
 # define SYNT_ER	"minishell: syntax error near unexpected token `newline'\n"
+# define VOID_CMD	":command not found\n"
 # define DATA_ER	"Error : A malloc has failed\n"
 //==============================================//
 
@@ -143,7 +143,6 @@ typedef struct s_data
 	int			exit;
 	int			quote;
 	int			pipe;
-	int			flag;
 
 	pid_t		*pid;
 
@@ -189,11 +188,12 @@ void			add_to_bottom_env(t_env **node, t_env *new_bot);
 void			add_to_bottom_cmd(t_cmd **node, t_cmd *new_bot);
 void			add_redir_back(t_redir_her **lst, t_redir_her *new);
 void			env_new_node(t_data *data, char *line);
-//================================================================//
+//void			reset(t_data *data);
+
 void			display_env(t_env *view);// a degager a la fin
-void			display_token(t_token *view);//
+void			display_tokens(t_token *token);//
 void			display_cmd(t_cmd *view);//
-//================================================================//
+
 int				ft_strcmp(char *s1, char *s2);
 int				srch_cmd(char *s, char c);
 int				ft_lstsize_e(t_env *lst);
@@ -210,7 +210,6 @@ t_data			*init_data(int ac, char **av);
 t_env			*new_env(char *new_var, char *new_arg, \
 char *new_key, int export);
 t_env			*make_new_env_name(char *line, int export);
-//======================================================//
 
 //============for the the expand========//
 char			**get_expand_t(t_data *data, char **cmd);
@@ -289,19 +288,22 @@ int				init_heredoc(t_redir_her *doc);
 bool			fcext(t_data *data, t_cmd *cmd, char *path, char *command);
 //===========================================================//
 
-//========================<for the parsing>=========================//
+//========================<parsing and tokeniser>=========================//
 char			**tokens_to_argv(t_token *start, t_token *end, int i);
 
+void			reset_read(t_data *data);
 void			main_reading(t_data *data, char *title);
 void			display_tokens(t_token *token);
 void			ft_token_add_back(t_token **lst, t_token *new);
 void			add_cmd_back(t_cmd **lst, t_cmd *new);
 
+int				main_parser(t_data *data);
+int				quotes_manager(t_data *data, t_token **tokens,	\
+								char *input, int *index);
 int				double_quotes(t_data *data, t_token **tokens,	\
 								char *input, int *index);
 int				single_quotes(t_data *data, t_token **tokens,	\
 								char *input, int *index);
-int				main_parser(t_data *data);
 int				is_space(int c);
 int				not_in_original_en(char **env, char *name);
 int				make_oldpwd(t_data *data, t_env *new, char **env);
@@ -309,24 +311,21 @@ int				make_pwd(t_data *data, t_env *new);
 int				no_minim_env(char **env);
 int				count_words(t_token *start, t_token *end);
 int				is_redir(int type);
-int				tok_to_cmd(t_token *token, t_cmd *new, \
-t_token	**start, t_cmd **cmds);
-int				tok_start(t_cmd *new, t_token *start, t_cmd **cmds);
-int				parse_redirections(t_cmd *cmd, t_token *tok, t_token *end);
+int				manage_quote(t_data *data, t_token **tokens,	\
+								char *input, int *index);
 
 t_cmd			*new_cmd_node(void);
-t_cmd			*init_cmd(t_token *token);
+t_cmd			*parse_commands(t_token *tokens);
 t_token			*tokeniser(t_data *data, char *input);
 t_token			*token_new(char *input, int *index, int len, int type);
-t_redir_her		*new_redirection(int type, char *file);
 //======================================================//
 
 //===================<for sig usage>===============//
+void			handle_signal(int signal);
 void			ft_signal_d(t_env *env);
 void			ft_sigint_heredoc(int pid);
 void			ft_sigint_cmd(int pid);
 void			ft_sigint_interactive(int pid);
-void			handle_signal(int signal);
 
 int				signal_manage(void);
 //===============================================//

@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 11:53:33 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/04 10:37:42 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/18 14:05:34 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	closes(int fd, int *fd_storage)
 
 int	srch_cmd(char *s, char c)
 {
+	if (!s)
+		return (0);
 	while (*s && *s != '\0')
 	{
 		if (*s == c)

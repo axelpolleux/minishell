@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 11:06:42 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/14 15:14:26 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/18 11:46:43 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,37 +17,6 @@ void	skip_spaces(char *input, int *index)
 	while (is_space(input[*index]))
 		(*index)++;
 }
-
-// void	add_in(t_data *data, t_token **tokens, char *input, int *index)
-// {
-// 	t_token	*new;
-// 	int		type;
-// 	int		len;
-
-// 	len = 1;
-// 	if (input[*index] == '|')
-// 	{
-// 		type = PIPE;
-// 		data->pipe++;
-// 	}
-// 	else if (input[*index] == '<')
-// 	{
-// 		if (input[*index + 1] && input[*index + 1] == '<')
-// 		{
-// 			type = HEREDOC;
-// 			len = 2;
-// 		}
-// 		else
-// 			type = RED_IN;
-// 	}
-// 	else
-// 		type = WORD;
-// 	new = token_new(input, index, len, type);
-// 	if (!new)
-// 		data_malloc_error(data);
-// 	ft_token_add_back(tokens, new);
-// 	(*index) += len;
-// }
 
 void	add_in(t_data *data, t_token **tokens, char *input, int *index)
 {
@@ -131,11 +100,7 @@ t_token	*tokeniser(t_data *data, char *input)
 			break ;
 		if (ft_strchr("|<", input[index]))
 			add_in(data, &tokens, input, &index);
-		else if (input[index] == '"' && double_quotes(data, &tokens,
-				input, &index))
-			return (NULL);
-		else if (input[index] == '\'' && single_quotes(data, &tokens,
-				input, &index))
+		else if (manage_quote(data, &tokens, input, &index))
 			return (NULL);
 		else if (input[index] == '>')
 			add_out(data, &tokens, input, &index);

@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/14 15:01:38 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/18 15:07:36 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,17 @@ void	display_cmd(t_cmd *view)
 	}
 }
 
-void	display_token(t_token *view)
+void	display_tokens(t_token *token)
 {
-	printf("{");
-	while (view)
+	int	i;
+
+	i = 0;
+	while (token)
 	{
-		printf("%s:%d", view->cmd, view->type);
-		if (view->next)
-			printf(", ");
-		view = view->next;
+		printf("%d: {%s - %d}\n", i, token->cmd, token->type);
+		i++;
+		token = token->next;
 	}
-	printf("}\n");
 }
 
 	// //pour voir l'historique
@@ -109,5 +109,5 @@ int	main(int ac, char **av, char **env)
 		data_malloc_error(data);
 	init_env(data, env, -1);
 	main_reading(data, "pastishell$ ");
-	return (0);
+	return (EXIT_SUCCESS);
 }

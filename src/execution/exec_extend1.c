@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 11:48:19 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/14 14:58:24 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/18 15:06:25 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,9 @@ void	cmd_with_path(t_data *data, t_cmd *cmd, char *command)
 	}
 	cmd->cmd_path = ft_strdup(command);
 	if (!cmd->cmd_path)
+	{
 		data_malloc_error(data);
+	}
 }
 
 int	check_directory(t_data *data, char *path)
@@ -99,9 +101,14 @@ int	check_directory(t_data *data, char *path)
 int	check_cmd(t_data *data, t_cmd *cmd)
 {
 	data->exit = -1;
-	if (!cmd || !cmd->cmd || !cmd->cmd[0])
+	if (!cmd || !cmd->cmd)
 		return (EXIT_FAILURE);
-	if (srch_cmd(cmd->cmd[0], '/'))
+	else if (!cmd->cmd[0])
+	{
+		ft_putstr_fd(VOID_CMD, 2);
+		data->exit = 127;
+	}
+	else if (srch_cmd(cmd->cmd[0], '/'))
 		cmd_with_path(data, cmd, cmd->cmd[0]);
 	else
 	{

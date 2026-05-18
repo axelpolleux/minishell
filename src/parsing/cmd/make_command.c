@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 17:10:40 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/14 14:50:48 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/15 14:40:08 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int	tok_to_cmd(t_token *token, t_cmd *new, t_token **start, t_cmd **cmds)
 	return (EXIT_SUCCESS);
 }
 
-t_cmd	*init_cmd(t_token *token)
+t_cmd	*parse_commands(t_token *token)
 {
 	t_cmd	*cmds;
 	t_cmd	*new;

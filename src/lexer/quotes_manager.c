@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/08 16:01:08 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/14 15:04:12 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/18 15:04:38 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,26 @@ int	single_quotes(t_data *data, t_token **tokens, char *input, int *index)
 		data_malloc_error(data);
 	ft_token_add_back(tokens, new);
 	(*index) += (i + 1);
+	return (EXIT_SUCCESS);
+}
+
+int	manage_quote(t_data *data, t_token **tokens, char *input, int *index)
+{
+	if (input[*index] == '"')
+	{
+		if (double_quotes(data, tokens, input, index) == EXIT_FAILURE)
+		{
+			free_token(*tokens);
+			return (EXIT_FAILURE);
+		}
+	}
+	else if (input[*index] == '\'')
+	{
+		if (single_quotes(data, tokens, input, index))
+		{
+			free_token(*tokens);
+			return (EXIT_FAILURE);
+		}
+	}
 	return (EXIT_SUCCESS);
 }

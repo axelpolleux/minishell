@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 17:08:16 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/05 15:30:11 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/15 16:07:54 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	is_builtin(char **built_in, char *cmd)
 	int	i;
 
 	i = 0;
-	if (built_in == NULL)
+	if (built_in == NULL || !cmd)
 		return (0);
 	while (built_in[i])
 	{
