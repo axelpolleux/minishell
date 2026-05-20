@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:43:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/18 15:07:16 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/20 11:10:12 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	children(t_data *data, t_cmd *cmd)
 
 	if (is_builtin(data->built_in, cmd->cmd[0]))
 		built_child(data, cmd);
-	else if (!check_cmd(data, cmd))
+	else if (check_cmd(data, cmd) == EXIT_SUCCESS)
 	{
 		manage_redir(data, cmd);
 		if (cmd->next)
@@ -101,7 +101,8 @@ void	exec(t_data *data)
 	data->pid = ft_calloc(sizeof(pid_t), count);
 	if (!data->pid)
 		data_malloc_error(data);
-	heredoc_manage(data->cmd);
+	if (heredoc_manage(data, data->cmd))
+		data_malloc_error(data);
 	manage_process(data, t_cmd);
 	wait_end(data, count);
 }

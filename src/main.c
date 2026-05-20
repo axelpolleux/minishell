@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/18 15:07:36 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/20 11:51:04 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,30 @@ void	display_cmd(t_cmd *view)
 	}
 }
 
-void	display_tokens(t_token *token)
-{
-	int	i;
+// void	display_tokens(t_token *token)
+// {
+// 	int	i;
 
-	i = 0;
-	while (token)
+// 	i = 0;
+// 	while (token)
+// 	{
+// 		printf("%d: {%s - %d}\n", i, token->cmd, token->type);
+// 		i++;
+// 		token = token->next;
+// 	}
+// }
+
+void	display_tokens(t_token *view)
+{
+	printf("{");
+	while (view)
 	{
-		printf("%d: {%s - %d}\n", i, token->cmd, token->type);
-		i++;
-		token = token->next;
+		printf("%s:%d", view->cmd, view->type);
+		if (view->next)
+			printf(", ");
+		view = view->next;
 	}
+	printf("}\n");
 }
 
 	// //pour voir l'historique
@@ -111,3 +124,5 @@ int	main(int ac, char **av, char **env)
 	main_reading(data, "pastishell$ ");
 	return (EXIT_SUCCESS);
 }
+
+// vas faire le reste des heredoc connard
