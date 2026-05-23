@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 11:20:04 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/15 14:20:51 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/21 11:19:31 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ t_data	*init_data(int ac, char **av)
 	data->fd_storage[0] = -1;
 	data->fd_storage[1] = -1;
 	data->t_env = NULL;
+	data->history = NULL;
 	data->token = NULL;
 	data->cmd = NULL;
 	data->exit = 0;

@@ -6,31 +6,33 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 14:51:32 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/20 13:52:41 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/23 13:40:21 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	void_quote(char *line, int *i)
+int	void_quote(char *line, int *i, int *empty)
 {
 	if (line[*i] == '"' && line[*i + 1] == '"')
 	{
 		*(i) += 2;
-		return (EXIT_FAILURE);
+		*empty = 1;
+		return (1);
 	}
 	if (line[*i] == '\'' && line[*i + 1] == '\'')
 	{
 		*(i) += 2;
-		return (EXIT_FAILURE);
+		*empty = 1;
+		return (1);
 	}
-	return (EXIT_SUCCESS);
+	return (0);
 }
 
 int	ext_nqote(char **old, int *i, int *j, int *l)
 {
 	while (old[*i][*j] == ' ')
-		j++;
+		(*j)++;
 	if (!old[*i][*j])
 		return (1);
 	*l = *j;
@@ -38,13 +40,12 @@ int	ext_nqote(char **old, int *i, int *j, int *l)
 	return (0);
 }
 
-int	exec_line_expand(t_data *data, char *line, char **n_line, int *i)
+int	exec_line_expand(t_data *data, char *line, char **n_line, int *i, int *empty)
 {
-	if (void_quote(line, i))
+	if (void_quote(line, i, empty))
 	{
-		*n_line = ft_charjoin(*n_line, 2);
-		if (!(*n_line))
-			return (0);
+		if (void_quote(line, i, empty))
+			return (1);
 		return (1);
 	}
 	if (quote_expand(data, line, i))

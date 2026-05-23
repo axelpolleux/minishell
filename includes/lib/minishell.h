@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/20 16:25:08 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/23 13:38:23 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ extern volatile int	g_signal;
 typedef struct s_redir_her
 {
 	char				*file;
+	char				*n_exp_cmd;
 
 	int					type;
 	int					fd;
@@ -137,6 +138,7 @@ typedef struct s_data
 
 	char		*line;
 	char		*line_env;
+	char		*history;
 
 	int			fd_storage[2];
 	int			last_fd;
@@ -227,10 +229,10 @@ int				split_nquote(char **new, char **old, int i, int k);
 int				get_key_nd_len(char *line, char *name);
 int				quote_expand(t_data *data, char *line, int *i);
 int				count_word_quot(char **arr, char c, int i);
-int				void_quote(char *line, int *i);
+int				void_quote(char *line, int *i, int *empty);
 int				ext_nqote(char **old, int *i, int *j, int *l);
 int				exec_line_expand(t_data *data, char *line, \
-char **nline, int *i);
+char **nline, int *i , int *empty);
 
 bool			in_quote(char *line);
 //=====================================//
@@ -283,6 +285,7 @@ void			parent(t_data *data, t_cmd *cmd);
 void			manage_process(t_data *data, t_cmd *cmd);
 void			wait_end(t_data *data, int count);
 void			manage_redir(t_data *data, t_cmd *cmd);
+void			redir_heredoc(t_redir_her *redir);
 void			exec(t_data *data);
 
 int				check_directory(t_data *data, char *path);
@@ -305,11 +308,11 @@ void			display_tokens(t_token *token);
 void			ft_token_add_back(t_token **lst, t_token *new);
 void			add_cmd_back(t_cmd **lst, t_cmd *new);
 
+int				add_word(t_data *data, t_token **tokens, \
+							char *input, int *index);
 int				main_parser(t_data *data);
-int				double_quotes(t_data *data, t_token **tokens,	\
-								char *input, int *index);
-int				single_quotes(t_data *data, t_token **tokens,	\
-								char *input, int *index);
+int				double_quotes(char *input, int *index);
+int				single_quotes(char *input, int *index);
 int				is_space(int c);
 int				not_in_original_en(char **env, char *name);
 int				make_oldpwd(t_data *data, t_env *new, char **env);
@@ -317,12 +320,13 @@ int				make_pwd(t_data *data, t_env *new);
 int				no_minim_env(char **env);
 int				count_words(t_token *start, t_token *end);
 int				is_redir(int type);
-int				manage_quote(t_data *data, t_token **tokens,	\
-								char *input, int *index);
+int				manage_quote(t_token **tokens, char *input, int *index);
+bool			skip_quote(char *input, int *i);
 bool			write_here(t_redir_her *doc, char *line, int *fd);
 bool			new_delimiter(t_data *data, t_redir_her *doc);
 bool			read_heredoc(t_data *data, t_redir_her *doc, \
 char *tmp, int *fd);
+bool			history_heredoc(t_data *data, char *line, int *fd);
 
 t_cmd			*new_cmd_node(void);
 t_cmd			*parse_commands(t_token *tokens);

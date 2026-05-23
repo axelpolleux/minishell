@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:40:43 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/18 15:06:57 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/23 13:43:30 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,33 +31,47 @@ bool	fcext(t_data *data, t_cmd *cmd, char *path, char *command)
 	return (false);
 }
 
-void	manage_redir(t_data *data, t_cmd *cmd)
+void	redir_heredoc(t_redir_her *redir)
 {
-	t_redir_her	*redir;
+	t_redir_her	*tmp;
 	int			fd;
 
-	redir = cmd->redir;
-	while (redir)
+	tmp = redir;
+	while (tmp)
 	{
-		if (redir->type == HEREDOC)
-			fd = redir->fd;
+		if (tmp->type == HEREDOC)
+			fd = tmp->fd;
 		else
-			fd = verif_file(redir->file, redir->type);
+			fd = verif_file(tmp->file, tmp->type);
 		if (fd < 0)
 		{
-			perror(redir->file);
-			exit(1);
+			perror(tmp->file);
+			exit(EXIT_FAILURE);
 		}
-		if (redir->type == RED_IN || redir->type == HEREDOC)
+		if (tmp->type == RED_IN || tmp->type == HEREDOC)
 			dup2(fd, STDIN_FILENO);
 		else
 			dup2(fd, STDOUT_FILENO);
 		close(fd);
-		redir = redir->next;
+		tmp = tmp->next;
+	}
+}
+
+void	manage_redir(t_data *data, t_cmd *cmd)
+{
+	if (cmd->input != STDIN_FILENO && cmd->input >= 0)
+	{
+		if (dup2(cmd->input, STDIN_FILENO) == -1)
+			dup_error(data);
+		close(cmd->input);
 	}
 	if (cmd->next)
+	{
 		if (dup2(data->fd_storage[1], STDOUT_FILENO) == -1)
 			dup_error(data);
+		close(data->fd_storage[1]);
+	}
+	redir_heredoc(cmd->redir);
 }
 
 int	verif_file(char *file, int doc)
@@ -88,3 +102,35 @@ void	wait_end(t_data *data, int count)
 	free(data->pid);
 	data->pid = NULL;
 }
+
+// void	manage_redir(t_data *data, t_cmd *cmd)
+// {
+// 	t_redir_her	*redir;
+// 	int			fd;
+
+// 	redir = cmd->redir;
+// 	while (redir)
+// 	{
+// 		if (redir->type == HEREDOC)
+// 			fd = redir->fd;
+// 		else
+// 			fd = verif_file(redir->file, redir->type);
+// 		if (fd < 0)
+// 		{
+// 			perror(redir->file);
+// 			exit(EXIT_FAILURE);
+// 		}
+// 		if (redir->type == RED_IN || redir->type == HEREDOC)
+// 			dup2(fd, STDIN_FILENO);
+// 		else
+// 			dup2(fd, STDOUT_FILENO);
+// 		close(fd);
+// 		redir = redir->next;
+// 	}
+// 	if (cmd->next)
+// 		if (dup2(data->fd_storage[1], STDOUT_FILENO) == -1)
+// 		{
+// 			dup_error(data);
+// 			close(data->fd_storage[1]);
+// 		}
+// }

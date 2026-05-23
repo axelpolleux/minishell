@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/28 17:10:40 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/15 14:40:08 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/22 12:12:00 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_redir_her	*new_redirection(int type, char *file)
 {
 	t_redir_her	*new;
 
-	new = ft_calloc(1, sizeof(t_redir_her));
+	new = ft_calloc(sizeof(t_redir_her), 1);
 	if (!new)
 		return (NULL);
 	new->type = type;
@@ -41,6 +41,7 @@ int	parse_redirections(t_cmd *cmd, t_token *tok, t_token *end)
 			if (!tok->next || tok->next->type != WORD)
 			{
 				ft_putstr_fd("syntax error near redirection\n", 2);
+				//data->exit = 2;
 				return (EXIT_FAILURE);
 			}
 			new = new_redirection(tok->type, tok->next->cmd);

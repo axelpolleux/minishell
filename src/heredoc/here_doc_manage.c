@@ -6,22 +6,35 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 11:11:15 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/20 16:22:48 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/23 13:46:35 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	write_here(t_redir_her *doc, char *line, int *fd)
+bool	new_delimiter(t_data *data, t_redir_her *doc)
 {
-	if (!ft_strcmp(line, doc->file))
-	{
-		free(line);
+	char	*n_line;
+	int		i;
+
+	data->quote = NQUOT;
+	n_line = ft_strdup("");
+	if (!n_line)
 		return (true);
+	i = 0;
+	while (doc->file[i])
+	{
+		if (quote_expand(data, doc->file, &i))
+			continue ;
+		n_line = ft_charjoin(n_line, doc->file[i]);
+		if (!n_line)
+			return (true);
+		i++;
 	}
-	write(fd[1], line, ft_strlen(line));
-	write(fd[1], "\n", 1);
-	free(line);
+	free(doc->file);
+	doc->file = n_line;
+	if (!doc->file)
+		return (true);
 	return (false);
 }
 
@@ -33,15 +46,18 @@ bool	read_heredoc(t_data *data, t_redir_her *doc, char *tmp, int *fd)
 	{
 		line = readline("> ");
 		if (!line)
+		{
+			close(fd[1]);
 			break ;
+		}
+		if (history_heredoc(data, line, fd))
+			return (true);
 		line = expand_here_doc(data, doc, line, tmp);
 		if (!line)
 		{
 			closes(-1, fd);
 			return (true);
 		}
-		if (line && *line && !full_void(line))
-			add_history(line);
 		if (write_here(doc, line, fd))
 			break ;
 	}
@@ -53,22 +69,25 @@ int	init_heredoc(t_data *data, t_redir_her *doc)
 	char	*tmp;
 	int		fd[2];
 
-	if (pipe(fd) == -1)
-		return (-1);
 	tmp = ft_strdup(doc->file);
 	if (!tmp)
-	{
-		closes(-1, fd);
 		return (-2);
-	}
+	if (pipe(fd) == -1)
+		return (-1);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_signal);
+	printf("old_delim:{%s}\n", doc->file);
+	if (new_delimiter(data, doc))
+	{
+		free(tmp);
+		return (-2);
+	}
+	printf("new_delim:{%s}\n", doc->file);
 	if (read_heredoc(data, doc, tmp, fd))
 	{
 		free(tmp);
 		return (-2);
 	}
-	rl_clear_history();
 	free(tmp);
 	close(fd[1]);
 	return (fd[0]);
@@ -78,6 +97,11 @@ bool	heredoc_manage(t_data *data, t_cmd *cmd)
 {
 	t_redir_her	*doc;
 
+	if (data->history)
+		free(data->history);
+	data->history = ft_strjoin(data->line, "\n");
+	if (!data->history)
+		return (true);
 	while (cmd)
 	{
 		doc = cmd->redir;
@@ -87,12 +111,12 @@ bool	heredoc_manage(t_data *data, t_cmd *cmd)
 			{
 				doc->fd = init_heredoc(data, doc);
 				if (doc->fd == -2)
-					return (EXIT_FAILURE);
+					return (true);
 				cmd->input = doc->fd;
 			}
 			doc = doc->next;
 		}
 		cmd = cmd->next;
 	}
-	return (EXIT_SUCCESS);
+	return (false);
 }

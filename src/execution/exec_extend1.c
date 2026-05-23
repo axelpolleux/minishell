@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 11:48:19 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/19 14:20:56 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/22 10:48:12 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ int	check_directory(t_data *data, char *path)
 
 int	check_cmd(t_data *data, t_cmd *cmd)
 {
+	ft_putendl_fd("check_cmd", 1);
 	data->exit = -1;
 	if (!cmd || !cmd->cmd || !cmd->cmd[0])
 		return (EXIT_FAILURE);
@@ -114,6 +115,9 @@ int	check_cmd(t_data *data, t_cmd *cmd)
 			full_cmd(data, cmd, cmd->cmd[0], -1);
 	}
 	if (data->exit == 126 || data->exit == 127)
+	{
+		ft_putendl_fd("check_cmd_error", 1);
 		return (EXIT_FAILURE);
+	}
 	return (EXIT_SUCCESS);
 }

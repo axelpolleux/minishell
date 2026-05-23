@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/20 11:51:04 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/23 13:37:08 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,5 +124,7 @@ int	main(int ac, char **av, char **env)
 	main_reading(data, "pastishell$ ");
 	return (EXIT_SUCCESS);
 }
-
-// vas faire le reste des heredoc connard
+// leak a env i
+//  comportement heredoc erratique    
+// les erreur du init_cmd sont incomplete
+// les redir parte en couille      > test non creation de test

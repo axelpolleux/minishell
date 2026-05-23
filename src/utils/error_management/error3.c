@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 10:52:20 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/08 17:42:26 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/22 10:51:55 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	opendir_error(t_data *data, char *error)
 
 void	error_cnf(t_data *data, char *error)
 {
+	ft_putstr_fd("enter_error_cnf", 1);
 	ft_putstr_fd(error, 2);
 	ft_putstr_fd(": command not found\n", 2);
 	data->exit = 127;

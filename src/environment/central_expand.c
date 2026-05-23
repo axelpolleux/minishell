@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 10:10:01 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/20 15:05:15 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/23 13:42:24 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,21 +68,29 @@ char	*dollar_expand(t_data *data, char *line, int *i)
 	return (ft_strdup(n_line));
 }
 
+// pas secur
 char	*line_expand(t_data *data, char *line, int i)
 {
 	char	*n_line;
 	int		ret;
+	int		empty;
 
+	empty = 0;
 	n_line = ft_strdup("");
 	if (!n_line)
 		return (NULL);
 	while (line[i])
 	{
-		ret = exec_line_expand(data, line, &n_line, &i);
+		ret = exec_line_expand(data, line, &n_line, &i, &empty);
 		if (ret == 0)
 			return (NULL);
 		if (ret == 2)
 			i++;
+	}
+	if (empty && n_line[0] == '\0')
+	{
+		free(n_line);
+		return (ft_strdup("\2"));
 	}
 	return (n_line);
 }
@@ -115,7 +123,7 @@ void	get_expand(t_data *data, t_cmd *cmd)
 	char	*n_line;
 	int		i;
 
-	tmp = ft_calloc(sizeof(char *), PATH_MAX);
+	tmp = ft_calloc(sizeof(char *), nb_arg(cmd->cmd) + 1);
 	if (!tmp)
 		data_malloc_error(data);
 	i = -1;
