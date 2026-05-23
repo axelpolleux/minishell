@@ -6,9 +6,12 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/15 15:01:40 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/05 18:43:25 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "minishell.h"
 
@@ -50,18 +53,18 @@ void	display_cmd(t_cmd *view)
 	}
 }
 
-void	display_tokens(t_token *token)
-{
-	int	i;
+// void	display_tokens(t_token *token)
+// {
+// 	int	i;
 
-	i = 0;
-	while (token)
-	{
-		printf("%d: {%s - %d}\n", i, token->cmd, token->type);
-		i++;
-		token = token->next;
-	}
-}
+// 	i = 0;
+// 	while (token)
+// 	{
+// 		printf("%d: {%s - %d}\n", i, token->cmd, token->type);
+// 		i++;
+// 		token = token->next;
+// 	}
+// }
 
 	// //pour voir l'historique
 	// HIST_ENTRY **history;
@@ -112,3 +115,7 @@ int	main(int ac, char **av, char **env)
 	main_reading(data, "pastishell$ ");
 	return (EXIT_SUCCESS);
 }
+// leak a env i
+//  comportement heredoc erratique
+// les erreur du init_cmd sont incomplete
+// les redir parte en couille      > test non creation de test

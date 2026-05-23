@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/15 15:05:25 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/05 18:39:55 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 	double
 	unsign
 	int
+	bool
 	long
 	size_t
 	strcut
@@ -97,6 +98,7 @@ typedef struct s_cmd
 	char			*cmd_path;
 	char			*full_cmd;
 
+	int				type;
 	int				input;
 	int				output;
 
@@ -136,6 +138,7 @@ typedef struct s_data
 
 	char		*line;
 	char		*line_env;
+	char		*history;
 
 	int			fd_storage[2];
 	int			last_fd;
@@ -187,13 +190,11 @@ void			add_to_bottom_env(t_env **node, t_env *new_bot);
 void			add_to_bottom_cmd(t_cmd **node, t_cmd *new_bot);
 void			add_redir_back(t_redir_her **lst, t_redir_her *new);
 void			env_new_node(t_data *data, char *line);
-//void			reset(t_data *data);
 
 void			display_env(t_env *view);// a degager a la fin
 void			display_tokens(t_token *token);//
 void			display_cmd(t_cmd *view);//
-
-
+//================================================================//
 int				ft_strcmp(char *s1, char *s2);
 int				srch_cmd(char *s, char c);
 int				ft_lstsize_e(t_env *lst);
@@ -210,12 +211,16 @@ t_data			*init_data(int ac, char **av);
 t_env			*new_env(char *new_var, char *new_arg, \
 char *new_key, int export);
 t_env			*make_new_env_name(char *line, int export);
+//======================================================//
 
 //============for the the expand========//
 char			**get_expand_t(t_data *data, char **cmd);
 char			*dollar_expand(t_data *data, char *line, int *i);
 char			*line_expand(t_data *data, char *line, int i);
 char			*get_dollar(t_data *data, char *line, int *i, char *n_line);
+char			*expand_here_doc(t_data *data, t_redir_her *doc, \
+char *line, char *tmp);
+char			*get_expand_line(t_data *data, char *line, char *n_line);
 
 void			replace_cmd(t_data *data, t_cmd *cmd, char **tmp);
 void			place_space(char **args);
@@ -224,7 +229,13 @@ void			get_expand(t_data *data, t_cmd *cmd);
 int				split_nquote(char **new, char **old, int i, int k);
 int				get_key_nd_len(char *line, char *name);
 int				quote_expand(t_data *data, char *line, int *i);
-int				count_word_quot(char **arr, char c);
+int				count_word_quot(char **arr, char c, int i);
+int				void_quote(char *line, int *i, int *empty);
+int				ext_nqote(char **old, int *i, int *j, int *l);
+int				exec_line_expand(t_data *data, char *line, \
+char **nline, int *i , int *empty);
+
+bool			in_quote(char *line);
 //=====================================//
 
 //========================<for build in>=========================//
@@ -275,17 +286,18 @@ void			parent(t_data *data, t_cmd *cmd);
 void			manage_process(t_data *data, t_cmd *cmd);
 void			wait_end(t_data *data, int count);
 void			manage_redir(t_data *data, t_cmd *cmd);
+void			redir_heredoc(t_redir_her *redir);
 void			exec(t_data *data);
-void			heredoc_manage(t_cmd *cmd);
 
 int				check_directory(t_data *data, char *path);
 int				check_cmd(t_data *data, t_cmd *cmd);
 int				verif_file(char *line, int doc);
 int				only_quote(char *line);
 int				full_void(char *line);
-int				init_heredoc(t_redir_her *doc);
+int				init_heredoc(t_data *data, t_redir_her *doc);
 
 bool			fcext(t_data *data, t_cmd *cmd, char *path, char *command);
+bool			heredoc_manage(t_data *data, t_cmd *cmd);
 //===========================================================//
 
 //========================<parsing and tokeniser>=========================//
@@ -297,13 +309,11 @@ void			display_tokens(t_token *token);
 void			ft_token_add_back(t_token **lst, t_token *new);
 void			add_cmd_back(t_cmd **lst, t_cmd *new);
 
+int				add_word(t_data *data, t_token **tokens, \
+							char *input, int *index);
 int				main_parser(t_data *data);
-int				quotes_manager(t_data *data, t_token **tokens,	\
-								char *input, int *index);
-int				double_quotes(t_data *data, t_token **tokens,	\
-								char *input, int *index);
-int				single_quotes(t_data *data, t_token **tokens,	\
-								char *input, int *index);
+int				double_quotes(char *input, int *index);
+int				single_quotes(char *input, int *index);
 int				is_space(int c);
 int				not_in_original_en(char **env, char *name);
 int				make_oldpwd(t_data *data, t_env *new, char **env);
@@ -311,14 +321,18 @@ int				make_pwd(t_data *data, t_env *new);
 int				no_minim_env(char **env);
 int				count_words(t_token *start, t_token *end);
 int				is_redir(int type);
-
+int				manage_quote(t_token **tokens, char *input, int *index);
+bool			skip_quote(char *input, int *i);
+bool			write_here(t_redir_her *doc, char *line, int *fd);
+bool			new_delimiter(t_data *data, t_redir_her *doc);
+bool			read_heredoc(t_data *data, t_redir_her *doc, \
+char *tmp, int *fd);
+bool			history_heredoc(t_data *data, char *line, int *fd);
 
 t_cmd			*new_cmd_node(void);
 t_cmd			*parse_commands(t_token *tokens);
 t_token			*tokeniser(t_data *data, char *input);
 t_token			*token_new(char *input, int *index, int len, int type);
-
-
 //======================================================//
 
 //===================<for sig usage>===============//
@@ -330,5 +344,4 @@ void			ft_sigint_interactive(int pid);
 
 int				signal_manage(void);
 //===============================================//
-
 #endif

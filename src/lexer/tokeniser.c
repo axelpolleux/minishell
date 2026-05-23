@@ -25,18 +25,15 @@ void	add_in(t_data *data, t_token **tokens, char *input, int *index)
 	int		len;
 
 	len = 1;
-	if (input[*index] == '|')
+	if (input[*index] == '|' && ++data->pipe)
 		type = PIPE;
-	else if (input[*index] == '<')
+	else if (input[*index] == '<' && input[*index + 1] == '<')
 	{
-		if (input[*index + 1] && input[*index + 1] == '<')
-		{
-			type = HEREDOC;
-			len = 2;
-		}
-		else
-			type = RED_IN;
+		type = HEREDOC;
+		len = 2;
 	}
+	else if (input[*index] == '<')
+		type = RED_IN;
 	else
 		type = WORD;
 	new = token_new(input, index, len, type);
@@ -72,43 +69,72 @@ void	add_out(t_data *data, t_token **tokens, char *input, int *index)
 	(*index) += len;
 }
 
-void	add_word(t_data *data, t_token **tokens, char *input, int *index)
+// void	add_word(t_data *data, t_token **tokens, char *input, int *index)
+// {
+// 	t_token	*new;
+// 	int		start;
+// 	int		i;
+
+// 	start = *index;
+// 	i = *index;
+// 	while (input[i] && !is_space(input[i]) && !ft_strchr("|<>", input[i]))
+// 	{
+// 		if (input[i] == '\'' || input[i] == '"')
+// 		{
+// 			if (skip_quote(input, &i))
+// 			{
+// 				free_token(*tokens);
+// 				ft_putstr_fd(QUOT_ER, 2);
+// 				return ;
+// 			}
+// 		}
+// 		else
+// 			i++;
+// 	}
+// 	new = token_new(input, &start, i - start, WORD);
+// 	if (!new)
+// 		data_malloc_error(data);
+// 	ft_token_add_back(tokens, new);
+// 	*index = i;
+// }
+
+int	add_word(t_data *data, t_token **tokens, char *input, int *index)
 {
 	t_token	*new;
-	int		len;
-	char	quote;
+	int		start;
+	int		i;
 
-	len = 0;
-	while (input[*index + len] && !is_space(input[*index + len])
-		&& !ft_strchr("|<>", input[*index + len]))
+	start = *index;
+	i = *index;
+	while (input[i] && !is_space(input[i]) && !ft_strchr("|<>", input[i]))
 	{
-		if (input[*index + len] == '"' || input[*index + len] == '\'')
+		if (input[i] == '\'' || input[i] == '"')
 		{
-			quote = input[*index + len++];
-			while (input[*index + len] && input[*index + len] != quote)
-				len++;
-			if (!input[*index + len])
+			if (skip_quote(input, &i))
 			{
-				error_quote();
-				break ;
+				free_token(*tokens);
+				*tokens = NULL;
+				return (error_quote());
 			}
 		}
-		len++;
+		else
+			i++;
 	}
-	new = token_new(input, index, len, WORD);
+	new = token_new(input, &start, i - start, WORD);
 	if (!new)
 		data_malloc_error(data);
 	ft_token_add_back(tokens, new);
-	(*index) += len;
+	*index = i;
+	return (EXIT_SUCCESS);
 }
 
 t_token	*tokeniser(t_data *data, char *input)
 {
-	int		index;
 	t_token	*tokens;
+	int		index;
 
-	index = 0;
 	tokens = NULL;
+	index = 0;
 	while (input[index])
 	{
 		skip_spaces(input, &index);
@@ -116,15 +142,12 @@ t_token	*tokeniser(t_data *data, char *input)
 			break ;
 		else if (ft_strchr("|<", input[index]))
 			add_in(data, &tokens, input, &index);
-		else if (input[index] == '"' || input[index] == '\'')
-		{
-			if (!quotes_manager(data, &tokens, input, &index))
-				break ;
-		}
-		else if (ft_strchr(">", input[index]))
+		else if (manage_quote(&tokens, input, &index))
+			return (NULL);
+		else if (input[index] == '>')
 			add_out(data, &tokens, input, &index);
-		else if (!is_space(input[index]))
-			add_word(data, &tokens, input, &index);
+		else if (add_word(data, &tokens, input, &index))
+			return (NULL);
 	}
 	return (tokens);
 }

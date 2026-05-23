@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 10:10:01 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/05 18:43:34 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/23 13:42:24 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,17 @@ int	split_nquote(char **new, char **old, int i, int k)
 	while (old[++i])
 	{
 		j = 0;
+		if (old[i][0] == 2 && old[i][1] == '\0')
+		{
+			new[++k] = ft_strdup("");
+			if (!new[k])
+				return (EXIT_FAILURE);
+			continue ;
+		}
 		while (old[i][j])
 		{
-			while (old[i][j] == ' ')
-				j++;
-			if (!old[i][j])
-			{
-				new[++k] = ft_strdup("");
-				if (!new[k])
-					return (EXIT_FAILURE);
-				continue ;
-			}
-			l = j;
-			j += word_size(old[i] + j, ' ');
+			if (ext_nqote(old, &i, &j, &l))
+				break ;
 			new[++k] = ft_substr(old[i], l, j - l);
 			if (!new[k])
 				return (EXIT_FAILURE);
@@ -48,7 +46,10 @@ char	*dollar_expand(t_data *data, char *line, int *i)
 	int		len;
 
 	if (!line[*i])
-		return (ft_strdup("$"));
+	{
+		n_line = ft_strdup("$");
+		return (n_line);
+	}
 	if (line[*i] == '?')
 	{
 		(*i)++;
@@ -58,8 +59,6 @@ char	*dollar_expand(t_data *data, char *line, int *i)
 	if (len == 0)
 	{
 		n_line = ft_strdup("$");
-		if (!n_line)
-			return (NULL);
 		return (n_line);
 	}
 	n_line = (get_arg_env(data, key));
@@ -69,31 +68,29 @@ char	*dollar_expand(t_data *data, char *line, int *i)
 	return (ft_strdup(n_line));
 }
 
+// pas secur
 char	*line_expand(t_data *data, char *line, int i)
 {
 	char	*n_line;
+	int		ret;
+	int		empty;
 
+	empty = 0;
 	n_line = ft_strdup("");
 	if (!n_line)
 		return (NULL);
 	while (line[i])
 	{
-		if (quote_expand(data, line, &i))
-			continue ;
-		if (line[i] == '$' && data->quote != SQUOT)
-		{
-			n_line = get_dollar(data, line, &i, n_line);
-			if (!n_line)
-				return (NULL);
-			continue ;
-		}
-		if (data->quote == DQUOT && line[i] == ' ')
-			n_line = ft_charjoin(n_line, 1);
-		else
-			n_line = ft_charjoin(n_line, line[i]);
-		if (!n_line)
+		ret = exec_line_expand(data, line, &n_line, &i, &empty);
+		if (ret == 0)
 			return (NULL);
-		i++;
+		if (ret == 2)
+			i++;
+	}
+	if (empty && n_line[0] == '\0')
+	{
+		free(n_line);
+		return (ft_strdup("\2"));
 	}
 	return (n_line);
 }
@@ -102,7 +99,7 @@ void	replace_cmd(t_data *data, t_cmd *cmd, char **tmp)
 {
 	char	**n_cmd;
 
-	n_cmd = ft_calloc(sizeof(char *), count_word_quot(tmp, ' ') + 1);
+	n_cmd = ft_calloc(sizeof(char *), count_word_quot(tmp, ' ', -1) + 1);
 	if (!n_cmd)
 	{
 		free_arr(tmp);
@@ -126,7 +123,7 @@ void	get_expand(t_data *data, t_cmd *cmd)
 	char	*n_line;
 	int		i;
 
-	tmp = ft_calloc(sizeof(char *), PATH_MAX);
+	tmp = ft_calloc(sizeof(char *), nb_arg(cmd->cmd) + 1);
 	if (!tmp)
 		data_malloc_error(data);
 	i = -1;

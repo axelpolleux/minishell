@@ -6,11 +6,25 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 16:30:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/04/30 11:47:50 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/22 14:44:52 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+bool	skip_quote(char *input, int *i)
+{
+	char	quote;
+
+	quote = input[*i];
+	(*i)++;
+	while (input[*i] && input[*i] != quote)
+		(*i)++;
+	if (!input[*i])
+		return (true);
+	(*i)++;
+	return (false);
+}
 
 int	is_space(int c)
 {
@@ -49,7 +63,10 @@ t_token	*token_new(char *input, int *index, int len, int type)
 		return (NULL);
 	cmd = ft_substr(input, *index, len);
 	if (!cmd)
+	{
+		free(new);
 		return (NULL);
+	}
 	new->cmd = cmd;
 	new->type = type;
 	new->prev = NULL;

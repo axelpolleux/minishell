@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:43:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/14 15:00:48 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/23 13:44:17 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,11 @@ void	children(t_data *data, t_cmd *cmd)
 	char	**env;
 
 	if (is_builtin(data->built_in, cmd->cmd[0]))
+	{
+		manage_redir(data, cmd);
 		built_child(data, cmd);
-	else if (!check_cmd(data, cmd))
+	}
+	else if (check_cmd(data, cmd) == EXIT_SUCCESS)
 	{
 		manage_redir(data, cmd);
 		if (cmd->next)
@@ -68,8 +71,8 @@ void	manage_process(t_data *data, t_cmd *cmd)
 	i = 0;
 	while (cmd)
 	{
-		if (cmd->prev)
-			get_expand(data, cmd);
+		// if (cmd->prev)
+		// 	get_expand(data, cmd); // voir a modifier pour faire en entier
 		if (data->pipe-- > 0)
 			if (pipe(data->fd_storage) == -1)
 				pipe_error(data);
@@ -91,7 +94,12 @@ void	exec(t_data *data)
 	int		count;
 
 	t_cmd = data->cmd;
-	get_expand(data, t_cmd);
+	while (t_cmd)
+	{
+		get_expand(data, t_cmd);
+		t_cmd = t_cmd->next;
+	}
+	t_cmd = data->cmd;
 	if (is_builtin(data->built_in, t_cmd->cmd[0]) && !t_cmd->next)
 	{
 		exec_built(data, t_cmd);
@@ -101,7 +109,8 @@ void	exec(t_data *data)
 	data->pid = ft_calloc(sizeof(pid_t), count);
 	if (!data->pid)
 		data_malloc_error(data);
-	heredoc_manage(data->cmd);
+	if (heredoc_manage(data, data->cmd))
+		data_malloc_error(data);
 	manage_process(data, t_cmd);
 	wait_end(data, count);
 }

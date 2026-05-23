@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 11:17:43 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/14 15:02:26 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/21 11:20:37 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ void	free_data(t_data *data)
 			free(data->pid);
 		if (data->line)
 			free(data->line);
+		if (data->history)
+			free(data->history);
 		if (data->token)
 			free_token(data->token);
 		if (data->t_env)

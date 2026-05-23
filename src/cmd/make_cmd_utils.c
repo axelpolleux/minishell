@@ -6,7 +6,11 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 16:44:26 by ethutin-          #+#    #+#             */
+<<<<<<<< HEAD:src/parsing/cmd/make_cmd_utils.c
 /*   Updated: 2026/05/14 11:33:53 by ethutin-         ###   ########.fr       */
+========
+/*   Updated: 2026/05/22 13:48:50 by ethutin-         ###   ########.fr       */
+>>>>>>>> refs/heads/exec:src/cmd/make_cmd_utils.c
 /*                                                                            */
 /* ************************************************************************** */
 

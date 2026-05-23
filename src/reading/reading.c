@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/26 17:04:56 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/15 15:27:57 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/18 15:08:08 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ void	handle_signal(int signal)
 
 void	reset_read(t_data *data)
 {
-		free_token(data->token);
-		data->token = NULL;
-		free_cmd(data->cmd);
-		data->cmd = NULL;
-		free(data->line);
-		data->line = NULL;
+	free_token(data->token);
+	data->token = NULL;
+	free_cmd(data->cmd);
+	data->cmd = NULL;
+	free(data->line);
+	data->line = NULL;
 }
 
 void	main_reading(t_data *data, char *title)
@@ -46,7 +46,7 @@ void	main_reading(t_data *data, char *title)
 			free_data(data);
 			printf("exit\n");
 			exit(0);
-		}
+		}1
 		if (data->line && *(data->line) && !full_void(data->line))
 			add_history(data->line);
 		if (main_parser(data))
@@ -55,6 +55,7 @@ void	main_reading(t_data *data, char *title)
 			continue ;
 		}
 		exec(data);
+		free(data->line);
 	}
 	free_data(data);
 }

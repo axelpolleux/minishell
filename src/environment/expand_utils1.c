@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_utils.c                                     :+:      :+:    :+:   */
+/*   expand_utils1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 14:01:58 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/05 17:45:41 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/19 15:54:49 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,9 @@ char	*get_dollar(t_data *data, char *line, int *i, char *n_line)
 	return (n_line);
 }
 
-int	count_word_quot(char **arr, char c)
+int	count_word_quot(char **arr, char c, int i)
 {
 	int	count;
-	int	i;
 	int	j;
 
 	count = 0;
@@ -36,6 +35,11 @@ int	count_word_quot(char **arr, char c)
 	while (arr[++i])
 	{
 		j = 0;
+		if (arr[i][0] == 2 && arr[i][1] == '\0')
+		{
+			count++;
+			continue ;
+		}
 		while (arr[i][j])
 		{
 			if ((arr[i][j] != c))
@@ -43,7 +47,7 @@ int	count_word_quot(char **arr, char c)
 				j += word_size(arr[i] + j, c);
 				count++;
 			}
-			else if (arr[i][j] == c)
+			else
 				j++;
 		}
 	}
@@ -56,7 +60,6 @@ void	place_space(char **arr)
 	int	j;
 
 	i = -1;
-	j = 0;
 	while (arr[++i])
 	{
 		j = -1;
@@ -64,6 +67,8 @@ void	place_space(char **arr)
 		{
 			if (arr[i][j] == 1)
 				arr[i][j] = ' ';
+			else if (arr[i][j] == 2)
+				arr[i][j] = '\0';
 		}
 	}
 }
