@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 10:31:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/05 18:08:03 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/25 13:24:57 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ void	exec_exit(t_data *data, t_cmd *g_cmd, char **cmd)
 	arg = nb_arg(cmd);
 	if (arg > 1)
 	{
-		out = exit_atoi(cmd[1], 1, 0);
+		out = exit_atoi(cmd[0], 1, 0);
 		if (out == -1)
-			error_exit(data, cmd[1]);
+			error_exit(data, cmd[0]);
 	}
 	if (arg > 2)
 	{

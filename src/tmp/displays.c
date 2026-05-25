@@ -22,10 +22,17 @@ void	display_cmd(t_cmd *view)
 		i = -1;
 		printf("============================\n");
 		printf("cmd => {");
-		while (view->cmd[++i])
+		while (view->args[++i])
 		{
-			printf("%s", view->cmd[i]);
-			if (view->cmd[i + 1])
+			if (!i)
+			{
+				printf("%s", view->command);
+				if (view->args)
+					printf(", ");
+				continue ;
+			}
+			printf("%s", view->args[i]);
+			if (view->args[i + 1])
 				printf(", ");
 		}
 		printf("}\n");
@@ -37,6 +44,19 @@ void	display_cmd(t_cmd *view)
 	}
 }
 
+void	display_tokens(t_token *view)
+{
+	printf("{");
+	while (view)
+	{
+		printf("%s:%d", view->cmd, view->type);
+		if (view->next)
+			printf(", ");
+		view = view->next;
+	}
+	printf("}\n");
+}
+
 //=======a degager a la fin==========//
 
 // //pour voir l'historique
@@ -46,17 +66,3 @@ void	display_cmd(t_cmd *view)
 // while (history[++i])
 //     printf("=> %s\n", history[i]->line);
 //=======================================//
-
-// void	display_tokens(t_token *token)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (token)
-// 	{
-// 		printf("%d: {%s - %d}\n", i, token->cmd, token->type);
-// 		i++;
-// 		token = token->next;
-// 	}
-// }
-

@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/09 14:16:32 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/05 18:01:47 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/25 13:53:04 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,16 @@ void	unset_place(t_data *data, char *motif)
 	}
 }
 
-int	exec_unset(t_data *data, char **cmd)
+int	exec_unset(t_data *data, char **args)
 {
 	int		i;
 
-	i = 1;
-	if (nb_arg(cmd) < 2)
+	i = 0;
+	if (args == NULL)
 		return (EXIT_SUCCESS);
-	while (cmd[i])
+	while (args[i])
 	{
-		unset_place(data, cmd[i]);
+		unset_place(data, args[i]);
 		i++;
 	}
 	return (EXIT_SUCCESS);

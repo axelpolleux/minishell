@@ -1,39 +1,49 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd_expand.c                                        :+:      :+:    :+:   */
+/*   error1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/25 13:18:42 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/25 13:18:52 by ethutin-         ###   ########.fr       */
+/*   Created: 2025/11/18 09:51:16 by ethutin-          #+#    #+#             */
+/*   Updated: 2026/05/25 15:10:33 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	update_cd(t_data *data, char *new_var, char *new_key, char *new_arg)
+int	open_error(t_data *data)
 {
-	t_env	*tmp;
+	closes(-1, data->fd_storage);
+	write(2, "minishell: ", 12);
+	perror(data->cmd->args[0]);
+	free_data(data);
+	exit(EXIT_FAILURE);
+}
 
-	tmp = data->t_env;
-	while (tmp)
-	{
-		if (!ft_strcmp(new_key, tmp->key))
-		{
-			if (tmp->var)
-				free(tmp->var);
-			if (tmp->arg)
-				free(tmp->arg);
-			if (tmp->key)
-				free(tmp->key);
-			tmp->var = new_var;
-			tmp->arg = new_arg;
-			tmp->key = new_key;
-			tmp->export = 1;
-			return (EXIT_SUCCESS);
-		}
-		tmp = tmp->next;
-	}
+void	wait_error(t_data *data)
+{
+	free_data(data);
+	perror("waitpid");
+	exit (-1);
+}
+
+void	dup_error(t_data *data)
+{
+	free_data(data);
+	perror("dup");
+	exit (-1);
+}
+
+void	fork_error(t_data *data)
+{
+	free_data(data);
+	perror("fork");
+	exit (-1);
+}
+
+int	error_quote(void)
+{
+	ft_putstr_fd(QUOT_ER, 2);
 	return (EXIT_FAILURE);
 }

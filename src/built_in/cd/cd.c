@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 16:06:43 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/06 12:51:14 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/25 14:14:33 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,47 +54,47 @@ int	update_var(t_data *data, char *new_pwd, char *old_pwd)
 	return (EXIT_SUCCESS);
 }
 
-char	*path_env(t_data *data, char **cmd)
+char	*path_env(t_data *data, char **args)
 {
 	char	*path;
 
 	path = NULL;
-	if (!cmd[1])
+	if (!args || !args[0])
 	{
 		path = get_arg_env(data, HOME);
 		if (!path)
-			error_perror (HOME_NSET, P_ERROR, 2);
+			error_perror(HOME_NSET, P_ERROR, 2);
 	}
-	else if (!strcmp(cmd[1], "-"))
+	else if (!strcmp(args[0], "-"))
 	{
 		path = get_arg_env(data, OLDPWD);
 		if (!path)
-			error_perror (OLDP_NSET, P_ERROR, 2);
+			error_perror(OLDP_NSET, P_ERROR, 2);
 		else
 			printf("%s\n", path);
 	}
 	else
-		path = cmd[1];
+		path = args[0];
 	return (path);
 }
 
-int	exec_cd(t_data *data, char **cmd)
+int	exec_cd(t_data *data, char **args)
 {
 	char	new_pwd[PATH_MAX];
 	char	old_pwd[PATH_MAX];
 	char	*path;
 
-	if (nb_arg(cmd) > 2)
+	if (nb_arg(args) > 1)
 	{
-		error_perror (CD_ARG, P_ERROR, 2);
+		error_perror(CD_ARG, P_ERROR, 2);
 		return (EXIT_FAILURE);
 	}
 	if (!getcwd(old_pwd, sizeof(old_pwd)))
 	{
-		error_perror (CD_ER, C_ERROR, NF);
+		error_perror(CD_ER, C_ERROR, NF);
 		return (EXIT_FAILURE);
 	}
-	path = path_env(data, cmd);
+	path = path_env(data, args);
 	if (!path)
 		return (EXIT_FAILURE);
 	if (exec_chdir(path, new_pwd, sizeof(new_pwd)))

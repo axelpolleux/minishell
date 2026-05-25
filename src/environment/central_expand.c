@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 10:10:01 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/23 13:42:24 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/25 15:01:02 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,8 @@ char	*line_expand(t_data *data, char *line, int i)
 	if (empty && n_line[0] == '\0')
 	{
 		free(n_line);
-		return (ft_strdup("\2"));
+		n_line = NULL;
+		n_line = ft_strdup("\2");
 	}
 	return (n_line);
 }
@@ -113,8 +114,8 @@ void	replace_cmd(t_data *data, t_cmd *cmd, char **tmp)
 	}
 	free_arr(tmp);
 	place_space(n_cmd);
-	free_arr(cmd->cmd);
-	cmd->cmd = n_cmd;
+	free_arr(cmd->args);
+	cmd->args = n_cmd;
 }
 
 void	get_expand(t_data *data, t_cmd *cmd)
@@ -123,14 +124,17 @@ void	get_expand(t_data *data, t_cmd *cmd)
 	char	*n_line;
 	int		i;
 
-	tmp = ft_calloc(sizeof(char *), nb_arg(cmd->cmd) + 1);
+	tmp = ft_calloc(sizeof(char *), nb_arg(cmd->args) + 2);
 	if (!tmp)
 		data_malloc_error(data);
 	i = -1;
-	while (cmd->cmd[++i])
+	while (cmd->args[++i])
 	{
 		data->quote = NQUOT;
-		n_line = line_expand(data, cmd->cmd[i], 0);
+		if (!i)
+			n_line = line_expand(data, cmd->command, 0);
+		else
+			n_line = line_expand(data, cmd->args[i -1], 0);
 		if (!n_line)
 			data_malloc_error(data);
 		tmp[i] = n_line;

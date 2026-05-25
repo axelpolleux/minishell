@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/25 10:48:55 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/25 14:46:11 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ extern volatile int	g_signal;
 # define PWD		"PWD"
 # define OLDPWD		"OLDPWD"
 # define HOME		"HOME"
+# define TITLE		"minichevre$ "
 
 # define HOME_NSET	"minishell: cd: HOME not set\n"
 # define OLDP_NSET	"minishell: cd: OLDPWD not set\n"
@@ -107,8 +108,8 @@ typedef struct s_cmd
 	char            *full_cmd;
 
 	// redir management
-	char            **input;
-	char            **output;
+	int				input;
+	int				output;
 
 	// heredoc
 	t_redir_her		*redir;
@@ -134,6 +135,7 @@ typedef struct s_env
 	int				export;
 
 	struct s_env	*next;
+	struct s_env	*prev;
 }	t_env;
 
 typedef struct s_data
@@ -251,6 +253,7 @@ char			*get_arg_env(t_data *data, char *motif);
 char			*path_env(t_data *data, char **cmd);
 
 void			print_flag(char **cmd, int start);
+void			print_words(char **args, int *i, int *first_word);
 void			built_child(t_data *data, t_cmd *cmd);
 void			built_parent(t_data *data, t_cmd *cmd);
 void			unset_place(t_data *data, char *motif);
@@ -310,7 +313,7 @@ bool			heredoc_manage(t_data *data, t_cmd *cmd);
 char			**tokens_to_argv(t_token *start, t_token *end, int i);
 
 void			reset_read(t_data *data);
-void			main_reading(t_data *data, char *title);
+void			main_reading(t_data *data);
 void			display_tokens(t_token *token);
 void			ft_token_add_back(t_token **lst, t_token *new);
 void			add_cmd_back(t_cmd **lst, t_cmd *new);
