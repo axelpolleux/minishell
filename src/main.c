@@ -10,72 +10,45 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "minishell.h"
 
-//=======a degager a la fin==========//
-void	display_env(t_env *view)
+void	reset_read(t_data *data)
 {
-	while (view)
-	{
-		printf("var-> %s \n", view->var);
-		printf("arg-> %s \n", view->arg);
-		printf("key-> %s \n", view->key);
-		printf("export-> %d \n", view->export);
-		printf("====================\n");
-		view = view->next;
-	}
+	free_token(data->token);
+	data->token = NULL;
+	free_cmd(data->cmd);
+	data->cmd = NULL;
+	free(data->line);
+	data->line = NULL;
 }
 
-void	display_cmd(t_cmd *view)
+void	main_reading(t_data *data, char *title)
 {
-	int	i;
-
-	while (view)
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, handle_signal);
+	while (1)
 	{
-		i = -1;
-		printf("============================\n");
-		printf("cmd => {");
-		while (view->cmd[++i])
+		g_signal = 0;
+		data->line = readline(title);
+		if (!data->line)
 		{
-			printf("%s", view->cmd[i]);
-			if (view->cmd[i + 1])
-				printf(", ");
+			free_data(data);
+			printf("exit\n");
+			exit(0);
+		}1
+		if (data->line && *(data->line) && !full_void(data->line))
+			add_history(data->line);
+		if (main_parser(data))
+		{
+			reset_read(data);
+			continue ;
 		}
-		printf("}\n");
-		printf("cmd_path => %s\n", view->cmd_path);
-		printf("full_cmd => %s\n", view->full_cmd);
-		printf("input => %d\n", view->input);
-		printf("output => %d\n", view->output);
-		view = view->next;
+		exec(data);
+		free(data->line);
 	}
+	free_data(data);
 }
 
-// void	display_tokens(t_token *token)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (token)
-// 	{
-// 		printf("%d: {%s - %d}\n", i, token->cmd, token->type);
-// 		i++;
-// 		token = token->next;
-// 	}
-// }
-
-	// //pour voir l'historique
-	// HIST_ENTRY **history;
-	// history = history_list();
-	// int i = -1;
-	// while (history[++i])
-	//     printf("=> %s\n", history[i]->line);
-//=======================================//
-
-//signal(SIGQUIT, SIG_DFL);
-volatile sig_atomic_t	g_signal;
 
 void	init_env(t_data *data, char **env, int i)
 {

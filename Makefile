@@ -5,7 +5,7 @@ CFLAGS			:= -Wall -Werror -Wextra -g -fsanitize=address -MMD -MP
 INCLUDES_DIR	:= -Iincludes/ -Iincludes/libft/ -Iincludes/lib/
 INCLUDES		:= $(INCLUDES_DIR)
 LIBS			:= -lreadline
-NAME			:= minichevre
+NAME			:= minishell
 
 LIBFT_DIR		:= includes/libft/
 LIBFT			:= $(LIBFT_DIR)libft.a
@@ -26,16 +26,15 @@ $(NAME): $(LIBFT) $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) $(INCLUDES) $(LIBFT) $(LIBS) -o $(NAME)
 	@echo "Minishell [READY]"
 
-$(LIBFT): FORCE
+$(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
 	@echo "Libft [READY]"
-
-FORCE:
 
 $(BUILDS_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
-# 	@echo "Compiling: $<"
+	@echo "Compiling: $<"
+
 
 clean:
 	@echo "[CLEAN]"
@@ -49,4 +48,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re FORCE
+.PHONY: all clean fclean re

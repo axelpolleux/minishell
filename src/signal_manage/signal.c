@@ -12,7 +12,18 @@
 
 #include "minishell.h"
 
-//volatile sig_atomic_t	g_signal;
+volatile sig_atomic_t	g_signal;
+
+void	handle_signal(int signal)
+{
+	if (signal == SIGINT)
+	{
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+}
 
 // int	does_errexist(void)
 // {

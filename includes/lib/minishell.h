@@ -6,30 +6,38 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/05 18:39:55 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/25 10:48:55 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+// our include
 # include "libft.h"
+
+// basics
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdio.h>
+# include <string.h>
+# include <limits.h>
+# include <signal.h>
+# include <stdint.h>
+# include <fcntl.h>
+# include <errno.h>
+
+// system includes
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <sys/stat.h>
-# include <stdio.h>
+
+// readline
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <errno.h>
-# include <string.h>
-# include <stdint.h>
-# include <fcntl.h>
+
 # include <curses.h>
 # include <term.h>
-# include <signal.h>
-# include <limits.h>
 # include <dirent.h>
 
 /* respecter l'ordre
@@ -47,14 +55,12 @@
 //=============<for general utility>=============//
 extern volatile int	g_signal;
 
-# define ERROR		0
 # define WORD		1
 # define PIPE		2 // |
 # define RED_IN		3 // <
 # define RED_OUT	4 // >
 # define APPEND		5 // >>
 # define HEREDOC	6 // <<
-# define CMD		7
 
 # define P_ERROR	0
 # define C_ERROR	1
@@ -94,27 +100,28 @@ typedef struct s_redir_her
 
 typedef struct s_cmd
 {
-	char			**cmd;
-	char			*cmd_path;
-	char			*full_cmd;
+	// command management
+	char            *command;
+	char            **args;
+	char            *cmd_path;
+	char            *full_cmd;
 
-	int				type;
-	int				input;
-	int				output;
+	// redir management
+	char            **input;
+	char            **output;
 
+	// heredoc
 	t_redir_her		*redir;
 
-	struct s_cmd	*next;
-	struct s_cmd	*prev;
-}	t_cmd;
+	// link nodes
+	struct s_cmd    *next;
+}    t_cmd;
 
 typedef struct s_token
 {
 	char			*cmd;
-
 	int				type;
 
-	struct s_token	*prev;
 	struct s_token	*next;
 }	t_token;
 
@@ -127,7 +134,6 @@ typedef struct s_env
 	int				export;
 
 	struct s_env	*next;
-	struct s_env	*prev;
 }	t_env;
 
 typedef struct s_data
