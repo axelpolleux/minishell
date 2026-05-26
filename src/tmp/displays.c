@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   displays.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/25 19:48:50 by ethutin-          #+#    #+#             */
+/*   Updated: 2026/05/25 19:51:46 by ethutin-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	display_env(t_env *view)
@@ -20,8 +32,7 @@ void	display_cmd(t_cmd *view)
 	while (view)
 	{
 		i = -1;
-		printf("============================\n");
-		printf("cmd => {");
+		printf("============================\ncmd => {");
 		while (view->args[++i])
 		{
 			if (!i)
@@ -35,8 +46,7 @@ void	display_cmd(t_cmd *view)
 			if (view->args[i + 1])
 				printf(", ");
 		}
-		printf("}\n");
-		printf("cmd_path => %s\n", view->cmd_path);
+		printf("}\ncmd_path => %s\n", view->cmd_path);
 		printf("full_cmd => %s\n", view->full_cmd);
 		printf("input => %d\n", view->input);
 		printf("output => %d\n", view->output);
@@ -51,7 +61,12 @@ void	display_tokens(t_token *view)
 	{
 		printf("%s:%d", view->cmd, view->type);
 		if (view->next)
-			printf(", ");
+		{
+			if (view->quot)
+				printf(", 1, ");
+			else
+				printf(", 0, ");
+		}
 		view = view->next;
 	}
 	printf("}\n");

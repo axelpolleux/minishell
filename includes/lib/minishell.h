@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/25 14:46:11 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/26 11:02:55 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,14 +116,19 @@ typedef struct s_cmd
 
 	// link nodes
 	struct s_cmd    *next;
+	struct s_cmd    *prev;
 }    t_cmd;
 
 typedef struct s_token
 {
 	char			*cmd;
+
 	int				type;
 
+	bool			quot;
+	
 	struct s_token	*next;
+	struct s_token	*prev;
 }	t_token;
 
 typedef struct s_env
@@ -175,6 +180,7 @@ char *new_arg, char *new_key);
 void			init_env_fail_n(char *new_env, char *new_arg, char *new_key);
 void			opendir_error(t_data *data, char *error);
 void			error_cnf(t_data *data, char *error);
+void			parser_error(t_data *data, int output);
 
 int				error_quote(void);
 int				data_malloc_error(t_data *data);
@@ -198,11 +204,8 @@ void			add_to_bottom_env(t_env **node, t_env *new_bot);
 void			add_to_bottom_cmd(t_cmd **node, t_cmd *new_bot);
 void			add_redir_back(t_redir_her **lst, t_redir_her *new);
 void			env_new_node(t_data *data, char *line);
+void			init_env(t_data *data, char **env, int i);
 
-void			display_env(t_env *view);// a degager a la fin
-void			display_tokens(t_token *token);//
-void			display_cmd(t_cmd *view);//
-//================================================================//
 int				ft_strcmp(char *s1, char *s2);
 int				srch_cmd(char *s, char c);
 int				ft_lstsize_e(t_env *lst);
@@ -309,29 +312,35 @@ bool			fcext(t_data *data, t_cmd *cmd, char *path, char *command);
 bool			heredoc_manage(t_data *data, t_cmd *cmd);
 //===========================================================//
 
-//========================<parsing and tokeniser>=========================//
+//========================<lexer and parsing>=========================//
 char			**tokens_to_argv(t_token *start, t_token *end, int i);
 
+void			add_in(char *input, int *i, int *len, int *type);
+void			add_out(char *input, int *i, int *len, int *type);
+void			new_state(t_data *data, char *input, int *index);
 void			reset_read(t_data *data);
 void			main_reading(t_data *data);
 void			display_tokens(t_token *token);
 void			ft_token_add_back(t_token **lst, t_token *new);
 void			add_cmd_back(t_cmd **lst, t_cmd *new);
 
-int				add_word(t_data *data, t_token **tokens, \
-							char *input, int *index);
 int				main_parser(t_data *data);
-int				double_quotes(char *input, int *index);
-int				single_quotes(char *input, int *index);
-int				is_space(int c);
+// int				double_quotes(char *input, int *index);
+// int				single_quotes(char *input, int *index);
 int				not_in_original_en(char **env, char *name);
 int				make_oldpwd(t_data *data, t_env *new, char **env);
 int				make_pwd(t_data *data, t_env *new);
 int				no_minim_env(char **env);
 int				count_words(t_token *start, t_token *end);
-int				is_redir(int type);
+
 int				manage_quote(t_token **tokens, char *input, int *index);
+
+bool			is_redir(int type);
+bool			is_space(int c);
 bool			skip_quote(char *input, int *i);
+bool			add_all(t_data *data, t_token **tokens, char *input, int *i);
+bool			add_word(t_data *data, t_token **tokens, char *input, int *index);
+bool			quote_state(t_data *data, char *input, int *i, bool *quoted);
 bool			write_here(t_redir_her *doc, char *line, int *fd);
 bool			new_delimiter(t_data *data, t_redir_her *doc);
 bool			read_heredoc(t_data *data, t_redir_her *doc, \
@@ -339,9 +348,9 @@ char *tmp, int *fd);
 bool			history_heredoc(t_data *data, char *line, int *fd);
 
 t_cmd			*new_cmd_node(void);
-t_cmd			*parse_commands(t_token *tokens);
+t_cmd			*parsing_commands(t_token *tokens);
 t_token			*tokeniser(t_data *data, char *input);
-t_token			*token_new(char *input, int *index, int len, int type);
+t_token			*token_new(char *input, int len, int type, bool quot);
 //======================================================//
 
 //===================<for sig usage>===============//
@@ -352,5 +361,11 @@ void			ft_sigint_cmd(int pid);
 void			ft_sigint_interactive(int pid);
 
 int				signal_manage(void);
+//===============================================//
+
+//===================a degager=====================//
+void			display_env(t_env *view);// a degager a la fin
+void			display_tokens(t_token *token);//
+void			display_cmd(t_cmd *view);//
 //===============================================//
 #endif

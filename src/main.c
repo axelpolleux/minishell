@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/25 13:21:59 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/26 10:25:16 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,30 @@ void	reset_read(t_data *data)
 	data->cmd = NULL;
 	free(data->line);
 	data->line = NULL;
+	data->exit = 0;
+}
+
+int	main_parser(t_data *data)
+{
+	if (data->token)
+	{
+		free_token(data->token);
+		data->token = NULL;
+	}
+	data->token = tokeniser(data, data->line);
+	//display_tokens(data->token);
+	if (!data->token)
+		return (EXIT_FAILURE);
+	if (data->cmd)
+	{
+		free_cmd(data->cmd);
+		data->cmd = NULL;
+	}
+	//data->cmd = parsing_commands(data->token);
+	//if (!data->cmd)
+	//	return (EXIT_FAILURE);
+	//display_cmd(data->cmd);
+	return (EXIT_SUCCESS);
 }
 
 void	main_reading(t_data *data)
@@ -40,39 +64,15 @@ void	main_reading(t_data *data)
 			add_history(data->line);
 		if (main_parser(data))
 		{
+			if (data->exit != 0)
+				parser_error(data, data->exit);
 			reset_read(data);
 			continue ;
 		}
-		exec(data);
+		//exec(data);
 		free(data->line);
 	}
 	free_data(data);
-}
-
-
-void	init_env(t_data *data, char **env, int i)
-{
-	t_env	*new;
-	char	*new_var;
-	char	*new_arg;
-	char	*new_key;
-
-	new = NULL;
-	new_var = NULL;
-	new_arg = NULL;
-	new_key = NULL;
-	if (make_built_env(data, new, env))
-		return ;
-	while (env[++i])
-	{
-		data->line_env = env[i];
-		if (init_champ_env(data, &new_var, &new_arg, &new_key))
-			init_env_fail(data, new_var, new_arg, new_key);
-		new = new_env(new_var, new_arg, new_key, 1);
-		if (!new)
-			init_env_fail(data, new_var, new_arg, new_key);
-		add_to_bottom_env (&data->t_env, new);
-	}
 }
 
 int	main(int ac, char **av, char **env)
@@ -108,4 +108,10 @@ full_cmd => (null)
 input => -1
 output => -1
 dfghjkl wdwd wdqwdwqdwdwq dwqd d | grep d
+*/
+
+
+
+/*
+gestion d'erreur dans main parser qui ne fait que un reset et n'arrete pas le propgramme]
 */

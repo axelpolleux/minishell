@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/25 09:50:21 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/25 13:47:23 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/25 19:47:27 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int	central_export(t_data *data, char **args)
 {
 	int		output;
 	int		i;
-
 
 	i = 0;
 	output = -1;

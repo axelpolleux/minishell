@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 15:31:49 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/25 14:46:41 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/25 19:47:04 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	print_flag(char **args, int start)
 }
 
 void	print_words(char **args, int *i, int *first_word)
-{	
+{
 	while (args[++*(i)])
 	{
 		if (ft_strlen(args[*(i)]) != 0)
@@ -46,7 +46,7 @@ void	print_words(char **args, int *i, int *first_word)
 			}
 			else
 				printf(" %s", args[*(i)]);
-			}
+		}
 	}
 	printf("\n");
 }

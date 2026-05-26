@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_init2.c                                       :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 11:20:04 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/23 14:07:48 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/26 10:25:10 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,31 @@ t_env	*make_new_env_name(char *line, int export)
 	new_node->key = name;
 	new_node->export = export;
 	return (new_node);
+}
+
+void	init_env(t_data *data, char **env, int i)
+{
+	t_env	*new;
+	char	*new_var;
+	char	*new_arg;
+	char	*new_key;
+
+	new = NULL;
+	new_var = NULL;
+	new_arg = NULL;
+	new_key = NULL;
+	if (make_built_env(data, new, env))
+		return ;
+	while (env[++i])
+	{
+		data->line_env = env[i];
+		if (init_champ_env(data, &new_var, &new_arg, &new_key))
+			init_env_fail(data, new_var, new_arg, new_key);
+		new = new_env(new_var, new_arg, new_key, 1);
+		if (!new)
+			init_env_fail(data, new_var, new_arg, new_key);
+		add_to_bottom_env (&data->t_env, new);
+	}
 }
 
 t_data	*init_data(int ac, char **av)
