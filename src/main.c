@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/26 10:25:16 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/26 11:21:49 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,16 @@ void	reset_read(t_data *data)
 	data->cmd = NULL;
 	free(data->line);
 	data->line = NULL;
-	data->exit = 0;
+	if (data->path)
+	{
+		free_arr(data->path);
+		data->path = NULL;
+	}
+	if (data->pid)
+	{
+		free(data->pid);
+		data->pid = NULL;
+	}
 }
 
 int	main_parser(t_data *data)
@@ -31,7 +40,7 @@ int	main_parser(t_data *data)
 		data->token = NULL;
 	}
 	data->token = tokeniser(data, data->line);
-	//display_tokens(data->token);
+	display_tokens(data->token);
 	if (!data->token)
 		return (EXIT_FAILURE);
 	if (data->cmd)
@@ -39,10 +48,10 @@ int	main_parser(t_data *data)
 		free_cmd(data->cmd);
 		data->cmd = NULL;
 	}
-	//data->cmd = parsing_commands(data->token);
-	//if (!data->cmd)
-	//	return (EXIT_FAILURE);
-	//display_cmd(data->cmd);
+	data->cmd = parsing_commands(data->token);
+	if (!data->cmd)
+		return (EXIT_FAILURE);
+	display_cmd(data->cmd);
 	return (EXIT_SUCCESS);
 }
 
@@ -69,8 +78,8 @@ void	main_reading(t_data *data)
 			reset_read(data);
 			continue ;
 		}
-		//exec(data);
-		free(data->line);
+		exec(data);
+		reset_read(data);
 	}
 	free_data(data);
 }

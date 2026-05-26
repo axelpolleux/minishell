@@ -27,7 +27,7 @@ $(NAME): $(LIBFT) $(OBJS)
 	@echo "Minishell [READY]"
 
 $(LIBFT):
-	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
+	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory -j
 	@echo "Libft [READY]"
 
 $(BUILDS_DIR)/%.o: %.c

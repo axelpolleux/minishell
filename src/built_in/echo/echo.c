@@ -56,15 +56,16 @@ int	exec_echo(char **args)
 	int	i;
 	int	firts_word;
 
-	if (args == NULL)
+	// printf("DEBUG: exec_echo args[0]=%s, args[1]=%s\n", args[0], args[1]);
+	if (args == NULL || args[0] == NULL)
 	{
 		printf("\n");
 		return (0);
 	}
 	firts_word = 1;
-	i = -1;
-	if (!(ft_strcmp(args[0], "-n")))
-		print_flag(args, 1);
+	i = 0;
+	if (args[1] && !(ft_strcmp(args[1], "-n")))
+		print_flag(args, 2);
 	else
 		print_words(args, &i, &firts_word);
 	return (0);

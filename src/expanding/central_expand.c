@@ -124,20 +124,21 @@ void	get_expand(t_data *data, t_cmd *cmd)
 	char	*n_line;
 	int		i;
 
-	tmp = ft_calloc(sizeof(char *), nb_arg(cmd->args) + 2);
+	tmp = ft_calloc(sizeof(char *), nb_arg(cmd->args) + 1);
 	if (!tmp)
 		data_malloc_error(data);
 	i = -1;
 	while (cmd->args[++i])
 	{
 		data->quote = NQUOT;
-		if (!i)
-			n_line = line_expand(data, cmd->command, 0);
-		else
-			n_line = line_expand(data, cmd->args[i -1], 0);
+		n_line = line_expand(data, cmd->args[i], 0);
 		if (!n_line)
 			data_malloc_error(data);
 		tmp[i] = n_line;
 	}
 	replace_cmd(data, cmd, tmp);
+	if (cmd->command)
+		free(cmd->command);
+	if (cmd->args && cmd->args[0])
+		cmd->command = ft_strdup(cmd->args[0]);
 }

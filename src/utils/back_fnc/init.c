@@ -120,3 +120,4 @@ t_data	*init_data(int ac, char **av)
 	(void)ac;
 	return (data);
 }
+

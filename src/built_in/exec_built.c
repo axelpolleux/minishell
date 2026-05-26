@@ -37,15 +37,23 @@ void	built_child(t_data *data, t_cmd *cmd)
 
 void	exec_built(t_data *data, t_cmd *cmd)
 {
+	int	save_in;
+	int	save_out;
+
+	save_in = dup(0);
+	save_out = dup(1);
+	if (cmd->input > -1)
+		dup2(cmd->input, 0);
 	if (cmd->output > -1)
-	{
-		data->last_fd = dup(1);
 		dup2(cmd->output, 1);
-	}
 	built_parent(data, cmd);
+	fflush(stdout);
+	dup2(save_in, 0);
+	dup2(save_out, 1);
+	close(save_in);
+	close(save_out);
+	if (cmd->input > -1)
+		close(cmd->input);
 	if (cmd->output > -1)
-	{
-		dup2(data->last_fd, 1);
-		close (data->last_fd);
-	}
+		close(cmd->output);
 }

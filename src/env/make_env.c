@@ -32,6 +32,8 @@ int	make_pwd(t_data *data, t_env *new)
 	if (init_champ_env(data, &new_var, &new_arg, &new_key))
 		init_env_fail_n(new_var, new_arg, new_key);
 	new = new_env(new_var, new_arg, new_key, 1);
+	free(data->line_env);
+	data->line_env = NULL;
 	if (!new)
 		init_env_fail_n(new_var, new_arg, new_key);
 	add_to_bottom_env (&data->t_env, new);
@@ -68,17 +70,17 @@ int	make_oldpwd(t_data *data, t_env *new, char **env)
 	new_var = NULL;
 	new_arg = NULL;
 	new_key = NULL;
-	data->line = get_oldpwd(data, env);
-	if (!data->line)
+	data->line_env = get_oldpwd(data, env);
+	if (!data->line_env)
 		return (EXIT_FAILURE);
 	if (init_champ_env(data, &new_var, &new_arg, &new_key))
 		init_env_fail_n(new_var, new_arg, new_key);
 	new = new_env(new_var, new_arg, new_key, 1);
+	free(data->line_env);
+	data->line_env = NULL;
 	if (!new)
 		init_env_fail_n(new_var, new_arg, new_key);
 	add_to_bottom_env (&data->t_env, new);
-	free(data->line);
-	data->line = NULL;
 	return (EXIT_SUCCESS);
 }
 
