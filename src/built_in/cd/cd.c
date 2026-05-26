@@ -14,11 +14,30 @@
 
 int	exec_chdir(char *path, char *new_pwd, size_t size)
 {
-	if (chdir(path) == -1 || !getcwd(new_pwd, size))
+	if (chdir(path) == -1)
 	{
 		error_perror (CD_ER, C_ERROR, NF);
 		return (EXIT_FAILURE);
 	}
+	if (!getcwd(new_pwd, size))
+	{
+		error_perror(CD_ER, C_ERROR, NF);
+		new_pwd[0] = '\0';
+	}
+	return (EXIT_SUCCESS);
+}
+
+static int	get_old_pwd(t_data *data, char *old_pwd, size_t size)
+{
+	char	*pwd;
+
+	if (getcwd(old_pwd, size))
+		return (EXIT_SUCCESS);
+	pwd = get_arg_env(data, PWD);
+	if (pwd && ft_strlen(pwd) < size)
+		ft_strlcpy(old_pwd, pwd, size);
+	else
+		old_pwd[0] = '\0';
 	return (EXIT_SUCCESS);
 }
 
@@ -89,11 +108,8 @@ int	exec_cd(t_data *data, char **args)
 		error_perror(CD_ARG, P_ERROR, 2);
 		return (EXIT_FAILURE);
 	}
-	if (!getcwd(old_pwd, sizeof(old_pwd)))
-	{
-		error_perror(CD_ER, C_ERROR, NF);
+	if (get_old_pwd(data, old_pwd, sizeof(old_pwd)))
 		return (EXIT_FAILURE);
-	}
 	path = path_env(data, args);
 	if (!path)
 		return (EXIT_FAILURE);

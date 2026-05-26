@@ -25,7 +25,10 @@ int	data_malloc_error(t_data *data)
 void	error_perror(char *error, int error_p, int fd)
 {
 	if (error_p)
-		perror("error");
+	{
+		ft_putstr_fd("minishell: ", 2);
+		perror(error);
+	}
 	else
 		ft_putstr_fd(error, fd);
 }
