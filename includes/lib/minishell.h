@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/26 11:02:55 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/26 16:51:37 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ typedef struct s_redir_her
 typedef struct s_cmd
 {
 	// command management
-	char            *command;
+	char			*command;
 	char            **args;
 	char            *cmd_path;
 	char            *full_cmd;

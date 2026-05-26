@@ -35,7 +35,7 @@ int	replace(t_data *data, char *name, char *var)
 		data_malloc_error(data);
 	if (update_cd(data, new_var, new_key, new_arg))
 	{
-		free(data->line);
+		free(data->line_env);
 		init_env_fail_n(new_var, new_arg, new_key);
 		return (EXIT_FAILURE);
 	}
@@ -59,13 +59,13 @@ char	*path_env(t_data *data, char **args)
 	char	*path;
 
 	path = NULL;
-	if (!args || !args[0])
+	if (!args || !args[1])
 	{
 		path = get_arg_env(data, HOME);
 		if (!path)
 			error_perror(HOME_NSET, P_ERROR, 2);
 	}
-	else if (!strcmp(args[0], "-"))
+	else if (!strcmp(args[1], "-"))
 	{
 		path = get_arg_env(data, OLDPWD);
 		if (!path)
@@ -74,7 +74,7 @@ char	*path_env(t_data *data, char **args)
 			printf("%s\n", path);
 	}
 	else
-		path = args[0];
+		path = args[1];
 	return (path);
 }
 
@@ -84,7 +84,7 @@ int	exec_cd(t_data *data, char **args)
 	char	old_pwd[PATH_MAX];
 	char	*path;
 
-	if (nb_arg(args) > 1)
+	if (nb_arg(args) > 2)
 	{
 		error_perror(CD_ARG, P_ERROR, 2);
 		return (EXIT_FAILURE);
