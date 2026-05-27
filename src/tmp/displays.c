@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   displays.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/25 19:48:50 by ethutin-          #+#    #+#             */
+/*   Updated: 2026/05/26 16:33:36 by ethutin-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	display_env(t_env *view)
@@ -20,21 +32,37 @@ void	display_cmd(t_cmd *view)
 	while (view)
 	{
 		i = -1;
-		printf("============================\n");
-		printf("cmd => {");
-		while (view->cmd[++i])
+		printf("============================\ncmd => {");
+		while (view->args[++i])
 		{
-			printf("%s", view->cmd[i]);
-			if (view->cmd[i + 1])
+			printf("%s", view->args[i]);
+			if (view->args[i + 1])
 				printf(", ");
 		}
-		printf("}\n");
-		printf("cmd_path => %s\n", view->cmd_path);
+		printf("}\ncmd_path => %s\n", view->cmd_path);
 		printf("full_cmd => %s\n", view->full_cmd);
 		printf("input => %d\n", view->input);
 		printf("output => %d\n", view->output);
 		view = view->next;
 	}
+}
+
+void	display_tokens(t_token *view)
+{
+	printf("{");
+	while (view)
+	{
+		printf("%s:%d", view->cmd, view->type);
+		if (view->next)
+		{
+			if (view->quot)
+				printf(", 1, ");
+			else
+				printf(", 0, ");
+		}
+		view = view->next;
+	}
+	printf("}\n");
 }
 
 //=======a degager a la fin==========//
@@ -46,17 +74,3 @@ void	display_cmd(t_cmd *view)
 // while (history[++i])
 //     printf("=> %s\n", history[i]->line);
 //=======================================//
-
-// void	display_tokens(t_token *token)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (token)
-// 	{
-// 		printf("%d: {%s - %d}\n", i, token->cmd, token->type);
-// 		i++;
-// 		token = token->next;
-// 	}
-// }
-

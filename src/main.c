@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/05 18:43:25 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/27 15:18:12 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,26 +20,52 @@ void	reset_read(t_data *data)
 	data->cmd = NULL;
 	free(data->line);
 	data->line = NULL;
+	data->exit = 0;
 }
 
-void	main_reading(t_data *data, char *title)
+int	main_parser(t_data *data)
+{
+	if (data->token)
+	{
+		free_token(data->token);
+		data->token = NULL;
+	}
+	data->token = tokeniser(data, data->line);
+	display_tokens(data->token);
+	if (!data->token)
+		return (EXIT_FAILURE);
+	if (data->cmd)
+	{
+		free_cmd(data->cmd);
+		data->cmd = NULL;
+	}
+	data->cmd = parsing_commands(data, data->token);
+	if (!data->cmd)
+		return (EXIT_FAILURE);
+	display_cmd(data->cmd);
+	return (EXIT_SUCCESS);
+}
+
+void	main_reading(t_data *data)
 {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_signal);
 	while (1)
 	{
 		g_signal = 0;
-		data->line = readline(title);
+		data->line = readline(TITLE);
 		if (!data->line)
 		{
 			free_data(data);
 			printf("exit\n");
 			exit(0);
-		}1
+		}
 		if (data->line && *(data->line) && !full_void(data->line))
 			add_history(data->line);
 		if (main_parser(data))
 		{
+			if (data->exit != 0)
+				parser_error(data, data->exit);
 			reset_read(data);
 			continue ;
 		}
@@ -47,32 +73,6 @@ void	main_reading(t_data *data, char *title)
 		free(data->line);
 	}
 	free_data(data);
-}
-
-
-void	init_env(t_data *data, char **env, int i)
-{
-	t_env	*new;
-	char	*new_var;
-	char	*new_arg;
-	char	*new_key;
-
-	new = NULL;
-	new_var = NULL;
-	new_arg = NULL;
-	new_key = NULL;
-	if (make_built_env(data, new, env))
-		return ;
-	while (env[++i])
-	{
-		data->line_env = env[i];
-		if (init_champ_env(data, &new_var, &new_arg, &new_key))
-			init_env_fail(data, new_var, new_arg, new_key);
-		new = new_env(new_var, new_arg, new_key, 1);
-		if (!new)
-			init_env_fail(data, new_var, new_arg, new_key);
-		add_to_bottom_env (&data->t_env, new);
-	}
 }
 
 int	main(int ac, char **av, char **env)
@@ -85,10 +85,6 @@ int	main(int ac, char **av, char **env)
 		data_malloc_error(data);
 	init_env(data, env, -1);
 	//display_env(data->t_env);
-	main_reading(data, "pastishell$ ");
+	main_reading(data);
 	return (EXIT_SUCCESS);
 }
-// leak a env i
-//  comportement heredoc erratique
-// les erreur du init_cmd sont incomplete
-// les redir parte en couille      > test non creation de test

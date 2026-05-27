@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_init1.c                                       :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 11:17:43 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/23 14:07:15 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/26 16:31:35 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ void	free_cmd(t_cmd *node)
 	while (node)
 	{
 		tmp = node->next;
-		if (node->cmd)
-			free_arr(node->cmd);
+		if (node->args)
+			free_arr(node->args);
 		if (node->cmd_path)
 			free(node->cmd_path);
 		if (node->full_cmd)

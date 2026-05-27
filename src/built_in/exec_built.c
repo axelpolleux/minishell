@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 14:53:34 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/22 13:24:21 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/26 16:38:10 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,25 @@
 
 void	built_parent(t_data *data, t_cmd *cmd)
 {
-	if (!ft_strncmp("export", cmd->cmd[0], 6))
-		data->exit = exec_export(data, cmd->cmd);
-	else if (!ft_strncmp("unset", cmd->cmd[0], 5))
-		data->exit = exec_unset(data, cmd->cmd);
-	else if (!ft_strncmp("cd", cmd->cmd[0], 2))
-		data->exit = exec_cd(data, cmd->cmd);
+	if (!ft_strncmp("export", cmd->args[0], 6))
+		data->exit = exec_export(data, cmd->args);
+	else if (!ft_strncmp("unset", cmd->args[0], 5))
+		data->exit = exec_unset(data, cmd->args);
+	else if (!ft_strncmp("cd", cmd->args[0], 2))
+		data->exit = exec_cd(data, cmd->args);
 	built_child(data, cmd);
 }
 
 void	built_child(t_data *data, t_cmd *cmd)
 {
-	if (!ft_strncmp("echo", cmd->cmd[0], 4))
-		data->exit = exec_echo(cmd->cmd);
-	else if (!ft_strncmp("pwd", cmd->cmd[0], 3))
+	if (!ft_strncmp("echo", cmd->args[0], 4))
+		data->exit = exec_echo(cmd->args);
+	else if (!ft_strncmp("pwd", cmd->args[0], 3))
 		data->exit = exec_pwd();
-	else if (!ft_strncmp("env", cmd->cmd[0], 3))
+	else if (!ft_strncmp("env", cmd->args[0], 3))
 		data->exit = exec_env(data);
-	else if (!ft_strncmp("exit", cmd->cmd[0], 4))
-		exec_exit(data, cmd, cmd->cmd);
+	else if (!ft_strncmp("exit", cmd->args[0], 4))
+		exec_exit(data, cmd, cmd->args);
 }
 
 void	exec_built(t_data *data, t_cmd *cmd)

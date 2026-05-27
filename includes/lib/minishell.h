@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/25 10:48:55 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/27 15:20:06 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,15 +74,16 @@ extern volatile int	g_signal;
 # define PWD		"PWD"
 # define OLDPWD		"OLDPWD"
 # define HOME		"HOME"
+# define TITLE		"minichevre$ "
 
-# define HOME_NSET	"minishell: cd: HOME not set\n"
-# define OLDP_NSET	"minishell: cd: OLDPWD not set\n"
-# define CD_ER		"minishell: cd"
-# define CD_ARG		"minishell: cd: too many arguments\n"
-# define PWD_ER		"minishell: pwd"
-# define EXT_ARG	"exit\nminishell: exit: too many arguments\n"
-# define QUOT_ER	"minishell: every quote must be closed\n"
-# define SYNT_ER	"minishell: syntax error near unexpected token `newline'\n"
+# define HOME_NSET	"minichevre: cd: HOME not set\n"
+# define OLDP_NSET	"minichevre: cd: OLDPWD not set\n"
+# define CD_ER		"minichevre: cd"
+# define CD_ARG		"minichevre: cd: too many arguments\n"
+# define PWD_ER		"minichevre: pwd"
+# define EXT_ARG	"exit\nminichevre: exit: too many arguments\n"
+# define QUOT_ER	"minichevre: every quote must be closed\n"
+# define SYNT_UT	"minichevre: syntax error near unexpected token\n" 
 # define DATA_ER	"Error : A malloc has failed\n"
 //==============================================//
 
@@ -101,28 +102,32 @@ typedef struct s_redir_her
 typedef struct s_cmd
 {
 	// command management
-	char            *command;
-	char            **args;
-	char            *cmd_path;
-	char            *full_cmd;
+	char			**args;
+	char			*cmd_path;
+	char			*full_cmd;
 
 	// redir management
-	char            **input;
-	char            **output;
+	int				input;
+	int				output;
 
 	// heredoc
 	t_redir_her		*redir;
 
 	// link nodes
-	struct s_cmd    *next;
-}    t_cmd;
+	struct s_cmd	*next;
+	struct s_cmd	*prev;
+}	t_cmd;
 
 typedef struct s_token
 {
 	char			*cmd;
+
 	int				type;
 
+	bool			quot;
+
 	struct s_token	*next;
+	struct s_token	*prev;
 }	t_token;
 
 typedef struct s_env
@@ -134,6 +139,7 @@ typedef struct s_env
 	int				export;
 
 	struct s_env	*next;
+	struct s_env	*prev;
 }	t_env;
 
 typedef struct s_data
@@ -173,8 +179,9 @@ char *new_arg, char *new_key);
 void			init_env_fail_n(char *new_env, char *new_arg, char *new_key);
 void			opendir_error(t_data *data, char *error);
 void			error_cnf(t_data *data, char *error);
+void			parser_error(t_data *data, int output);
 
-int				error_quote(void);
+int				error_pars(int error);
 int				data_malloc_error(t_data *data);
 int				open_error(t_data *data);
 //=======================================================//
@@ -196,11 +203,8 @@ void			add_to_bottom_env(t_env **node, t_env *new_bot);
 void			add_to_bottom_cmd(t_cmd **node, t_cmd *new_bot);
 void			add_redir_back(t_redir_her **lst, t_redir_her *new);
 void			env_new_node(t_data *data, char *line);
+void			init_env(t_data *data, char **env, int i);
 
-void			display_env(t_env *view);// a degager a la fin
-void			display_tokens(t_token *token);//
-void			display_cmd(t_cmd *view);//
-//================================================================//
 int				ft_strcmp(char *s1, char *s2);
 int				srch_cmd(char *s, char c);
 int				ft_lstsize_e(t_env *lst);
@@ -239,7 +243,7 @@ int				count_word_quot(char **arr, char c, int i);
 int				void_quote(char *line, int *i, int *empty);
 int				ext_nqote(char **old, int *i, int *j, int *l);
 int				exec_line_expand(t_data *data, char *line, \
-char **nline, int *i , int *empty);
+char **nline, int *i, int *empty);
 
 bool			in_quote(char *line);
 //=====================================//
@@ -251,6 +255,7 @@ char			*get_arg_env(t_data *data, char *motif);
 char			*path_env(t_data *data, char **cmd);
 
 void			print_flag(char **cmd, int start);
+void			print_words(char **args, int *i, int *first_word);
 void			built_child(t_data *data, t_cmd *cmd);
 void			built_parent(t_data *data, t_cmd *cmd);
 void			unset_place(t_data *data, char *motif);
@@ -306,39 +311,44 @@ bool			fcext(t_data *data, t_cmd *cmd, char *path, char *command);
 bool			heredoc_manage(t_data *data, t_cmd *cmd);
 //===========================================================//
 
-//========================<parsing and tokeniser>=========================//
-char			**tokens_to_argv(t_token *start, t_token *end, int i);
-
+//========================<lexer and parsing>=========================//
+void			add_in(char *input, int *i, int *len, int *type);
+void			add_out(char *input, int *i, int *len, int *type);
+void			new_state(t_data *data, char *input, int *index);
 void			reset_read(t_data *data);
-void			main_reading(t_data *data, char *title);
+void			main_reading(t_data *data);
 void			display_tokens(t_token *token);
 void			ft_token_add_back(t_token **lst, t_token *new);
 void			add_cmd_back(t_cmd **lst, t_cmd *new);
 
-int				add_word(t_data *data, t_token **tokens, \
-							char *input, int *index);
+int				new_redirection(t_data *data, t_cmd *cmd, int type, char *file);
+int				tok_to_cmd(t_data *data, t_cmd *cmd, char *str, int i);
+int				parse_redir(t_data *data, t_token **token, t_cmd *cmd);
 int				main_parser(t_data *data);
-int				double_quotes(char *input, int *index);
-int				single_quotes(char *input, int *index);
-int				is_space(int c);
 int				not_in_original_en(char **env, char *name);
 int				make_oldpwd(t_data *data, t_env *new, char **env);
 int				make_pwd(t_data *data, t_env *new);
 int				no_minim_env(char **env);
 int				count_words(t_token *start, t_token *end);
-int				is_redir(int type);
-int				manage_quote(t_token **tokens, char *input, int *index);
+
+bool			new_cmd(t_data *data, t_cmd **cmd, t_token *token);
+bool			is_redir(int type);
+bool			is_space(int c);
 bool			skip_quote(char *input, int *i);
+bool			add_all(t_data *data, t_token **tokens, char *input, int *i);
+bool			add_word(t_data *data, t_token **tokens, \
+char *input, int *index);
+bool			quote_state(t_data *data, char *input, int *i, bool *quoted);
 bool			write_here(t_redir_her *doc, char *line, int *fd);
 bool			new_delimiter(t_data *data, t_redir_her *doc);
 bool			read_heredoc(t_data *data, t_redir_her *doc, \
 char *tmp, int *fd);
 bool			history_heredoc(t_data *data, char *line, int *fd);
 
-t_cmd			*new_cmd_node(void);
-t_cmd			*parse_commands(t_token *tokens);
+t_cmd			*new_cmd_node(t_data *data);
+t_cmd			*parsing_commands(t_data *data, t_token *tokens);
 t_token			*tokeniser(t_data *data, char *input);
-t_token			*token_new(char *input, int *index, int len, int type);
+t_token			*token_new(char *input, int len, int type, bool quot);
 //======================================================//
 
 //===================<for sig usage>===============//
@@ -349,5 +359,11 @@ void			ft_sigint_cmd(int pid);
 void			ft_sigint_interactive(int pid);
 
 int				signal_manage(void);
+//===============================================//
+
+//===================a degager=====================//
+void			display_env(t_env *view);// a degager a la fin
+void			display_tokens(t_token *token);//
+void			display_cmd(t_cmd *view);//
 //===============================================//
 #endif
