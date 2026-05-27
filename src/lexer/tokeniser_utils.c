@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 16:30:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/26 10:58:57 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/27 14:15:03 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,25 +50,3 @@ t_token	*token_new(char *input, int len, int type, bool quot)
 	new->next = NULL;
 	return (new);
 }
-
-// t_token	*token_new(char *input, int *index, int len, int type)
-// {
-// 	t_token	*new;
-// 	char	*cmd;
-
-// 	if (!input || !index || *index < 0 || len < 0)
-// 		return (NULL);
-// 	new = ft_calloc(sizeof(t_token), 1);
-// 	if (!new)
-// 		return (NULL);
-// 	cmd = ft_substr(input, *index, len);
-// 	if (!cmd)
-// 	{
-// 		free(new);
-// 		return (NULL);
-// 	}
-// 	new->cmd = cmd;
-// 	new->type = type;
-// 	new->next = NULL;
-// 	return (new);
-// }

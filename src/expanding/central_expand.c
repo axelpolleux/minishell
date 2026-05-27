@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 10:10:01 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/25 15:01:02 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/26 17:18:45 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ char	*line_expand(t_data *data, char *line, int i)
 		free(n_line);
 		n_line = NULL;
 		n_line = ft_strdup("\2");
+		return (n_line);
 	}
 	return (n_line);
 }
@@ -137,8 +138,4 @@ void	get_expand(t_data *data, t_cmd *cmd)
 		tmp[i] = n_line;
 	}
 	replace_cmd(data, cmd, tmp);
-	if (cmd->command)
-		free(cmd->command);
-	if (cmd->args && cmd->args[0])
-		cmd->command = ft_strdup(cmd->args[0]);
 }

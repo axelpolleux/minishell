@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/25 13:18:42 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/25 13:18:52 by ethutin-         ###   ########.fr       */
+/*   Created: 2026/05/06 12:50:48 by ethutin-          #+#    #+#             */
+/*   Updated: 2026/05/06 12:51:17 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,28 +36,4 @@ int	update_cd(t_data *data, char *new_var, char *new_key, char *new_arg)
 		tmp = tmp->next;
 	}
 	return (EXIT_FAILURE);
-}
-
-char	*path_env(t_data *data, char **args)
-{
-	char	*path;
-
-	path = NULL;
-	if (!args || !args[1])
-	{
-		path = get_arg_env(data, HOME);
-		if (!path)
-			error_perror(HOME_NSET, P_ERROR, 2);
-	}
-	else if (!strcmp(args[1], "-"))
-	{
-		path = get_arg_env(data, OLDPWD);
-		if (!path)
-			error_perror(OLDP_NSET, P_ERROR, 2);
-		else
-			printf("%s\n", path);
-	}
-	else
-		path = args[1];
-	return (path);
 }

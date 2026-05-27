@@ -68,10 +68,3 @@ void	new_state(t_data *data, char *input, int *index)
 			data->quote = NQUOT;
 	}
 }
-
-bool	is_redir(int type)
-{
-	if (type == RED_IN || type == RED_OUT || type == APPEND || type == HEREDOC)
-		return (true);
-	return (false);
-}

@@ -6,14 +6,13 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/26 16:50:43 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/27 15:18:12 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "../includes/lib/minishell.h"
 
-void reset_read(t_data* data)
+void	reset_read(t_data *data)
 {
 	free_token(data->token);
 	data->token = NULL;
@@ -21,19 +20,10 @@ void reset_read(t_data* data)
 	data->cmd = NULL;
 	free(data->line);
 	data->line = NULL;
-	if (data->path)
-	{
-		free_arr(data->path);
-		data->path = NULL;
-	}
-	if (data->pid)
-	{
-		free(data->pid);
-		data->pid = NULL;
-	}
+	data->exit = 0;
 }
 
-int main_parser(t_data* data)
+int	main_parser(t_data *data)
 {
 	if (data->token)
 	{
@@ -41,7 +31,7 @@ int main_parser(t_data* data)
 		data->token = NULL;
 	}
 	data->token = tokeniser(data, data->line);
-	// display_tokens(data->token);
+	display_tokens(data->token);
 	if (!data->token)
 		return (EXIT_FAILURE);
 	if (data->cmd)
@@ -49,14 +39,14 @@ int main_parser(t_data* data)
 		free_cmd(data->cmd);
 		data->cmd = NULL;
 	}
-	data->cmd = parsing_commands(data->token);
+	data->cmd = parsing_commands(data, data->token);
 	if (!data->cmd)
 		return (EXIT_FAILURE);
-	// display_cmd(data->cmd);
+	display_cmd(data->cmd);
 	return (EXIT_SUCCESS);
 }
 
-void main_reading(t_data* data)
+void	main_reading(t_data *data)
 {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_signal);
@@ -64,20 +54,11 @@ void main_reading(t_data* data)
 	{
 		g_signal = 0;
 		data->line = readline(TITLE);
-		if (g_signal == SIGINT)
-		{
-			data->exit = 130;
-			g_signal = 0;
-		}
 		if (!data->line)
 		{
-			ft_putendl_fd("exit", 1);
-			break ;
-		}
-		if (!data->line[0])
-		{
-			free(data->line);
-			continue ;
+			free_data(data);
+			printf("exit\n");
+			exit(0);
 		}
 		if (data->line && *(data->line) && !full_void(data->line))
 			add_history(data->line);
@@ -89,14 +70,14 @@ void main_reading(t_data* data)
 			continue ;
 		}
 		exec(data);
-		reset_read(data);
+		free(data->line);
 	}
 	free_data(data);
 }
 
-int main(int ac, char** av, char** env)
+int	main(int ac, char **av, char **env)
 {
-	t_data* data;
+	t_data	*data;
 
 	data = init_data(ac, av);
 	data->built_in = init_built();
@@ -107,30 +88,3 @@ int main(int ac, char** av, char** env)
 	main_reading(data);
 	return (EXIT_SUCCESS);
 }
-
-// leak a env i
-//  comportement heredoc erratique    
-// les erreur du init_cmd sont incomplete
-// les redir parte en couille      > test non creation de test
-// oublie pas en sortie de program la sorti 13
-
-/*
-bash
-echo dfghjkl wdwd wdqwdwqdwdwq dwqd d | grep d
-dfghjkl wdwd wdqwdwqdwdwq dwqd d
-
-
-pastishell$ echo dfghjkl wdwd wdqwdwqdwdwq dwqd d | grep d
-============================
-cmd => {echo, dfghjkl, wdwd, wdqwdwqdwdwq, dwqd, d, |, grep, d}
-cmd_path => (null)
-full_cmd => (null)
-input => -1
-output => -1
-dfghjkl wdwd wdqwdwqdwdwq dwqd d | grep d
-*/
-
-
-/*
-gestion d'erreur dans main parser qui ne fait que un reset et n'arrete pas le propgramme]
-*/

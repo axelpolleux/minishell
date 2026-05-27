@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/25 19:48:50 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/25 19:51:46 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/26 16:33:36 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,6 @@ void	display_cmd(t_cmd *view)
 		printf("============================\ncmd => {");
 		while (view->args[++i])
 		{
-			if (!i)
-			{
-				printf("%s", view->command);
-				if (view->args)
-					printf(", ");
-				continue ;
-			}
 			printf("%s", view->args[i]);
 			if (view->args[i + 1])
 				printf(", ");
