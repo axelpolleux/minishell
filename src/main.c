@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	reset_read(t_data *data)
+void reset_read(t_data* data)
 {
 	free_token(data->token);
 	data->token = NULL;
@@ -32,7 +32,7 @@ void	reset_read(t_data *data)
 	}
 }
 
-int	main_parser(t_data *data)
+int main_parser(t_data* data)
 {
 	if (data->token)
 	{
@@ -55,7 +55,7 @@ int	main_parser(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-void	main_reading(t_data *data)
+void main_reading(t_data* data)
 {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_signal);
@@ -65,9 +65,13 @@ void	main_reading(t_data *data)
 		data->line = readline(TITLE);
 		if (!data->line)
 		{
-			free_data(data);
-			printf("exit\n");
-			exit(0);
+			ft_putendl_fd("exit", 1);
+			break ;
+		}
+		if (!data->line[0])
+		{
+			free(data->line);
+			continue ;
 		}
 		if (data->line && *(data->line) && !full_void(data->line))
 			add_history(data->line);
@@ -84,9 +88,9 @@ void	main_reading(t_data *data)
 	free_data(data);
 }
 
-int	main(int ac, char **av, char **env)
+int main(int ac, char** av, char** env)
 {
-	t_data	*data;
+	t_data* data;
 
 	data = init_data(ac, av);
 	data->built_in = init_built();
@@ -97,6 +101,7 @@ int	main(int ac, char **av, char **env)
 	main_reading(data);
 	return (EXIT_SUCCESS);
 }
+
 // leak a env i
 //  comportement heredoc erratique    
 // les erreur du init_cmd sont incomplete
@@ -118,7 +123,6 @@ input => -1
 output => -1
 dfghjkl wdwd wdqwdwqdwdwq dwqd d | grep d
 */
-
 
 
 /*

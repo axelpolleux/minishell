@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	handle_in(t_data *data, t_cmd *cmd, t_redir_her *curr)
+static int	handle_in(t_cmd *cmd, t_redir_her *curr)
 {
 	if (cmd->input > -1)
 		close(cmd->input);
@@ -21,10 +21,11 @@ static void	handle_in(t_data *data, t_cmd *cmd, t_redir_her *curr)
 	else
 		cmd->input = curr->fd;
 	if (cmd->input == -1)
-		open_error(data);
+		return (0);
+	return (1);
 }
 
-static void	handle_out(t_data *data, t_cmd *cmd, t_redir_her *curr)
+static int	handle_out(t_cmd *cmd, t_redir_her *curr)
 {
 	if (cmd->output > -1)
 		close(cmd->output);
@@ -33,22 +34,32 @@ static void	handle_out(t_data *data, t_cmd *cmd, t_redir_her *curr)
 	else
 		cmd->output = open(curr->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (cmd->output == -1)
-		open_error(data);
+		return (0);
+	return (1);
 }
 
-void	manage_redir(t_data *data, t_cmd *cmd)
+int	manage_redir(t_data *data, t_cmd *cmd)
 {
+	int			state;
 	t_redir_her	*curr;
 
+	state = 1;
 	curr = cmd->redir;
 	while (curr)
 	{
 		if (curr->type == RED_IN || curr->type == HEREDOC)
-			handle_in(data, cmd, curr);
+			state = handle_in(cmd, curr);
 		else if (curr->type == RED_OUT || curr->type == APPEND)
-			handle_out(data, cmd, curr);
+			state = handle_out(cmd, curr);
+		if (!state)
+		{
+			perror(cmd->args[0]);
+			data->exit = 1;
+			return (1);
+		}
 		curr = curr->next;
 	}
+	return (0);
 }
 
 void	apply_redir(t_cmd *cmd)

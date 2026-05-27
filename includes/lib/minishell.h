@@ -297,7 +297,7 @@ void			exec_command(t_data *data, t_cmd *cmd, char **env);
 void			parent(t_data *data, t_cmd *cmd);
 void			manage_process(t_data *data, t_cmd *cmd);
 void			wait_end(t_data *data, int count);
-void			manage_redir(t_data *data, t_cmd *cmd);
+int				manage_redir(t_data *data, t_cmd *cmd);
 void			apply_redir(t_cmd *cmd);
 void			redir_heredoc(t_redir_her *redir);
 void			exec(t_data *data);

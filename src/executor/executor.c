@@ -107,7 +107,8 @@ void	exec(t_data *data)
 	curr = data->cmd;
 	while (curr)
 	{
-		manage_redir(data, curr);
+		if (manage_redir(data, curr))
+			return ;
 		curr = curr->next;
 	}
 	if (!data->cmd->next && is_builtin(data->built_in, data->cmd->command))
