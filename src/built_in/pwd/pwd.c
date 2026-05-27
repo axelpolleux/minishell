@@ -16,6 +16,7 @@ int	exec_pwd(void)
 {
 	char	*pwd;
 
+	// rajouter une verif, si on a une variable pwd dans env, si elle existe deja, on part de cette valeur, et non pas de getcwd
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 	{

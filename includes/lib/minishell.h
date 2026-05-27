@@ -82,7 +82,7 @@ extern volatile int	g_signal;
 # define CD_ARG		"minishell: cd: too many arguments\n"
 # define PWD_ER		"minishell: pwd"
 # define EXT_ARG	"exit\nminishell: exit: too many arguments\n"
-# define QUOT_ER	"minishell: every quote must be closed\n"
+# define QUOT_ER	"minishell: every quotes must be closed\n"
 # define SYNT_ER	"minishell: syntax error near unexpected token `newline'\n"
 # define DATA_ER	"Error : A malloc has failed\n"
 //==============================================//
