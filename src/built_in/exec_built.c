@@ -28,7 +28,7 @@ void	built_child(t_data *data, t_cmd *cmd)
 	if (!ft_strncmp("echo", cmd->command, 4))
 		data->exit = exec_echo(cmd->args);
 	else if (!ft_strncmp("pwd", cmd->command, 3))
-		data->exit = exec_pwd();
+		data->exit = exec_pwd(data);
 	else if (!ft_strncmp("env", cmd->command, 3))
 		data->exit = exec_env(data);
 	else if (!ft_strncmp("exit", cmd->command, 4))
