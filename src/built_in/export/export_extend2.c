@@ -40,8 +40,8 @@ int	realoc_arg(t_env *tmp, char *line, char *name, int start)
 	char	*new_arg;
 
 	free(tmp->var);
-	free(tmp->key);
 	free(tmp->arg);
+	free(tmp->key);
 	new_var = ft_strdup(line);
 	if (!new_var)
 	{

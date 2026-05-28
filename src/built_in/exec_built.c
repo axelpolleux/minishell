@@ -20,7 +20,8 @@ void	built_parent(t_data *data, t_cmd *cmd)
 		data->exit = exec_unset(data, cmd->args);
 	else if (!ft_strncmp("cd", cmd->command, 2))
 		data->exit = exec_cd(data, cmd->args);
-	built_child(data, cmd);
+	else
+		built_child(data, cmd);
 }
 
 void	built_child(t_data *data, t_cmd *cmd)
