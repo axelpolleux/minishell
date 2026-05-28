@@ -103,9 +103,9 @@ typedef struct s_cmd
 {
 	// command management
 	char			*command;
-	char            **args;
-	char            *cmd_path;
-	char            *full_cmd;
+	char			**args;
+	char			*cmd_path;
+	char			*full_cmd;
 
 	// redir management
 	int				input;
@@ -115,9 +115,9 @@ typedef struct s_cmd
 	t_redir_her		*redir;
 
 	// link nodes
-	struct s_cmd    *next;
-	struct s_cmd    *prev;
-}    t_cmd;
+	struct s_cmd	*next;
+	struct s_cmd	*prev;
+}	t_cmd;
 
 typedef struct s_token
 {
@@ -126,7 +126,6 @@ typedef struct s_token
 	int				type;
 
 	bool			quot;
-	
 	struct s_token	*next;
 	struct s_token	*prev;
 }	t_token;
@@ -243,8 +242,8 @@ int				quote_expand(t_data *data, char *line, int *i);
 int				count_word_quot(char **arr, char c, int i);
 int				void_quote(char *line, int *i, int *empty);
 int				ext_nqote(char **old, int *i, int *j, int *l);
-int				exec_line_expand(t_data *data, char *line, \
-char **nline, int *i , int *empty);
+int				exec_line_expand(t_data *data, char *line,	\
+				char **nline, int *i, int *empty);
 
 bool			in_quote(char *line);
 //=====================================//
@@ -340,7 +339,8 @@ bool			is_redir(int type);
 bool			is_space(int c);
 bool			skip_quote(char *input, int *i);
 bool			add_all(t_data *data, t_token **tokens, char *input, int *i);
-bool			add_word(t_data *data, t_token **tokens, char *input, int *index);
+bool			add_word(t_data *data, t_token **tokens, char *input,	\
+				int *index);
 bool			quote_state(t_data *data, char *input, int *i, bool *quoted);
 bool			write_here(t_redir_her *doc, char *line, int *fd);
 bool			new_delimiter(t_data *data, t_redir_her *doc);

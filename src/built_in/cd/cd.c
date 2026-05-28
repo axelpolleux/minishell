@@ -73,30 +73,6 @@ int	update_var(t_data *data, char *new_pwd, char *old_pwd)
 	return (EXIT_SUCCESS);
 }
 
-char	*path_env(t_data *data, char **args)
-{
-	char	*path;
-
-	path = NULL;
-	if (!args || !args[1])
-	{
-		path = get_arg_env(data, HOME);
-		if (!path)
-			error_perror(HOME_NSET, P_ERROR, 2);
-	}
-	else if (!strcmp(args[1], "-"))
-	{
-		path = get_arg_env(data, OLDPWD);
-		if (!path)
-			error_perror(OLDP_NSET, P_ERROR, 2);
-		else
-			printf("%s\n", path);
-	}
-	else
-		path = args[1];
-	return (path);
-}
-
 int	exec_cd(t_data *data, char **args)
 {
 	char	new_pwd[PATH_MAX];
