@@ -12,18 +12,26 @@
 
 #include "minishell.h"
 
-int	exec_pwd(void)
+int	exec_pwd(t_data * data)
 {
 	char	*pwd;
+	char	*tmp;
 
-	// rajouter une verif, si on a une variable pwd dans env, si elle existe deja, on part de cette valeur, et non pas de getcwd
-	pwd = getcwd(NULL, 0);
+	tmp = getcwd(NULL, 0);
+	if (tmp)
+	{
+		ft_putstr_fd(tmp, 1);
+		ft_putstr_fd("\n", 1);
+		free(tmp);
+		return (EXIT_SUCCESS);
+	}
+	pwd = get_arg_env(data, PWD);
 	if (!pwd)
 	{
-		error_perror (PWD_ER, C_ERROR, NF);
+		error_perror(PWD_ER, C_ERROR, NF);
 		return (EXIT_FAILURE);
 	}
-	printf("%s\n", pwd);
-	free (pwd);
+	ft_putstr_fd(pwd, 1);
+	ft_putstr_fd("\n", 1);
 	return (EXIT_SUCCESS);
 }

@@ -272,7 +272,7 @@ int				exit_atoi(const char *str, int sign, long res);
 int				exec_echo(char **cmd);
 int				exec_cd(t_data *data, char **cmd);
 int				exec_chdir(char *path, char *new_pwd, size_t size);
-int				exec_pwd(void);
+int				exec_pwd(t_data *data);
 int				exec_export(t_data *data, char **cmd);
 int				central_export(t_data *data, char **cmd);
 int				exec_unset(t_data *data, char **cmd);
