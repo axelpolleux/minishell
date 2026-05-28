@@ -12,20 +12,39 @@
 
 #include "minishell.h"
 
-static int	handle_in(t_cmd *cmd, t_redir_her *curr)
+// int	handle_in(t_cmd *cmd, t_redir_her *curr)
+// {
+// 	if (cmd->input > -1)
+// 		close(cmd->input);
+// 	if (curr->type == RED_IN)
+// 		cmd->input = open(curr->file, O_RDONLY);
+// 	else
+// 		cmd->input = curr->fd;
+// 	if (cmd->input == -1)
+// 		return (0);
+// 	return (1);
+// }
+
+int handle_in(t_cmd *cmd, t_redir_her *curr)
 {
-	if (cmd->input > -1)
-		close(cmd->input);
-	if (curr->type == RED_IN)
-		cmd->input = open(curr->file, O_RDONLY);
-	else
-		cmd->input = curr->fd;
-	if (cmd->input == -1)
-		return (0);
-	return (1);
+    if (curr->type == RED_IN)
+    {
+        if (cmd->input > -1)
+            close(cmd->input);
+        cmd->input = open(curr->file, O_RDONLY);
+    }
+    else
+    {
+        if (cmd->input > -1 && cmd->input != curr->fd)
+            close(cmd->input);
+        cmd->input = curr->fd;
+    }
+    if (cmd->input == -1)
+        return (0);
+    return (1);
 }
 
-static int	handle_out(t_cmd *cmd, t_redir_her *curr)
+int	handle_out(t_cmd *cmd, t_redir_her *curr)
 {
 	if (cmd->output > -1)
 		close(cmd->output);
@@ -62,16 +81,19 @@ int	manage_redir(t_data *data, t_cmd *cmd)
 	return (0);
 }
 
-void	apply_redir(t_cmd *cmd)
+//pas secu du tout
+void	apply_redir(t_data *data, t_cmd *cmd)
 {
 	if (cmd->input > -1)
 	{
-		dup2(cmd->input, 0);
+		if (dup2(cmd->input, 0) == -1)
+    		dup_error(data);
 		close(cmd->input);
 	}
 	if (cmd->output > -1)
 	{
-		dup2(cmd->output, 1);
+		if (dup2(cmd->input, 1) == -1)
+    		dup_error(data);
 		close(cmd->output);
 	}
 }

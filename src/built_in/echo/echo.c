@@ -6,67 +6,71 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 15:31:49 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/25 19:47:04 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/28 18:18:48 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_flag(char **args, int start)
+bool flag_identification(char *str)
+{
+    int i;
+
+	i = 0;
+    if (!str)
+        return (false);
+    if (str[i] != '-')
+        return (false);
+    i++;
+    if (str[i] != 'n')
+        return (false);
+    while (str[i] == 'n')
+        i++;
+    return (str[i] == '\0');
+}
+
+void	print_flag(char **cmd, int start)
 {
 	int	firts_word;
 
 	firts_word = 1;
-	while (args[start])
+	while (cmd[start])
 	{
-		if (ft_strlen(args[start]) != 0)
+		if (ft_strlen(cmd[start]) != 0)
 		{
 			if (firts_word)
 			{
-				printf("%s", args[start]);
+				printf("%s", cmd[start]);
 				firts_word = 0;
 			}
 			else
-				printf(" %s", args[start]);
+				printf(" %s", cmd[start]);
 		}
 		start++;
 	}
 }
 
-void	print_words(char **args, int *i, int *first_word)
+int exec_echo(char **cmd)
 {
-	while (args[++*(i)])
-	{
-		if (ft_strlen(args[*(i)]) != 0)
-		{
-			if (*(first_word))
-			{
-				printf("%s", args[*(i)]);
-				*(first_word) = 0;
-			}
-			else
-				printf(" %s", args[*(i)]);
-		}
-	}
-	printf("\n");
-}
+    int i;
+    bool new;
 
-int	exec_echo(char **args)
-{
-	int	i;
-	int	firts_word;
+    i = 1;
+    new = true;
+    while (flag_identification(cmd[i]))
+    {
+        new = false;
+        i++;
+    }
+    while (cmd[i])
+    {
+        printf("%s", cmd[i]);
 
-	// printf("DEBUG: exec_echo args[0]=%s, args[1]=%s\n", args[0], args[1]);
-	if (args == NULL || args[0] == NULL)
-	{
-		printf("\n");
-		return (0);
-	}
-	firts_word = 1;
-	i = 0;
-	if (args[1] && !(ft_strcmp(args[1], "-n")))
-		print_flag(args, 2);
-	else
-		print_words(args, &i, &firts_word);
-	return (0);
+        if (cmd[i + 1])
+            printf(" ");
+        i++;
+    }
+    if (new)
+        printf("\n");
+    return (0);
 }

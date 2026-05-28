@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/25 19:48:50 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/26 16:33:36 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/28 11:41:20 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,18 +49,22 @@ void	display_cmd(t_cmd *view)
 
 void	display_tokens(t_token *view)
 {
+	int	i;
+
+	i = 1;
+	printf("nb_token:cmd:type:quoted\n");
 	printf("{");
 	while (view)
 	{
-		printf("%s:%d", view->cmd, view->type);
+		printf("%d:%s:%d", i, view->cmd, view->type);
+		if (view->quot)
+			printf(":1");
+		else
+			printf(":0");
 		if (view->next)
-		{
-			if (view->quot)
-				printf(", 1, ");
-			else
-				printf(", 0, ");
-		}
+			printf(", ");
 		view = view->next;
+		i++;
 	}
 	printf("}\n");
 }
