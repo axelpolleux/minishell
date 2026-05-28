@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/27 15:20:06 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/28 16:46:12 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,6 @@ typedef struct s_data
 	int			last_fd;
 	int			exit;
 	int			quote;
-	int			pipe;
 
 	pid_t		*pid;
 
@@ -240,7 +239,7 @@ int				split_nquote(char **new, char **old, int i, int k);
 int				get_key_nd_len(char *line, char *name);
 int				quote_expand(t_data *data, char *line, int *i);
 int				count_word_quot(char **arr, char c, int i);
-int				void_quote(char *line, int *i, int *empty);
+int				void_quote(t_data *data, char *line, int *i, int *empty);
 int				ext_nqote(char **old, int *i, int *j, int *l);
 int				exec_line_expand(t_data *data, char *line, \
 char **nline, int *i, int *empty);
@@ -260,6 +259,7 @@ void			built_child(t_data *data, t_cmd *cmd);
 void			built_parent(t_data *data, t_cmd *cmd);
 void			unset_place(t_data *data, char *motif);
 void			exec_exit(t_data *data, t_cmd *g_cmd, char **cmd);
+void			exit_arg(t_data *data, char *str, int *out);
 void			exec_built(t_data *data, t_cmd *cmd);
 void			manage_export(t_data *data, char *line);
 void			make_export(t_data *data, char *key);
@@ -285,6 +285,8 @@ int				only_key_equal(char *line);
 int				realoc_arg(t_env *tmp, char *line, char *name, int start);
 int				update_cd(t_data *data, char *new_var, \
 char *new_key, char *new_arg);
+
+bool			flag_identification(char *str);
 //===============================================================//
 
 //========================<for exec>=========================//
@@ -294,15 +296,18 @@ void			cmd_with_path(t_data *data, t_cmd *cmd, char *command);
 void			full_cmd(t_data *data, t_cmd *cmd, char *command, int i);
 void			exec_command(t_data *data, t_cmd *cmd, char **env);
 void			parent(t_data *data, t_cmd *cmd);
-void			manage_process(t_data *data, t_cmd *cmd);
+void			handle_exec_loop(t_data *data, int count);
+void			manage_process(t_data *data, t_cmd *cmd, int index);
 void			wait_end(t_data *data, int count);
-void			manage_redir(t_data *data, t_cmd *cmd);
+void			apply_redir(t_data *data, t_cmd *cmd);
 void			redir_heredoc(t_redir_her *redir);
 void			exec(t_data *data);
 
+int				manage_redir(t_data *data, t_cmd *cmd);
 int				check_directory(t_data *data, char *path);
 int				check_cmd(t_data *data, t_cmd *cmd);
-int				verif_file(char *line, int doc);
+int				handle_out(t_cmd *cmd, t_redir_her *curr);
+int				handle_in(t_cmd *cmd, t_redir_her *curr);
 int				only_quote(char *line);
 int				full_void(char *line);
 int				init_heredoc(t_data *data, t_redir_her *doc);

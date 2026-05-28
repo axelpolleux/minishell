@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/27 15:18:12 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/28 18:24:20 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	main_parser(t_data *data)
 		data->token = NULL;
 	}
 	data->token = tokeniser(data, data->line);
-	display_tokens(data->token);
+	//display_tokens(data->token);
 	if (!data->token)
 		return (EXIT_FAILURE);
 	if (data->cmd)
@@ -42,11 +42,11 @@ int	main_parser(t_data *data)
 	data->cmd = parsing_commands(data, data->token);
 	if (!data->cmd)
 		return (EXIT_FAILURE);
-	display_cmd(data->cmd);
+	//display_cmd(data->cmd);
 	return (EXIT_SUCCESS);
 }
 
-void	main_reading(t_data *data)
+void main_reading(t_data* data)
 {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_signal);
@@ -56,9 +56,13 @@ void	main_reading(t_data *data)
 		data->line = readline(TITLE);
 		if (!data->line)
 		{
-			free_data(data);
-			printf("exit\n");
-			exit(0);
+			ft_putendl_fd("exit", 1);
+			break ;
+		}
+		if (!data->line[0])
+		{
+			free(data->line);
+			continue ;
 		}
 		if (data->line && *(data->line) && !full_void(data->line))
 			add_history(data->line);
@@ -70,7 +74,7 @@ void	main_reading(t_data *data)
 			continue ;
 		}
 		exec(data);
-		free(data->line);
+		reset_read(data);
 	}
 	free_data(data);
 }

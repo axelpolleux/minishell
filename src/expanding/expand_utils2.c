@@ -6,14 +6,15 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 14:51:32 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/23 13:40:21 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/28 14:53:26 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	void_quote(char *line, int *i, int *empty)
+int	void_quote(t_data *data, char *line, int *i, int *empty)
 {
+	(void)data;
 	if (line[*i] == '"' && line[*i + 1] == '"')
 	{
 		*(i) += 2;
@@ -42,12 +43,8 @@ int	ext_nqote(char **old, int *i, int *j, int *l)
 
 int	exec_line_expand(t_data *data, char *line, char **n_line, int *i, int *empty)
 {
-	if (void_quote(line, i, empty))
-	{
-		if (void_quote(line, i, empty))
-			return (1);
+	if (void_quote(data, line, i, empty))
 		return (1);
-	}
 	if (quote_expand(data, line, i))
 		return (1);
 	if (line[*i] == '$' && data->quote != SQUOT)

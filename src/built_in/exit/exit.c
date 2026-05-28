@@ -6,11 +6,18 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 10:31:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/05 18:08:03 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/28 17:37:56 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	exit_arg(t_data *data, char *str, int *out)
+{
+	*(out) = exit_atoi(str, 1, 0);
+	if (*(out) == -1)
+		error_exit(data, str);
+}
 
 int	exit_atoi(const char *str, int sign, long res)
 {
@@ -40,31 +47,29 @@ int	exit_atoi(const char *str, int sign, long res)
 	return ((int)((res * sign) % 256));
 }
 
-void	exec_exit(t_data *data, t_cmd *g_cmd, char **cmd)
+void exec_exit(t_data *data, t_cmd *cmd, char **args)
 {
-	int		out;
-	int		arg;
+    int out;
+    int arg;
 
-	if (g_cmd->output >= 0)
-	{
-		dup2(data->last_fd, 1);
-		close (data->last_fd);
-	}
-	arg = nb_arg(cmd);
-	if (arg > 1)
-	{
-		out = exit_atoi(cmd[1], 1, 0);
-		if (out == -1)
-			error_exit(data, cmd[1]);
-	}
-	if (arg > 2)
-	{
-		error_perror(EXT_ARG, P_ERROR, 2);
-		return ;
-	}
-	else
-		out = data->exit;
-	printf("exit\n");
-	free_data(data);
-	exit(out);
+    if (cmd->output >= 0)
+    {
+        dup2(data->last_fd, 1);
+        close(data->last_fd);
+    }
+    if (cmd->next || cmd->prev)
+        return ;
+    arg = nb_arg(args);
+    if (arg > 1)
+        exit_arg(data, args[1], &out);
+    else
+        out = data->exit;
+    if (arg > 2)
+    {
+        error_perror(EXT_ARG, P_ERROR, 2);
+        return ;
+    }
+    printf("exit\n");
+    free_data(data);
+    exit(out);
 }

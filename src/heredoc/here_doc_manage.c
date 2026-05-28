@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 11:11:15 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/23 13:46:35 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/28 15:08:41 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,13 @@ int	init_heredoc(t_data *data, t_redir_her *doc)
 		return (-1);
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_signal);
-	printf("old_delim:{%s}\n", doc->file);
+	//printf("old_delim:{%s}\n", doc->file);
 	if (new_delimiter(data, doc))
 	{
 		free(tmp);
 		return (-2);
 	}
-	printf("new_delim:{%s}\n", doc->file);
+	//printf("new_delim:{%s}\n", doc->file);
 	if (read_heredoc(data, doc, tmp, fd))
 	{
 		free(tmp);

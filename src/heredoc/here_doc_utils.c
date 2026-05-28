@@ -6,25 +6,11 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/21 11:52:33 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/23 13:46:47 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/28 16:18:18 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// bool	history_heredoc(t_data *data, char *line, int *fd)
-// {
-// 	free(data->history);
-// 	data->history = ft_strjoin(line, "\n");
-// 	if (!data->history)
-// 	{
-// 		closes(-1, fd);
-// 		free(line);
-// 		return (true);
-// 	}
-// 	add_history(data->history);
-// 	return (false);
-// }
 
 bool	history_heredoc(t_data *data, char *line, int *fd)
 {

@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 10:10:01 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/26 17:18:45 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/28 14:54:12 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,7 @@ char	*line_expand(t_data *data, char *line, int i)
 	if (empty && n_line[0] == '\0')
 	{
 		free(n_line);
-		n_line = NULL;
-		n_line = ft_strdup("\2");
-		return (n_line);
+		return (ft_strdup("\2"));
 	}
 	return (n_line);
 }
