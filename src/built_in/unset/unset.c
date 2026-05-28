@@ -28,6 +28,7 @@ void	unset_place(t_data *data, char *motif)
 			if (tmp->next)
 				tmp->next->prev = tmp->prev;
 			free(tmp->var);
+			free(tmp->arg);
 			free(tmp->key);
 			free(tmp);
 			break ;
