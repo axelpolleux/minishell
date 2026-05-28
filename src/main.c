@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "../includes/lib/minishell.h"
 
 void reset_read(t_data* data)
 {
@@ -63,6 +64,11 @@ void main_reading(t_data* data)
 	{
 		g_signal = 0;
 		data->line = readline(TITLE);
+		if (g_signal == SIGINT)
+		{
+			data->exit = 130;
+			g_signal = 0;
+		}
 		if (!data->line)
 		{
 			ft_putendl_fd("exit", 1);
