@@ -19,6 +19,7 @@ void	children(t_data *data, t_cmd *cmd)
 
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
+	exit_status = 0;
 	if (cmd->next)
 		dup2(data->fd_storage[1], 1);
 	if (cmd->prev)
@@ -26,9 +27,8 @@ void	children(t_data *data, t_cmd *cmd)
 	closes(-1, data->fd_storage);
 	if (cmd->prev)
 		close(data->last_fd);
-	if (!check_cmd(data, cmd))
-	{
-		exit_status = data->exit;
+	if (!check_cmd(data, cmd, &exit_status))
+	{	
 		free_data(data);
 		exit(exit_status);
 	}
@@ -77,6 +77,7 @@ void	handle_exec_loop(t_data *data, int count)
 		index++;
 	}
 	wait_end(data, count);
+
 }
 
 void	exec(t_data *data)
@@ -87,14 +88,15 @@ void	exec(t_data *data)
 		return ;
 	curr = data->cmd;
 	if (heredoc_manage(data, data->cmd))
-		data_malloc_error(data);
+	{
+		if (data->exit != 130)
+			data_malloc_error(data);
+	}
 	while (curr)
 	{
 		get_expand(data, curr);
 		if (manage_redir(data, curr))
 			return ;
-		// printf("\npost_expand\n");
-		// display_cmd(curr);
 		curr = curr->next;
 	}
 	if (!data->cmd->next && is_builtin(data->built_in, data->cmd->command))

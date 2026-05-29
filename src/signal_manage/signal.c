@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 13:23:20 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/18 15:05:43 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/29 17:12:15 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,48 @@ void	handle_signal(int signal)
 {
 	if (signal == SIGINT)
 	{
-		// g_signal = SIGINT;
 		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }
+
+// void	handle_signal(int signal)
+// {
+// 	if (signal == SIGINT)
+// 	{
+// 		g_signal = SIGINT;
+// 		write(1, "\n", 1);
+// 		rl_on_new_line();
+// 		rl_replace_line("", 0);
+// 		rl_redisplay();
+// 	}
+// }
+// void	handle_heredoc(int signal)
+// {
+// 	(void)signal;
+// 	g_signal = SIGINT;
+// 	write(1, "\n", 1);
+// 	rl_replace_line("", 0);
+// 	rl_done = 1;
+// }
+
+// void	handle_heredoc(int signal)
+// {
+// 	(void)signal;
+// 	g_signal = SIGINT;
+// 	write(1, "\n", 1);
+// 	rl_replace_line("", 0);
+// 	rl_done = 1;
+// }
+
+
+
+
+
+
+
 
 // int	does_errexist(void)
 // {

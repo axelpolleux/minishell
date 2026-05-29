@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/28 18:24:20 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/29 15:34:49 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	reset_read(t_data* data)
 	data->cmd = NULL;
 	free(data->line);
 	data->line = NULL;
-	data->exit = 0;
 }
 
 int	main_parser(t_data *data)

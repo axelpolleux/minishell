@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/28 16:46:12 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/29 15:53:37 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -305,7 +305,7 @@ void			exec(t_data *data);
 
 int				manage_redir(t_data *data, t_cmd *cmd);
 int				check_directory(t_data *data, char *path);
-int				check_cmd(t_data *data, t_cmd *cmd);
+int				check_cmd(t_data *data, t_cmd *cmd, int *status);
 int				verif_file(char *line, int doc);
 int				handle_out(t_cmd *cmd, t_redir_her *curr);
 int				handle_in(t_cmd *cmd, t_redir_her *curr);
@@ -365,12 +365,7 @@ t_token			*token_new(char *input, int len, int type, bool quot);
 
 //===================<for sig usage>===============//
 void			handle_signal(int signal);
-void			ft_signal_d(t_env *env);
-void			ft_sigint_heredoc(int pid);
-void			ft_sigint_cmd(int pid);
-void			ft_sigint_interactive(int pid);
-
-int				signal_manage(void);
+void			handle_heredoc(int signal);
 //===============================================//
 
 //===================a degager=====================//
