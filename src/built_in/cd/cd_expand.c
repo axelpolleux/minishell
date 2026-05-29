@@ -60,3 +60,4 @@ char	*path_env(t_data *data, char **args)
 	else
 		path = args[1];
 	return (path);
+}

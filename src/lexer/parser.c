@@ -62,7 +62,7 @@ char	**tokens_to_argv(t_token *start, t_token *end, int i)
 	return (argv);
 }
 
-static t_redir_her	*new_redir_node(char *file, int type)
+t_redir_her	*new_redir_node(char *file, int type)
 {
 	t_redir_her	*new;
 
@@ -80,7 +80,7 @@ static t_redir_her	*new_redir_node(char *file, int type)
 	return (new);
 }
 
-static int	handle_redirs(t_cmd *cmd, t_token *start, t_token *end)
+int	handle_redirs(t_cmd *cmd, t_token *start, t_token *end)
 {
 	t_redir_her	*new;
 
@@ -101,38 +101,38 @@ static int	handle_redirs(t_cmd *cmd, t_token *start, t_token *end)
 	return (EXIT_SUCCESS);
 }
 
-t_cmd	*parsing_commands(t_token *tokens)
-{
-	t_cmd	*cmds;
-	t_cmd	*new;
-	t_token	*curr;
-	t_token	*start;
-
-	cmds = NULL;
-	curr = tokens;
-	while (curr)
-	{
-		start = curr;
-		while (curr && curr->type != PIPE)
-			curr = curr->next;
-		new = new_cmd_node();
-		if (!new)
-		{
-			free_cmd(cmds);
-			return (NULL);
-		}
-		new->args = tokens_to_argv(start, curr, 0);
-		if (new->args && new->args[0])
-			new->command = ft_strdup(new->args[0]);
-		if (handle_redirs(new, start, curr))
-		{
-			free_cmd(new);
-			free_cmd(cmds);
-			return (NULL);
-		}
-		add_cmd_back(&cmds, new);
-		if (curr)
-			curr = curr->next;
-	}
-	return (cmds);
-}
+// t_cmd	*parsing_commands(t_data *data, t_token *tokens)
+// {
+// 	t_cmd	*cmds;
+// 	t_cmd	*new;
+// 	t_token	*curr;
+// 	t_token	*start;
+//
+// 	cmds = NULL;
+// 	curr = tokens;
+// 	while (curr)
+// 	{
+// 		start = curr;
+// 		while (curr && curr->type != PIPE)
+// 			curr = curr->next;
+// 		new = new_cmd_node(data);
+// 		if (!new)
+// 		{
+// 			free_cmd(cmds);
+// 			return (NULL);
+// 		}
+// 		new->args = tokens_to_argv(start, curr, 0);
+// 		if (new->args && new->args[0])
+// 			new->command = ft_strdup(new->args[0]);
+// 		if (handle_redirs(new, start, curr))
+// 		{
+// 			free_cmd(new);
+// 			free_cmd(cmds);
+// 			return (NULL);
+// 		}
+// 		add_cmd_back(&cmds, new);
+// 		if (curr)
+// 			curr = curr->next;
+// 	}
+// 	return (cmds);
+// }

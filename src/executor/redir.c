@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static int	handle_in(t_cmd *cmd, t_redir_her *curr)
+int	handle_in(t_cmd *cmd, t_redir_her *curr)
 {
     if (curr->type == RED_IN)
     {
@@ -31,7 +31,7 @@ static int	handle_in(t_cmd *cmd, t_redir_her *curr)
     return (1);
 }
 
-static int	handle_out(t_cmd *cmd, t_redir_her *curr)
+int	handle_out(t_cmd *cmd, t_redir_her *curr)
 {
 	if (cmd->output > -1)
 		close(cmd->output);

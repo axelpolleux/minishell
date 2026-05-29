@@ -71,7 +71,7 @@ void	exec_command(t_data *data, t_cmd *cmd, char **env)
 {
 	int	exit_status;
 
-	apply_redir(cmd);
+	apply_redir(data, cmd);
 	if (is_builtin(data->built_in, cmd->command))
 	{
 		built_child(data, cmd);
