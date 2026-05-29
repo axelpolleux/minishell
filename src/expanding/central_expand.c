@@ -123,6 +123,8 @@ void	get_expand(t_data *data, t_cmd *cmd)
 	char	*n_line;
 	int		i;
 
+	if (!cmd->args)
+		return ;
 	tmp = ft_calloc(sizeof(char *), nb_arg(cmd->args) + 1);
 	if (!tmp)
 		data_malloc_error(data);

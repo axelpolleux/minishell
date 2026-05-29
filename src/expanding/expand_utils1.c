@@ -15,11 +15,21 @@
 char	*get_dollar(t_data *data, char *line, int *i, char *n_line)
 {
 	char	*tmp;
+	int		j;
 
 	(*i)++;
 	tmp = dollar_expand(data, line, i);
 	if (!tmp)
 		return (NULL);
+	if (data->quote == DQUOT)
+	{
+		j = -1;
+		while (tmp[++j])
+		{
+			if (tmp[j] == ' ')
+				tmp[j] = 1;
+		}
+	}
 	n_line = ft_strjoin_upd(n_line, tmp);
 	free(tmp);
 	return (n_line);

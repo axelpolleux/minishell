@@ -78,7 +78,7 @@ void	apply_redir(t_data *data, t_cmd *cmd)
 	}
 	if (cmd->output > -1)
 	{
-		if (dup2(cmd->input, 1) == -1)
+		if (dup2(cmd->output, 1) == -1)
     		dup_error(data);
 		close(cmd->output);
 	}

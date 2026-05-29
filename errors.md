@@ -1,7 +1,7 @@
 # HEREDOC
 - [] Les redir n'ont pasl'air de marcher dans le heredoc (return bad fd), sauf que les fichiers sont qd meme crées, et ils sont vides
 Le heredoc doit normalement créer les fichiers que lorsque la commande est valide
-c```
+```
 cat << EOF > test
 ls
 test
@@ -13,8 +13,19 @@ cat test
 %
 ```
 
+# EXPAND
+- [ ] echo '""'
+  - [ ] export VAR='ho hello' -> ec$VAR == NULL
+    - env --> VAR=ho
+      - Mainly comes from void_quotes + exec_len_expand + split_nquote
+        - If we comment that part, expand seem to work perfectly, but it can generate leaks in other parts at any time
+          ```c
+            // if (void_quote(data, line, i, empty))
+            // 	return (1);
+            ```
 
 
+```c
 minichevre$ > test
 AddressSanitizer:DEADLYSIGNAL
 =================================================================
@@ -32,4 +43,4 @@ AddressSanitizer:DEADLYSIGNAL
 AddressSanitizer can not provide additional info.
 SUMMARY: AddressSanitizer: SEGV /home/ethutin-/COMMON_TRUNK/CIRCLE3/Minishell/minishell_work/src/expanding/central_expand.c:130:2 in get_expand
 ==266172==ABORTING
-
+```

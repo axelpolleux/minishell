@@ -14,18 +14,23 @@
 
 int	void_quote(t_data *data, char *line, int *i, int *empty)
 {
-	(void)data;
-	if (line[*i] == '"' && line[*i + 1] == '"')
+	if (data->quote == NQUOT)
 	{
-		*(i) += 2;
-		*empty = 1;
-		return (1);
+		if (line[*i] == '"' && line[*i + 1] == '"')
+		{
+			*(i) += 2;
+			*empty = 1;
+			return (1);
+		}
 	}
-	if (line[*i] == '\'' && line[*i + 1] == '\'')
+	if (data->quote == NQUOT)
 	{
-		*(i) += 2;
-		*empty = 1;
-		return (1);
+		if (line[*i] == '\'' && line[*i + 1] == '\'')
+		{
+			*(i) += 2;
+			*empty = 1;
+			return (1);
+		}
 	}
 	return (0);
 }
@@ -46,7 +51,10 @@ int	exec_line_expand(t_data *data, char *line, char **n_line, int *i, int *empty
 	if (void_quote(data, line, i, empty))
 		return (1);
 	if (quote_expand(data, line, i))
+	{
+		*empty = 1;
 		return (1);
+	}
 	if (line[*i] == '$' && data->quote != SQUOT)
 	{
 		*n_line = get_dollar(data, line, i, *n_line);
@@ -54,7 +62,7 @@ int	exec_line_expand(t_data *data, char *line, char **n_line, int *i, int *empty
 			return (0);
 		return (1);
 	}
-	if (data->quote == DQUOT && line[*i] == ' ')
+	if ((data->quote == DQUOT || data->quote == SQUOT) && line[*i] == ' ')
 		*n_line = ft_charjoin(*n_line, 1);
 	else
 		*n_line = ft_charjoin(*n_line, line[*i]);
