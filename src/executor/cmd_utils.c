@@ -12,6 +12,30 @@
 
 #include "minishell.h"
 
+void	exec_command(t_data *data, t_cmd *cmd, char **env)
+{
+	int	exit_status;
+
+	apply_redir(data, cmd);
+	if (is_builtin(data->built_in, cmd->command))
+	{
+		built_child(data, cmd);
+		exit_status = data->exit;
+		free_data(data);
+		free_arr(env);
+		exit(exit_status);
+	}
+	if (cmd->cmd_path)
+	{
+		execve(cmd->cmd_path, cmd->args, env);
+		perror("minishell: execve");
+	}
+	exit_status = data->exit;
+	free_data(data);
+	free_arr(env);
+	exit(exit_status);
+}
+
 void	get_path(t_data *data)
 {
 	char	*path_env;
@@ -48,7 +72,7 @@ static char	*find_cmd_in_path(t_data *data, char *cmd)
 	return (NULL);
 }
 
-int	check_cmd(t_data *data, t_cmd *cmd)
+int	check_cmd(t_data *data, t_cmd *cmd, int *status)
 {
 	if (!cmd || !cmd->command || !cmd->command[0])
 		return (EXIT_FAILURE);
@@ -58,6 +82,7 @@ int	check_cmd(t_data *data, t_cmd *cmd)
 	cmd->cmd_path = find_cmd_in_path(data, cmd->command);
 	if (!cmd->cmd_path)
 	{
+		*(status) = 127;
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd->command, 2);
 		ft_putstr_fd(": command not found\n", 2);
@@ -65,30 +90,6 @@ int	check_cmd(t_data *data, t_cmd *cmd)
 		return (0);
 	}
 	return (1);
-}
-
-void	exec_command(t_data *data, t_cmd *cmd, char **env)
-{
-	int	exit_status;
-
-	apply_redir(data, cmd);
-	if (is_builtin(data->built_in, cmd->command))
-	{
-		built_child(data, cmd);
-		exit_status = data->exit;
-		free_data(data);
-		free_arr(env);
-		exit(exit_status);
-	}
-	if (cmd->cmd_path)
-	{
-		execve(cmd->cmd_path, cmd->args, env);
-		perror("minishell: execve");
-	}
-	exit_status = data->exit;
-	free_data(data);
-	free_arr(env);
-	exit(exit_status);
 }
 
 void	wait_end(t_data *data, int count)
@@ -99,8 +100,10 @@ void	wait_end(t_data *data, int count)
 	i = -1;
 	while (++i < count)
 	{
+		signal(SIGINT, SIG_IGN);
 		if (waitpid(data->pid[i], &status, 0) == -1)
 			wait_error(data);
+		signal(SIGINT, handle_signal);
 		if (WIFEXITED(status))
 			data->exit = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
