@@ -50,16 +50,16 @@ static char	*find_cmd_in_path(t_data *data, char *cmd)
 
 int	check_cmd(t_data *data, t_cmd *cmd)
 {
-	if (!cmd || !cmd->args || !cmd->args[0])
+	if (!cmd || !cmd->command || !cmd->command[0])
 		return (EXIT_FAILURE);
-	if (is_builtin(data->built_in, cmd->args[0]))
+	if (is_builtin(data->built_in, cmd->command))
 		return (1);
 	get_path(data);
-	cmd->cmd_path = find_cmd_in_path(data, cmd->args[0]);
+	cmd->cmd_path = find_cmd_in_path(data, cmd->command);
 	if (!cmd->cmd_path)
 	{
 		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd->args[0], 2);
+		ft_putstr_fd(cmd->command, 2);
 		ft_putstr_fd(": command not found\n", 2);
 		data->exit = 127;
 		return (0);
@@ -72,7 +72,7 @@ void	exec_command(t_data *data, t_cmd *cmd, char **env)
 	int	exit_status;
 
 	apply_redir(data, cmd);
-	if (is_builtin(data->built_in, cmd->args[0]))
+	if (is_builtin(data->built_in, cmd->command))
 	{
 		built_child(data, cmd);
 		exit_status = data->exit;

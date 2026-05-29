@@ -12,20 +12,7 @@
 
 #include "minishell.h"
 
-// int	handle_in(t_cmd *cmd, t_redir_her *curr)
-// {
-// 	if (cmd->input > -1)
-// 		close(cmd->input);
-// 	if (curr->type == RED_IN)
-// 		cmd->input = open(curr->file, O_RDONLY);
-// 	else
-// 		cmd->input = curr->fd;
-// 	if (cmd->input == -1)
-// 		return (0);
-// 	return (1);
-// }
-
-int handle_in(t_cmd *cmd, t_redir_her *curr)
+int	handle_in(t_cmd *cmd, t_redir_her *curr)
 {
     if (curr->type == RED_IN)
     {
@@ -81,7 +68,6 @@ int	manage_redir(t_data *data, t_cmd *cmd)
 	return (0);
 }
 
-//pas secu du tout
 void	apply_redir(t_data *data, t_cmd *cmd)
 {
 	if (cmd->input > -1)
