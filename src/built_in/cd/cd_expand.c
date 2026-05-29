@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/25 13:18:42 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/25 13:18:52 by ethutin-         ###   ########.fr       */
+/*   Created: 2026/05/06 12:50:48 by ethutin-          #+#    #+#             */
+/*   Updated: 2026/05/06 12:51:17 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,3 @@ char	*path_env(t_data *data, char **args)
 	else
 		path = args[1];
 	return (path);
-}

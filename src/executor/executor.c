@@ -47,51 +47,34 @@ void	parent(t_data *data, t_cmd *cmd)
 	}
 }
 
-void	manage_process(t_data *data, t_cmd *cmd)
+void	manage_process(t_data *data, t_cmd *cmd, int index)
 {
 	if (cmd->next)
 	{
 		if (pipe(data->fd_storage) == -1)
 			pipe_error(data);
 	}
-	data->pid[data->pipe] = fork();
-	if (data->pid[data->pipe] == -1)
+	data->pid[index] = fork();
+	if (data->pid[index] == -1)
 		fork_error(data);
-	if (data->pid[data->pipe] == 0)
+	if (data->pid[index] == 0)
 		children(data, cmd);
 	else
 		parent(data, cmd);
 }
 
-void	wait_end(t_data *data, int count)
-{
-	int	i;
-	int	status;
-
-	i = -1;
-	while (++i < count)
-	{
-		if (waitpid(data->pid[i], &status, 0) == -1)
-			wait_error(data);
-		if (WIFEXITED(status))
-			data->exit = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-			data->exit = 128 + WTERMSIG(status);
-	}
-}
-
-static void	handle_exec_loop(t_data *data, int count)
+void	handle_exec_loop(t_data *data, int count)
 {
 	t_cmd	*curr;
+	int		index;
 
 	curr = data->cmd;
-	data->pipe = 0;
+	index = 0;
 	while (curr)
 	{
-		get_expand(data, curr);
-		manage_process(data, curr);
+		manage_process(data, curr, index);
 		curr = curr->next;
-		data->pipe++;
+		index++;
 	}
 	wait_end(data, count);
 }
@@ -102,18 +85,20 @@ void	exec(t_data *data)
 
 	if (!data->cmd)
 		return ;
-	if (heredoc_manage(data, data->cmd))
-		return ;
 	curr = data->cmd;
+	if (heredoc_manage(data, data->cmd))
+		data_malloc_error(data);
 	while (curr)
 	{
+		get_expand(data, curr);
 		if (manage_redir(data, curr))
 			return ;
+		// printf("\npost_expand\n");
+		// display_cmd(curr);
 		curr = curr->next;
 	}
 	if (!data->cmd->next && is_builtin(data->built_in, data->cmd->command))
 	{
-		get_expand(data, data->cmd);
 		exec_built(data, data->cmd);
 		return ;
 	}

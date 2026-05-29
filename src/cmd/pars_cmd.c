@@ -1,20 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokeniser_utils.c                                  :+:      :+:    :+:   */
+/*   pars_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/03 16:30:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/27 16:16:33 by ethutin-         ###   ########.fr       */
+/*   Created: 2026/05/26 17:36:10 by ethutin-          #+#    #+#             */
+/*   Updated: 2026/05/27 14:04:38 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_token_add_back(t_token **lst, t_token *new)
+void	add_cmd_back(t_cmd **lst, t_cmd *new)
 {
-	t_token	*last;
+	add_to_bottom_cmd(lst, new);
+}
+
+void	add_redir_back(t_redir_her **lst, t_redir_her *new)
+{
+	t_redir_her	*last;
 
 	if (!lst || !new)
 		return ;
@@ -27,26 +32,4 @@ void	ft_token_add_back(t_token **lst, t_token *new)
 	while (last->next)
 		last = last->next;
 	last->next = new;
-	new->prev = last;
-}
-
-t_token	*token_new(char *input, int len, int type, bool quot)
-{
-	t_token	*new;
-	char	*cmd;
-
-	new = ft_calloc(sizeof(t_token), 1);
-	if (!new)
-		return (NULL);
-	cmd = ft_substr(input, 0, len);
-	if (!cmd)
-	{
-		free(new);
-		return (NULL);
-	}
-	new->cmd = cmd;
-	new->type = type;
-	new->quot = quot;
-	new->next = NULL;
-	return (new);
 }

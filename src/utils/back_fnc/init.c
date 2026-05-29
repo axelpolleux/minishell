@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 11:20:04 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/26 10:25:10 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/28 10:47:18 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,9 +115,7 @@ t_data	*init_data(int ac, char **av)
 	data->cmd = NULL;
 	data->exit = 0;
 	data->quote = NQUOT;
-	data->pipe = 0;
 	(void)av;
 	(void)ac;
 	return (data);
 }
-

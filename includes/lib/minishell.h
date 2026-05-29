@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/26 16:51:37 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/28 16:46:12 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,14 +76,14 @@ extern volatile int	g_signal;
 # define HOME		"HOME"
 # define TITLE		"minichevre$ "
 
-# define HOME_NSET	"minishell: cd: HOME not set\n"
-# define OLDP_NSET	"minishell: cd: OLDPWD not set\n"
-# define CD_ER		"minishell: cd"
-# define CD_ARG		"minishell: cd: too many arguments\n"
-# define PWD_ER		"minishell: pwd"
-# define EXT_ARG	"exit\nminishell: exit: too many arguments\n"
-# define QUOT_ER	"minishell: every quotes must be closed\n"
-# define SYNT_ER	"minishell: syntax error near unexpected token `newline'\n"
+# define HOME_NSET	"minichevre: cd: HOME not set\n"
+# define OLDP_NSET	"minichevre: cd: OLDPWD not set\n"
+# define CD_ER		"minichevre: cd"
+# define CD_ARG		"minichevre: cd: too many arguments\n"
+# define PWD_ER		"minichevre: pwd"
+# define EXT_ARG	"exit\nminichevre: exit: too many arguments\n"
+# define QUOT_ER	"minichevre: every quotes must be closed\n"
+# define SYNT_UT	"minichevre: syntax error near unexpected token\n"
 # define DATA_ER	"Error : A malloc has failed\n"
 //==============================================//
 
@@ -156,7 +156,6 @@ typedef struct s_data
 	int			last_fd;
 	int			exit;
 	int			quote;
-	int			pipe;
 
 	pid_t		*pid;
 
@@ -181,7 +180,7 @@ void			opendir_error(t_data *data, char *error);
 void			error_cnf(t_data *data, char *error);
 void			parser_error(t_data *data, int output);
 
-int				error_quote(void);
+int				error_pars(int error);
 int				data_malloc_error(t_data *data);
 int				open_error(t_data *data);
 //=======================================================//
@@ -240,10 +239,10 @@ int				split_nquote(char **new, char **old, int i, int k);
 int				get_key_nd_len(char *line, char *name);
 int				quote_expand(t_data *data, char *line, int *i);
 int				count_word_quot(char **arr, char c, int i);
-int				void_quote(char *line, int *i, int *empty);
+int				void_quote(t_data *data, char *line, int *i, int *empty);
 int				ext_nqote(char **old, int *i, int *j, int *l);
-int				exec_line_expand(t_data *data, char *line,	\
-				char **nline, int *i, int *empty);
+int				exec_line_expand(t_data *data, char *line, \
+char **nline, int *i, int *empty);
 
 bool			in_quote(char *line);
 //=====================================//
@@ -260,6 +259,7 @@ void			built_child(t_data *data, t_cmd *cmd);
 void			built_parent(t_data *data, t_cmd *cmd);
 void			unset_place(t_data *data, char *motif);
 void			exec_exit(t_data *data, t_cmd *g_cmd, char **cmd);
+void			exit_arg(t_data *data, char *str, int *out);
 void			exec_built(t_data *data, t_cmd *cmd);
 void			manage_export(t_data *data, char *line);
 void			make_export(t_data *data, char *key);
@@ -285,6 +285,8 @@ int				only_key_equal(char *line);
 int				realoc_arg(t_env *tmp, char *line, char *name, int start);
 int				update_cd(t_data *data, char *new_var, \
 char *new_key, char *new_arg);
+
+bool			flag_identification(char *str);
 //===============================================================//
 
 //========================<for exec>=========================//
@@ -294,16 +296,19 @@ void			cmd_with_path(t_data *data, t_cmd *cmd, char *command);
 void			full_cmd(t_data *data, t_cmd *cmd, char *command, int i);
 void			exec_command(t_data *data, t_cmd *cmd, char **env);
 void			parent(t_data *data, t_cmd *cmd);
-void			manage_process(t_data *data, t_cmd *cmd);
+void			handle_exec_loop(t_data *data, int count);
+void			manage_process(t_data *data, t_cmd *cmd, int index);
 void			wait_end(t_data *data, int count);
-int				manage_redir(t_data *data, t_cmd *cmd);
-void			apply_redir(t_cmd *cmd);
+void			apply_redir(t_data *data, t_cmd *cmd);
 void			redir_heredoc(t_redir_her *redir);
 void			exec(t_data *data);
 
+int				manage_redir(t_data *data, t_cmd *cmd);
 int				check_directory(t_data *data, char *path);
 int				check_cmd(t_data *data, t_cmd *cmd);
 int				verif_file(char *line, int doc);
+int				handle_out(t_cmd *cmd, t_redir_her *curr);
+int				handle_in(t_cmd *cmd, t_redir_her *curr);
 int				only_quote(char *line);
 int				full_void(char *line);
 int				init_heredoc(t_data *data, t_redir_her *doc);
@@ -312,6 +317,10 @@ bool			fcext(t_data *data, t_cmd *cmd, char *path, char *command);
 bool			heredoc_manage(t_data *data, t_cmd *cmd);
 //===========================================================//
 
+//========================<lexer and parsing>=========================//
+void			add_in(char *input, int *i, int *len, int *type);
+void			add_out(char *input, int *i, int *len, int *type);
+void			new_state(t_data *data, char *input, int *index);
 //========================<lexer and parsing>=========================//
 char			**tokens_to_argv(t_token *start, t_token *end, int i);
 
@@ -324,23 +333,23 @@ void			display_tokens(t_token *token);
 void			ft_token_add_back(t_token **lst, t_token *new);
 void			add_cmd_back(t_cmd **lst, t_cmd *new);
 
+int				new_redirection(t_data *data, t_cmd *cmd, int type, char *file);
+int				tok_to_cmd(t_data *data, t_cmd *cmd, char *str, int i);
+int				parse_redir(t_data *data, t_token **token, t_cmd *cmd);
 int				main_parser(t_data *data);
-// int				double_quotes(char *input, int *index);
-// int				single_quotes(char *input, int *index);
 int				not_in_original_en(char **env, char *name);
 int				make_oldpwd(t_data *data, t_env *new, char **env);
 int				make_pwd(t_data *data, t_env *new);
 int				no_minim_env(char **env);
 int				count_words(t_token *start, t_token *end);
 
-int				manage_quote(t_token **tokens, char *input, int *index);
-
+bool			new_cmd(t_data *data, t_cmd **cmd, t_token *token);
 bool			is_redir(int type);
 bool			is_space(int c);
 bool			skip_quote(char *input, int *i);
 bool			add_all(t_data *data, t_token **tokens, char *input, int *i);
-bool			add_word(t_data *data, t_token **tokens, char *input,	\
-				int *index);
+bool			add_word(t_data *data, t_token **tokens, \
+char *input, int *index);
 bool			quote_state(t_data *data, char *input, int *i, bool *quoted);
 bool			write_here(t_redir_her *doc, char *line, int *fd);
 bool			new_delimiter(t_data *data, t_redir_her *doc);
@@ -348,8 +357,8 @@ bool			read_heredoc(t_data *data, t_redir_her *doc, \
 char *tmp, int *fd);
 bool			history_heredoc(t_data *data, char *line, int *fd);
 
-t_cmd			*new_cmd_node(void);
-t_cmd			*parsing_commands(t_token *tokens);
+t_cmd			*new_cmd_node(t_data *data);
+t_cmd			*parsing_commands(t_data *data, t_token *tokens);
 t_token			*tokeniser(t_data *data, char *input);
 t_token			*token_new(char *input, int len, int type, bool quot);
 //======================================================//

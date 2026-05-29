@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/05 18:26:35 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/14 15:02:59 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/26 17:26:55 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,7 @@ int	data_malloc_error(t_data *data)
 void	error_perror(char *error, int error_p, int fd)
 {
 	if (error_p)
-	{
-		ft_putstr_fd("minishell: ", 2);
-		perror(error);
-	}
+		perror("error");
 	else
 		ft_putstr_fd(error, fd);
 }
@@ -42,14 +39,14 @@ void	pipe_error(t_data *data)
 
 void	error_export(char *error)
 {
-	ft_putstr_fd("minishell: export: `", 2);
+	ft_putstr_fd("minichevre: export: `", 2);
 	ft_putstr_fd(error, 2);
 	ft_putstr_fd("`: not a valid identifier\n", 2);
 }
 
 void	error_exit(t_data *data, char *error)
 {
-	ft_putstr_fd("minishell: exit: ", 2);
+	ft_putstr_fd("minichevre: exit: ", 2);
 	ft_putstr_fd(error, 2);
 	ft_putstr_fd(": numeric argument required\n", 2);
 	free_data(data);
