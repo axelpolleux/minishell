@@ -91,6 +91,7 @@ void	exec(t_data *data)
 	{
 		if (data->exit != 130)
 			data_malloc_error(data);
+		return ;
 	}
 	while (curr)
 	{

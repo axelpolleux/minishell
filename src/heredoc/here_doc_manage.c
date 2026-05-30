@@ -205,7 +205,6 @@ bool	heredoc_manage(t_data *data, t_cmd *cmd)
 				doc->fd = init_heredoc(data, doc);
 				if (doc->fd == -2)
 					return (true);
-				cmd->input = doc->fd;
 			}
 			doc = doc->next;
 		}

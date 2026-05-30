@@ -83,6 +83,10 @@ void	free_cmd(t_cmd *node)
 			free(node->full_cmd);
 		if (node->redir)
 			free_redir(node->redir);
+		if (node->input > -1)
+			close(node->input);
+		if (node->output > -1)
+			close(node->output);
 		free(node);
 		node = tmp;
 	}
