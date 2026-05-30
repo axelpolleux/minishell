@@ -59,8 +59,9 @@ int	manage_redir(t_data *data, t_cmd *cmd)
 			state = handle_out(cmd, curr);
 		if (!state)
 		{
-			perror(cmd->args[0]);
-			data->exit = 1;
+			display_cmd(cmd);
+			// opendir_error(data, cmd->args);
+			opendir_error(data, cmd->redir->file);
 			return (1);
 		}
 		curr = curr->next;
