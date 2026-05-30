@@ -1,6 +1,6 @@
 #Basics
 CC				:= cc
-CFLAGS			:= -Wall -Werror -Wextra # -g -fsanitize=address -MMD -MP
+CFLAGS			:= -Wall -Werror -Wextra -g  -fsanitize=address -MMD -MP
 
 INCLUDES_DIR	:= -Iincludes/ -Iincludes/libft/ -Iincludes/lib/
 INCLUDES		:= $(INCLUDES_DIR)

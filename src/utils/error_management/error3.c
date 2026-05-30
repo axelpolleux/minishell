@@ -48,7 +48,7 @@ void	opendir_error(t_data *data, char *error)
 {
 	ft_putstr_fd("minichevre: ", 2);
 	ft_putstr_fd(error, 2);
-	ft_putstr_fd(" : Is a directory\n", 2);
+	ft_putstr_fd(" : is a directory\n", 2);
 	data->exit = 126;
 }
 
