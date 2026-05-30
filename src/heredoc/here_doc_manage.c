@@ -22,19 +22,22 @@ bool	new_delimiter(t_data *data, t_redir_her *doc)
 	if (!n_line)
 		return (true);
 	i = 0;
-	printf("old_delim: %s\n", doc->file);
 	while (doc->file[i])
 	{
-		// checker le new et le old delim
 		if (quote_expand(data, doc->file, &i))
 			continue ;
+		if (doc->file[i] == '$' && data->quote == NQUOT)
+		{
+			n_line = get_dollar(data, doc->file, &i, n_line);
+			if (!n_line)
+				return (true);
+			continue ;
+		}
 		n_line = ft_charjoin(n_line, doc->file[i]);
 		if (!n_line)
 			return (true);
 		i++;
 	}
-		printf("new_delim: %s\n", doc->file);
-
 	free(doc->file);
 	doc->file = n_line;
 	if (!doc->file)
