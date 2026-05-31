@@ -45,6 +45,7 @@ int	make_pwd(t_data *data, t_env *new)
 char	*get_oldpwd(t_data *data, char **env)
 {
 	char	*line;
+	char	*pwd;
 
 	if (!env)
 	{
@@ -54,7 +55,10 @@ char	*get_oldpwd(t_data *data, char **env)
 	}
 	else
 	{
-		line = ft_strdup(arg_env(env, "PWD=", ft_strlen("PWD=")));
+		pwd = arg_env(env, "PWD=", ft_strlen("PWD="));
+		if (!pwd)
+			return (NULL);
+		line = ft_strjoin("OLDPWD=", pwd);
 		if (!line)
 			return (NULL);
 	}

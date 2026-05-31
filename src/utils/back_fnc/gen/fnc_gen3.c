@@ -71,17 +71,13 @@ void	add_to_bottom_cmd(t_cmd **node, t_cmd *new_bot)
 
 char	*arg_env(char **env, char *motif, int len)
 {
-	char	*var;
 	int		i;
 
 	i = -1;
 	while (env[++i])
 	{
 		if (!ft_strncmp(env[i], motif, len))
-		{
-			var = env[i] + len + 1;
-			return (var);
-		}
+			return (env[i] + len);
 	}
 	return (NULL);
 }
