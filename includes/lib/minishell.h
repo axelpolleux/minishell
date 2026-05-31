@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/31 20:48:07 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/31 21:13:37 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,10 +248,8 @@ int				quote_expand(t_data *data, char *line, int *i);
 int				count_word_quot(char **arr, char c, int i);
 int				void_quote(t_data *data, char *line, int *i, int *empty);
 int				ext_nqote(char **old, int *i, int *j, int *l);
-// int				exec_line_expand(t_data *data, char *line, \
-// char **nline, int *i, int *empty);
-int				exec_line_expand(t_data *data, char *line, char **n_line, int **args);
-
+int				exec_line_expand(t_data *data, char *line,	\
+	char **n_line, int **args);
 
 bool			in_quote(char *line);
 //=====================================//
@@ -280,6 +278,9 @@ long			exit_atoi(const char *str, int sign, long res);
 int				exec_echo(char **cmd);
 int				exec_cd(t_data *data, char **cmd);
 int				exec_chdir(char *path, char *new_pwd, size_t size);
+int				not_in_original_en(char **env, char *name);
+int				make_oldpwd(t_data *data, t_env *new, char **env);
+char			*get_oldpwd(t_data *data, char **env);
 int				exec_pwd(t_data *data);
 int				exec_export(t_data *data, char **cmd);
 int				central_export(t_data *data, char **cmd);
