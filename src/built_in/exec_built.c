@@ -53,6 +53,7 @@ void	exec_built(t_data *data, t_cmd *cmd)
 		dup2(cmd->output, 1);
 	}
 	built_parent(data, cmd);
+	fflush(stdout);
 	if (save_in > -1)
 	{
 		dup2(save_in, 0);

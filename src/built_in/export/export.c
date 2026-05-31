@@ -54,7 +54,7 @@ int	central_export(t_data *data, char **args)
 	int		i;
 
 	i = 0;
-	output = -1;
+	output = EXIT_SUCCESS;
 	if (args == NULL)
 		return (output);
 	while (args[++i])

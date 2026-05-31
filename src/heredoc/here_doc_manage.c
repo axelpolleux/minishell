@@ -93,6 +93,9 @@ bool	read_heredoc(t_data *data, t_redir_her *doc, char *tmp, int *fd)
 		}
 		if (!line)
 		{
+			ft_putstr_fd("minichevre: warning: here-document delimited by end-of-file (wanted `", 2);
+			ft_putstr_fd(doc->file, 2);
+			ft_putstr_fd("`)\n", 2);
 			close(fd[1]);
 			break ;
 		}
