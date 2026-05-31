@@ -6,7 +6,7 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 17:40:15 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/31 19:33:55 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/31 21:36:40 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,5 @@ void	exec(t_data *data)
 		exec_built(data, data->cmd);
 		return ;
 	}
-	data->pid = ft_calloc(sizeof(pid_t), ft_lstsize_c(data->cmd));
-	if (!data->pid)
-		data_malloc_error(data);
-	handle_exec_loop(data, ft_lstsize_c(data->cmd));
+	init_data_for_exec(data);
 }
