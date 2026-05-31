@@ -6,41 +6,11 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 15:29:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/05 17:55:40 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/31 21:12:07 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	make_pwd(t_data *data, t_env *new)
-{
-	char	*pwd;
-	char	*new_var;
-	char	*new_arg;
-	char	*new_key;
-
-	pwd = getcwd(NULL, 0);
-	if (!pwd)
-		return (EXIT_FAILURE);
-	new_var = NULL;
-	new_arg = NULL;
-	new_key = NULL;
-	data->line_env = ft_strjoin("PWD=", pwd);
-	free (pwd);
-	if (!data->line_env)
-		return (EXIT_FAILURE);
-	if (init_champ_env(data, &new_var, &new_arg, &new_key))
-		init_env_fail_n(new_var, new_arg, new_key);
-	new = new_env(new_var, new_arg, new_key, 1);
-	free(data->line_env);
-	data->line_env = NULL;
-	if (!new)
-		init_env_fail_n(new_var, new_arg, new_key);
-	add_to_bottom_env (&data->t_env, new);
-	free(data->line);
-	data->line = NULL;
-	return (EXIT_SUCCESS);
-}
 
 char	*get_oldpwd(t_data *data, char **env)
 {
