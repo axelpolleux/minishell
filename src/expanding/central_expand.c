@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 10:10:01 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/28 14:54:12 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/31 20:50:19 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ char	*line_expand(t_data *data, char *line, int i)
 		return (NULL);
 	while (line[i])
 	{
-		ret = exec_line_expand(data, line, &n_line, &i, &empty);
+		ret = exec_line_expand(data, line, &n_line, (int *[2]){&i, &empty});
 		if (ret == 0)
 			return (NULL);
 		if (ret == 2)

@@ -25,21 +25,21 @@ void	wait_error(t_data *data)
 {
 	free_data(data);
 	perror("waitpid");
-	exit (-1);
+	exit (1);
 }
 
 void	dup_error(t_data *data)
 {
 	free_data(data);
 	perror("dup");
-	exit (-1);
+	exit (1);
 }
 
 void	fork_error(t_data *data)
 {
 	free_data(data);
 	perror("fork");
-	exit (-1);
+	exit (1);
 }
 
 int	error_pars(int error)

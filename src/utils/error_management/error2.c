@@ -32,7 +32,7 @@ void	pipe_error(t_data *data)
 {
 	perror("pipe");
 	free_data(data);
-	exit (-1);
+	exit (1);
 }
 
 void	error_export(char *error)
@@ -48,5 +48,5 @@ void	error_exit(t_data *data, char *error)
 	ft_putstr_fd(error, 2);
 	ft_putstr_fd(": numeric argument required\n", 2);
 	free_data(data);
-	exit(2);
+	exit(128);
 }

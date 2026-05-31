@@ -88,7 +88,7 @@ int	exec_cd(t_data *data, char **args)
 	if (nb_arg(args) > 2)
 	{
 		error_perror(CD_ARG, P_ERROR, 2);
-		return (EXIT_FAILURE);
+		return (2);
 	}
 	if (get_old_pwd(data, old_pwd, sizeof(old_pwd)))
 		return (EXIT_FAILURE);

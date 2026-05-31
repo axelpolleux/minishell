@@ -44,17 +44,9 @@ void	init_env_fail_n(char *new_env, char *new_arg, char *new_key)
 		free(new_key);
 }
 
-void	opendir_error(t_data *data, char *error)
-{
-	ft_putstr_fd("minichevre: ", 2);
-	ft_putstr_fd(error, 2);
-	ft_putstr_fd(" : is a directory\n", 2);
-	data->exit = 126;
-}
-
 void	error_cnf(t_data *data, char *error)
 {
-	ft_putstr_fd("enter_error_cnf", 1);
+	ft_putstr_fd("minichevre: ", 2);
 	ft_putstr_fd(error, 2);
 	ft_putstr_fd(": command not found\n", 2);
 	data->exit = 127;

@@ -69,7 +69,7 @@ int	exec_unset(t_data *data, char **args)
 			ft_putstr_fd("minichevre: unset: `", 2);
 			ft_putstr_fd(args[i], 2);
 			ft_putstr_fd("`: not a valid identifier\n", 2);
-			res = EXIT_FAILURE;
+			res = 2;
 		}
 		else
 			unset_place(data, args[i]);

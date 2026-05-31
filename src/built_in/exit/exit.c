@@ -14,17 +14,20 @@
 
 void	exit_arg(t_data *data, char *str, int *out)
 {
-	*(out) = exit_atoi(str, 1, 0);
-	if (*(out) == -1)
+	long	res;
+
+	res = exit_atoi(str, 1, 0);
+	if (res == LONG_MAX)
 		error_exit(data, str);
+	*(out) = (int)(res % 256);
 }
 
-int	exit_atoi(const char *str, int sign, long res)
+long	exit_atoi(const char *str, int sign, long res)
 {
 	sign = 1;
 	res = 0;
 	if (!str)
-		return (-1);
+		return (LONG_MAX);
 	while (*str == ' ' || (9 <= *str && *str <= 13))
 		str++;
 	if (*str == '-' || *str == '+')
@@ -34,7 +37,7 @@ int	exit_atoi(const char *str, int sign, long res)
 		str++;
 	}
 	if (!ft_isdigit(*str))
-		return (-1);
+		return (LONG_MAX);
 	while (ft_isdigit(*str))
 	{
 		res = res * 10 + (*str - '0');
@@ -43,8 +46,8 @@ int	exit_atoi(const char *str, int sign, long res)
 	while (*str == ' ' || (9 <= *str && *str <= 13))
 		str++;
 	if (*str)
-		return (-1);
-	return ((int)((res * sign) % 256));
+		return (LONG_MAX);
+	return (res * sign);
 }
 
 void	exec_exit(t_data *data, t_cmd *cmd, char **args)
@@ -65,7 +68,7 @@ void	exec_exit(t_data *data, t_cmd *cmd, char **args)
 	if (arg > 2)
 	{
 		error_perror(EXT_ARG, P_ERROR, 2);
-		data->exit = 1;
+		data->exit = 2;
 		return ;
 	}
 	data->exit = out;

@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 14:51:32 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/28 14:53:26 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/31 20:51:19 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,26 +46,26 @@ int	ext_nqote(char **old, int *i, int *j, int *l)
 	return (0);
 }
 
-int	exec_line_expand(t_data *data, char *line, char **n_line, int *i, int *empty)
+int	exec_line_expand(t_data *data, char *line, char **n_line, int **args)
 {
-	if (void_quote(data, line, i, empty))
+	if (void_quote(data, line, args[0], args[1]))
 		return (1);
-	if (quote_expand(data, line, i))
+	if (quote_expand(data, line, args[0]))
 	{
-		*empty = 1;
+		*args[1] = 1;
 		return (1);
 	}
-	if (line[*i] == '$' && data->quote != SQUOT)
+	if (line[*args[0]] == '$' && data->quote != SQUOT)
 	{
-		*n_line = get_dollar(data, line, i, *n_line);
+		*n_line = get_dollar(data, line, args[0], *n_line);
 		if (!(*n_line))
 			return (0);
 		return (1);
 	}
-	if ((data->quote == DQUOT || data->quote == SQUOT) && line[*i] == ' ')
+	if ((data->quote == DQUOT || data->quote == SQUOT) && line[*args[0]] == ' ')
 		*n_line = ft_charjoin(*n_line, 1);
 	else
-		*n_line = ft_charjoin(*n_line, line[*i]);
+		*n_line = ft_charjoin(*n_line, line[*args[0]]);
 	if (!(*n_line))
 		return (0);
 	return (2);
