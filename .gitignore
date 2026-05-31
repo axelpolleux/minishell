@@ -61,7 +61,3 @@ compile_flags.txt
 .minishell_history
 LICENSE
 .vscode/
-.junie
-/no_access
-/readline.supp
-/test.txt

@@ -68,13 +68,3 @@ void	display_tokens(t_token *view)
 	}
 	printf("}\n");
 }
-
-//=======a degager a la fin==========//
-
-// //pour voir l'historique
-// HIST_ENTRY **history;
-// history = history_list();
-// int i = -1;
-// while (history[++i])
-//     printf("=> %s\n", history[i]->line);
-//=======================================//

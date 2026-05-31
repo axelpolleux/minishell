@@ -68,7 +68,6 @@ char	*dollar_expand(t_data *data, char *line, int *i)
 	return (ft_strdup(n_line));
 }
 
-// pas secur
 char	*line_expand(t_data *data, char *line, int i)
 {
 	char	*n_line;

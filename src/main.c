@@ -30,7 +30,6 @@ int	main_parser(t_data *data)
 		data->token = NULL;
 	}
 	data->token = tokeniser(data, data->line);
-	//display_tokens(data->token);
 	if (!data->token)
 		return (EXIT_FAILURE);
 	if (data->cmd)
@@ -41,11 +40,10 @@ int	main_parser(t_data *data)
 	data->cmd = parsing_commands(data, data->token);
 	if (!data->cmd)
 		return (EXIT_FAILURE);
-	//display_cmd(data->cmd);
 	return (EXIT_SUCCESS);
 }
 
-void main_reading(t_data* data)
+void	main_reading(t_data *data)
 {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_signal);
@@ -90,7 +88,6 @@ int	main(int ac, char **av, char **env)
 	if (!data->built_in)
 		data_malloc_error(data);
 	init_env(data, env, -1);
-	//display_env(data->t_env);
 	main_reading(data);
 	return (EXIT_SUCCESS);
 }

@@ -47,31 +47,31 @@ int	exit_atoi(const char *str, int sign, long res)
 	return ((int)((res * sign) % 256));
 }
 
-void exec_exit(t_data *data, t_cmd *cmd, char **args)
+void	exec_exit(t_data *data, t_cmd *cmd, char **args)
 {
-    int out;
-    int arg;
+	int	out;
+	int	arg;
 
-    if (cmd->output >= 0)
-    {
-        dup2(data->last_fd, 1);
-        close(data->last_fd);
-    }
-    arg = nb_arg(args);
-    if (arg > 1)
-        exit_arg(data, args[1], &out);
-    else
-        out = data->exit;
-    if (arg > 2)
-    {
-        error_perror(EXT_ARG, P_ERROR, 2);
-        data->exit = 1;
-        return ;
-    }
-    data->exit = out;
-    if (cmd->next || cmd->prev)
-        return ;
-    printf("exit\n");
-    free_data(data);
-    exit(out);
+	if (cmd->output >= 0)
+	{
+		dup2(data->last_fd, 1);
+		close(data->last_fd);
+	}
+	arg = nb_arg(args);
+	if (arg > 1)
+		exit_arg(data, args[1], &out);
+	else
+		out = data->exit;
+	if (arg > 2)
+	{
+		error_perror(EXT_ARG, P_ERROR, 2);
+		data->exit = 1;
+		return ;
+	}
+	data->exit = out;
+	if (cmd->next || cmd->prev)
+		return ;
+	printf("exit\n");
+	free_data(data);
+	exit(out);
 }

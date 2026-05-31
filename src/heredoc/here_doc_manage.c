@@ -45,38 +45,6 @@ bool	new_delimiter(t_data *data, t_redir_her *doc)
 	return (false);
 }
 
-// bool	read_heredoc(t_data *data, t_redir_her *doc, char *tmp, int *fd)
-// {
-// 	char	*line;
-
-// 	while (1)
-// 	{
-// 		line = readline("> ");
-// 		if (!line)
-// 		{
-// 			if (g_signal == SIGINT)
-// 			{
-// 				closes(-1, fd);
-// 				data->exit = 130;
-// 				return (true);
-// 			}
-// 			close(fd[1]);
-// 			break ;
-// 		}
-// 		if (history_heredoc(data, line, fd))
-// 			return (true);
-// 		line = expand_here_doc(data, doc, line, tmp);
-// 		if (!line)
-// 		{
-// 			closes(-1, fd);
-// 			return (true);
-// 		}
-// 		if (write_here(doc, line, fd))
-// 			break ;
-// 	}
-// 	return (false);
-// }
-
 bool	read_heredoc(t_data *data, t_redir_her *doc, char *tmp, int *fd)
 {
 	char	*line;
@@ -140,39 +108,6 @@ void	heredoc_child(t_data *data, t_redir_her *doc, char *tmp, int *fd)
 	exit(0);
 }
 
-// int	init_heredoc(t_data *data, t_redir_her *doc)
-// {
-// 	char	*tmp;
-// 	int		fd[2];
-
-// 	g_signal = 0;
-// 	tmp = ft_strdup(doc->file);
-// 	if (!tmp)
-// 		return (-2);
-// 	if (pipe(fd) == -1)
-// 		return (-1);
-// 	signal(SIGQUIT, SIG_IGN);
-// 	signal(SIGINT, handle_heredoc);
-// 	if (new_delimiter(data, doc))
-// 	{
-// 		free(tmp);
-// 		return (-2);
-// 	}
-// 	if (read_heredoc(data, doc, tmp, fd))
-// 	{
-// 		free(tmp);
-// 		signal(SIGINT, handle_signal);
-// 		signal(SIGQUIT, SIG_IGN);
-// 		return (-2);
-// 	}
-// 	signal(SIGINT, handle_signal);
-// 	signal(SIGQUIT, SIG_IGN);
-// 	free(tmp);
-// 	close(fd[1]);
-// 	return (fd[0]);
-// }
-
-
 int	init_heredoc(t_data *data, t_redir_her *doc)
 {
 	pid_t	pid;
@@ -189,7 +124,7 @@ int	init_heredoc(t_data *data, t_redir_her *doc)
 	if (pid == -1)
 	{
 		free(tmp);
-		closes(-1, fd); 
+		closes(-1, fd);
 		return (-1);
 	}
 	if (pid == 0)
@@ -216,7 +151,6 @@ int	init_heredoc(t_data *data, t_redir_her *doc)
 	}
 	return (fd[0]);
 }
-
 
 bool	heredoc_manage(t_data *data, t_cmd *cmd)
 {
