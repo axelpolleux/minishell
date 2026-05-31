@@ -46,6 +46,7 @@ int	replace(t_data *data, char *name, char *var)
 	char	*new_var;
 	char	*new_key;
 	char	*new_arg;
+	t_env	*new;
 
 	data->line_env = ft_strjoin(name, var);
 	if (!data->line_env)
@@ -54,9 +55,14 @@ int	replace(t_data *data, char *name, char *var)
 		data_malloc_error(data);
 	if (update_cd(data, new_var, new_key, new_arg))
 	{
-		free(data->line_env);
-		init_env_fail_n(new_var, new_arg, new_key);
-		return (EXIT_FAILURE);
+		new = new_env(new_var, new_arg, new_key, 1);
+		if (!new)
+		{
+			free(data->line_env);
+			init_env_fail_n(new_var, new_arg, new_key);
+			return (EXIT_FAILURE);
+		}
+		add_to_bottom_env(&data->t_env, new);
 	}
 	free(data->line_env);
 	return (EXIT_SUCCESS);

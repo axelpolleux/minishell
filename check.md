@@ -10,7 +10,7 @@
 
 
 # Errors
-- Lorsque l'on execute /usr/bin/env -i ./minishell , lorsque cd est execute dans minish il n'y a pas de OLDPWD et PWD, il faut les rajouter 
+- Lorsque l'on execute /usr/bin/env -i ./minishell, lorsque cd est execute dans minish il n'y a pas de OLDPWD et PWD, il faut les rajouter 
 
 - rajouter export+= (check si le contenu est NULL, ne pas segfault)
 - ```cd ~``` --> ne marche pas

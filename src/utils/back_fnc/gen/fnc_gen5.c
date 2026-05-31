@@ -38,7 +38,7 @@ int	no_minim_env(char **env)
 	int		error;
 
 	if (!env || !(*env))
-		return (-1);
+		return (3);
 	error = 0;
 	if (not_in_original_en(env, PWD))
 		error += 2;
