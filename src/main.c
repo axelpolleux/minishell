@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/29 15:34:49 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/31 20:41:55 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,17 +43,34 @@ int	main_parser(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
+// void	g_signal_init(void)
+// {
+// 	signal(SIGQUIT, SIG_IGN);
+// 	signal(SIGINT, handle_signal);
+// 	rl_event_hook = rl_event;
+// }
+//
+// void	g_signal_while(t_data *data)
+// {
+// 	g_signal = 0;
+// 	data->line = readline(TITLE);
+// 	if (g_signal == SIGINT)
+// 		data->exit = 130;
+// }
+//
+// void	check_exit(t_data *data)
+// {
+// 	if (data->exit != 0)
+// 		parser_error(data, data->exit);
+// 	reset_read(data);
+// }
+
 void	main_reading(t_data *data)
 {
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, handle_signal);
-	rl_event_hook = rl_event;
+	g_signal_init();
 	while (1)
 	{
-		g_signal = 0;
-		data->line = readline(TITLE);
-		if (g_signal == SIGINT)
-			data->exit = 130;
+		g_signal_while(data);
 		if (!data->line)
 		{
 			ft_putendl_fd("exit", 1);
@@ -68,9 +85,7 @@ void	main_reading(t_data *data)
 			add_history(data->line);
 		if (main_parser(data))
 		{
-			if (data->exit != 0)
-				parser_error(data, data->exit);
-			reset_read(data);
+			check_exit(data);
 			continue ;
 		}
 		exec(data);

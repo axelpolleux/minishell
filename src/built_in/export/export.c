@@ -62,7 +62,7 @@ int	central_export(t_data *data, char **args)
 		if (pars_export(args[i]))
 		{
 			error_export(args[i]);
-			output = EXIT_FAILURE;
+			output = 2;
 			continue ;
 		}
 		manage_export(data, args[i]);
@@ -72,9 +72,10 @@ int	central_export(t_data *data, char **args)
 
 int	exec_export(t_data *data, char **args)
 {
+	int	res;
+
 	if (only_export(data, args))
 		return (EXIT_SUCCESS);
-	if (central_export(data, args))
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	res = central_export(data, args);
+	return (res);
 }

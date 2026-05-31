@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/29 15:53:37 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/31 20:48:07 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,13 @@ typedef struct s_redir_her
 
 	struct s_redir_her	*next;
 }	t_redir_her;
+
+typedef struct s_expand_ctx
+{
+	char	**n_line;
+	int		*i;
+	int		*empty;
+}	t_expand_ctx;
 
 typedef struct s_cmd
 {
@@ -241,8 +248,10 @@ int				quote_expand(t_data *data, char *line, int *i);
 int				count_word_quot(char **arr, char c, int i);
 int				void_quote(t_data *data, char *line, int *i, int *empty);
 int				ext_nqote(char **old, int *i, int *j, int *l);
-int				exec_line_expand(t_data *data, char *line, \
-char **nline, int *i, int *empty);
+// int				exec_line_expand(t_data *data, char *line, \
+// char **nline, int *i, int *empty);
+int				exec_line_expand(t_data *data, char *line, char **n_line, int **args);
+
 
 bool			in_quote(char *line);
 //=====================================//
@@ -267,7 +276,7 @@ void			change_arg(t_data *data, char *line, char *name, int start);
 
 int				make_built_env(t_data *data, t_env *new, char **env);
 int				is_builtin(char **built_in, char *cmd);
-int				exit_atoi(const char *str, int sign, long res);
+long			exit_atoi(const char *str, int sign, long res);
 int				exec_echo(char **cmd);
 int				exec_cd(t_data *data, char **cmd);
 int				exec_chdir(char *path, char *new_pwd, size_t size);
@@ -329,9 +338,11 @@ void			add_out(char *input, int *i, int *len, int *type);
 void			new_state(t_data *data, char *input, int *index);
 void			reset_read(t_data *data);
 void			main_reading(t_data *data);
-void			display_tokens(t_token *token);
 void			ft_token_add_back(t_token **lst, t_token *new);
 void			add_cmd_back(t_cmd **lst, t_cmd *new);
+void			g_signal_init(void);
+void			g_signal_while(t_data *data);
+void			check_exit(t_data *data);
 
 int				new_redirection(t_data *data, t_cmd *cmd, int type, char *file);
 int				tok_to_cmd(t_data *data, t_cmd *cmd, char *str, int i);

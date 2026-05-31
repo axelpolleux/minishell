@@ -6,7 +6,7 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 17:40:15 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/31 19:34:03 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/31 20:22:27 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,29 +51,57 @@ void	get_path(t_data *data)
 
 static char	*find_cmd_in_path(t_data *data, char *cmd)
 {
-	char	*tmp;
-	char	*full;
-	int		i;
+	char		*tmp;
+	char		*full;
+	int			i;
+	struct stat	s;
+	char		*saved_path;
 
-	if (ft_strchr(cmd, '/') && access(cmd, X_OK) == 0)
+	if (ft_strchr(cmd, '/'))
 		return (ft_strdup(cmd));
-	if (ft_strchr(cmd, '/') || !data->path)
+	if (!data->path)
 		return (NULL);
 	i = -1;
+	saved_path = NULL;
 	while (data->path[++i])
 	{
 		tmp = ft_strjoin(data->path[i], "/");
 		full = ft_strjoin(tmp, cmd);
 		free(tmp);
-		if (access(full, X_OK) == 0)
-			return (full);
+		if (stat(full, &s) == 0 && !S_ISDIR(s.st_mode))
+		{
+			if (access(full, X_OK) == 0)
+			{
+				if (saved_path)
+					free(saved_path);
+				return (full);
+			}
+			if (!saved_path)
+				saved_path = ft_strdup(full);
+		}
 		free(full);
 	}
-	return (NULL);
+	return (saved_path);
+}
+
+static int	report_err(char *cmd, char *msg, int code, int *status)
+{
+	ft_putstr_fd("minichevre: ", 2);
+	if (msg)
+	{
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(msg, 2);
+	}
+	else
+		perror(cmd);
+	*status = code;
+	return (code);
 }
 
 int	check_cmd(t_data *data, t_cmd *cmd, int *status)
 {
+	struct stat	s;
+
 	if (!cmd || !cmd->command || !cmd->command[0])
 		return (EXIT_FAILURE);
 	if (is_builtin(data->built_in, cmd->command))
@@ -82,33 +110,20 @@ int	check_cmd(t_data *data, t_cmd *cmd, int *status)
 	cmd->cmd_path = find_cmd_in_path(data, cmd->command);
 	if (!cmd->cmd_path)
 	{
-		*(status) = 127;
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd->command, 2);
-		ft_putstr_fd(": command not found\n", 2);
-		data->exit = 127;
+		data->exit = report_err(cmd->command,
+				": command not found\n", 127, status);
+		return (0);
+	}
+	if (stat(cmd->cmd_path, &s) == 0 && S_ISDIR(s.st_mode))
+	{
+		data->exit = report_err(cmd->command,
+				": Is a directory\n", 126, status);
+		return (0);
+	}
+	if (access(cmd->cmd_path, X_OK) != 0)
+	{
+		data->exit = report_err(cmd->command, NULL, 126, status);
 		return (0);
 	}
 	return (1);
-}
-
-void	wait_end(t_data *data, int count)
-{
-	int	i;
-	int	status;
-
-	i = -1;
-	while (++i < count)
-	{
-		signal(SIGINT, SIG_IGN);
-		if (waitpid(data->pid[i], &status, 0) == -1)
-			wait_error(data);
-		signal(SIGINT, handle_signal);
-		if (WIFEXITED(status))
-			data->exit = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-			data->exit = 128 + WTERMSIG(status);
-	}
-	free(data->pid);
-	data->pid = NULL;
 }

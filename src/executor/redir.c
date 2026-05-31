@@ -6,7 +6,7 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 12:36:45 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/31 19:36:51 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/31 19:55:57 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,9 @@ int	manage_redir(t_data *data, t_cmd *cmd)
 			state = handle_out(cmd, curr);
 		if (!state)
 		{
-			opendir_error(data, cmd->redir->file);
+			ft_putstr_fd("minichevre: ", 2);
+			perror(curr->file);
+			data->exit = 1;
 			return (1);
 		}
 		curr = curr->next;
