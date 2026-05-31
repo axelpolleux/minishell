@@ -366,6 +366,7 @@ t_token			*token_new(char *input, int len, int type, bool quot);
 //===================<for sig usage>===============//
 void			handle_signal(int signal);
 void			handle_heredoc(int signal);
+int				rl_event(void);
 //===============================================//
 
 //===================a degager=====================//

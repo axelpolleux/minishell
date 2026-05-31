@@ -83,7 +83,14 @@ bool	read_heredoc(t_data *data, t_redir_her *doc, char *tmp, int *fd)
 
 	while (1)
 	{
+		g_signal = 0;
 		line = readline("> ");
+		if (g_signal == SIGINT)
+		{
+			if (line)
+				free(line);
+			return (true);
+		}
 		if (!line)
 		{
 			close(fd[1]);
@@ -105,14 +112,27 @@ bool	read_heredoc(t_data *data, t_redir_her *doc, char *tmp, int *fd)
 
 void	heredoc_child(t_data *data, t_redir_her *doc, char *tmp, int *fd)
 {
-	signal(SIGINT, SIG_DFL);
+	signal(SIGINT, handle_heredoc);
 	signal(SIGQUIT, SIG_IGN);
+	rl_event_hook = rl_event;
 	close(fd[0]);
 	if (new_delimiter(data, doc))
+	{
+		free(tmp);
+		free_data(data);
 		exit(1);
+	}
 	if (read_heredoc(data, doc, tmp, fd))
+	{
+		free(tmp);
+		close(fd[1]);
+		free_data(data);
+		if (g_signal == SIGINT)
+			exit(130);
 		exit(1);
+	}
 	close(fd[1]);
+	free(tmp);
 	free_data(data);
 	exit(0);
 }
@@ -172,14 +192,10 @@ int	init_heredoc(t_data *data, t_redir_her *doc)
 	if (pid == 0)
 		heredoc_child(data, doc, tmp, fd);
 	close(fd[1]);
+	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &status, 0);
+	signal(SIGINT, handle_signal);
 	free(tmp);
-	
-	
-	
-	
-	
-	
 	if (WIFSIGNALED(status))
 	{
 		if (WTERMSIG(status) == SIGINT)
@@ -188,6 +204,12 @@ int	init_heredoc(t_data *data, t_redir_her *doc)
 			close(fd[0]);
 			return (-2);
 		}
+	}
+	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
+	{
+		data->exit = 130;
+		close(fd[0]);
+		return (-2);
 	}
 	return (fd[0]);
 }

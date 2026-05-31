@@ -49,10 +49,13 @@ void main_reading(t_data* data)
 {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_signal);
+	rl_event_hook = rl_event;
 	while (1)
 	{
 		g_signal = 0;
 		data->line = readline(TITLE);
+		if (g_signal == SIGINT)
+			data->exit = 130;
 		if (!data->line)
 		{
 			ft_putendl_fd("exit", 1);
