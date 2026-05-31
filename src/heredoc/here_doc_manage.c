@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 11:11:15 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/29 17:37:12 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/05/31 22:23:08 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,9 @@ bool	new_delimiter(t_data *data, t_redir_her *doc)
 	char	*n_line;
 	int		i;
 
-	data->quote = NQUOT;
-	n_line = ft_strdup("");
+	n_line = define_line(data, &i);
 	if (!n_line)
 		return (true);
-	i = 0;
 	while (doc->file[i])
 	{
 		if (quote_expand(data, doc->file, &i))
@@ -40,8 +38,6 @@ bool	new_delimiter(t_data *data, t_redir_her *doc)
 	}
 	free(doc->file);
 	doc->file = n_line;
-	if (!doc->file)
-		return (true);
 	return (false);
 }
 
@@ -61,10 +57,7 @@ bool	read_heredoc(t_data *data, t_redir_her *doc, char *tmp, int *fd)
 		}
 		if (!line)
 		{
-			ft_putstr_fd("minichevre: warning: here-document delimited by end-of-file (wanted `", 2);
-			ft_putstr_fd(doc->file, 2);
-			ft_putstr_fd("`)\n", 2);
-			close(fd[1]);
+			heredoc_eof_error(doc, *fd);
 			break ;
 		}
 		if (history_heredoc(data, line, fd))

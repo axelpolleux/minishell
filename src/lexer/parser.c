@@ -6,7 +6,7 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 12:36:34 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/31 19:33:43 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/31 21:26:44 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,8 @@ char	**tokens_to_argv(t_token *start, t_token *end, int i)
 			i++;
 		}
 		else if (is_redir(start->type))
-		{
 			if (start->next)
 				start = start->next;
-		}
 		start = start->next;
 	}
 	return (argv);

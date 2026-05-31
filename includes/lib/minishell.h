@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/31 21:13:37 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/05/31 22:21:22 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,6 +312,7 @@ void			wait_end(t_data *data, int count);
 void			apply_redir(t_data *data, t_cmd *cmd);
 void			redir_heredoc(t_redir_her *redir);
 void			exec(t_data *data);
+void			init_data_for_exec(t_data *data);
 
 int				manage_redir(t_data *data, t_cmd *cmd);
 int				check_directory(t_data *data, char *path);
@@ -365,8 +366,10 @@ char *input, int *index);
 bool			quote_state(t_data *data, char *input, int *i, bool *quoted);
 bool			write_here(t_redir_her *doc, char *line, int *fd);
 bool			new_delimiter(t_data *data, t_redir_her *doc);
+char			*define_line(t_data *data, int *index);
 bool			read_heredoc(t_data *data, t_redir_her *doc, \
 char *tmp, int *fd);
+void			heredoc_eof_error(t_redir_her *doc, int fd);
 bool			history_heredoc(t_data *data, char *line, int *fd);
 
 t_cmd			*new_cmd_node(t_data *data);
