@@ -59,7 +59,7 @@ void	free_redir(t_redir_her *node)
 		tmp = node->next;
 		if (node->file)
 			free(node->file);
-		if (node->fd != -1)
+		if (node->fd > -1)
 			close(node->fd);
 		free(node);
 		node = tmp;

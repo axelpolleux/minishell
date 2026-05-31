@@ -43,7 +43,7 @@ int	key_in_env(t_data *data, char *key)
 	env = data->t_env;
 	while (env)
 	{
-		if (!strcmp(key, env->key))
+		if (!ft_strcmp(key, env->key))
 			return (1);
 		env = env->next;
 	}

@@ -49,7 +49,7 @@ char	*path_env(t_data *data, char **args)
 		if (!path)
 			error_perror(HOME_NSET, P_ERROR, 2);
 	}
-	else if (!strcmp(args[1], "-"))
+	else if (!ft_strcmp(args[1], "-"))
 	{
 		path = get_arg_env(data, OLDPWD);
 		if (!path)

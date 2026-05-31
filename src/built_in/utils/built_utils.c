@@ -39,7 +39,7 @@ int	is_builtin(char **built_in, char *cmd)
 		return (0);
 	while (built_in[i])
 	{
-		if (!strcmp(built_in[i], cmd))
+		if (!ft_strcmp(built_in[i], cmd))
 			return (1);
 		i++;
 	}

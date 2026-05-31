@@ -18,10 +18,11 @@ void	handle_signal(int signal)
 {
 	if (signal == SIGINT)
 	{
+		g_signal = SIGINT;
 		write(1, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
-		rl_redisplay();
+		rl_done = 1;
 	}
 }
 
@@ -36,23 +37,20 @@ void	handle_signal(int signal)
 // 		rl_redisplay();
 // 	}
 // }
-// void	handle_heredoc(int signal)
-// {
-// 	(void)signal;
-// 	g_signal = SIGINT;
-// 	write(1, "\n", 1);
-// 	rl_replace_line("", 0);
-// 	rl_done = 1;
-// }
+void	handle_heredoc(int signal)
+{
+	(void)signal;
+	g_signal = SIGINT;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_done = 1;
+}
 
-// void	handle_heredoc(int signal)
-// {
-// 	(void)signal;
-// 	g_signal = SIGINT;
-// 	write(1, "\n", 1);
-// 	rl_replace_line("", 0);
-// 	rl_done = 1;
-// }
+int	rl_event(void)
+{
+	return (0);
+}
 
 
 
