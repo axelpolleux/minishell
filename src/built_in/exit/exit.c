@@ -57,8 +57,6 @@ void exec_exit(t_data *data, t_cmd *cmd, char **args)
         dup2(data->last_fd, 1);
         close(data->last_fd);
     }
-    if (cmd->next || cmd->prev)
-        return ;
     arg = nb_arg(args);
     if (arg > 1)
         exit_arg(data, args[1], &out);
@@ -67,8 +65,12 @@ void exec_exit(t_data *data, t_cmd *cmd, char **args)
     if (arg > 2)
     {
         error_perror(EXT_ARG, P_ERROR, 2);
+        data->exit = 1;
         return ;
     }
+    data->exit = out;
+    if (cmd->next || cmd->prev)
+        return ;
     printf("exit\n");
     free_data(data);
     exit(out);
