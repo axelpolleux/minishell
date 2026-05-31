@@ -12,21 +12,21 @@
 
 #include "minishell.h"
 
-bool flag_identification(char *str)
+bool	flag_identification(char *str)
 {
-    int i;
+	int	i;
 
 	i = 0;
-    if (!str)
-        return (false);
-    if (str[i] != '-')
-        return (false);
-    i++;
-    if (str[i] != 'n')
-        return (false);
-    while (str[i] == 'n')
-        i++;
-    return (str[i] == '\0');
+	if (!str)
+		return (false);
+	if (str[i] != '-')
+		return (false);
+	i++;
+	if (str[i] != 'n')
+		return (false);
+	while (str[i] == 'n')
+		i++;
+	return (str[i] == '\0');
 }
 
 void	print_flag(char **args, int start)
@@ -50,27 +50,26 @@ void	print_flag(char **args, int start)
 	}
 }
 
-int exec_echo(char **args)
+int	exec_echo(char **args)
 {
-    int i;
-    bool new;
+	int		i;
+	bool	new;
 
-    i = 1;
-    new = true;
-    while (flag_identification(args[i]))
-    {
-        new = false;
-        i++;
-    }
-    while (args[i])
-    {
-        printf("%s", args[i]);
-
-        if (args[i + 1])
-            printf(" ");
-        i++;
-    }
-    if (new)
-        printf("\n");
-    return (0);
+	i = 1;
+	new = true;
+	while (flag_identification(args[i]))
+	{
+		new = false;
+		i++;
+	}
+	while (args[i])
+	{
+		printf("%s", args[i]);
+		if (args[i + 1])
+			printf(" ");
+		i++;
+	}
+	if (new)
+		printf("\n");
+	return (0);
 }

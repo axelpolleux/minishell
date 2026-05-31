@@ -20,8 +20,6 @@ int	data_malloc_error(t_data *data)
 	exit (EXIT_FAILURE);
 }
 
-//refaire la gestion de toute les erreur en 
-//utilsant que error_perror et error_exit
 void	error_perror(char *error, int error_p, int fd)
 {
 	if (error_p)

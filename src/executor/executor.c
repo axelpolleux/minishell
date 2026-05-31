@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: junie <junie@jetbrains.com>                +#+  +:+       +#+        */
+/*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/26 12:40:00 by junie             */
-/*   Updated: 2026/05/26 12:40:00 by junie             */
+/*   Created: 2026/05/29 17:40:15 by apolleux          #+#    #+#             */
+/*   Updated: 2026/05/31 19:33:55 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	children(t_data *data, t_cmd *cmd)
 	if (cmd->prev)
 		close(data->last_fd);
 	if (!check_cmd(data, cmd, &exit_status))
-	{	
+	{
 		free_data(data);
 		exit(exit_status);
 	}
@@ -77,7 +77,6 @@ void	handle_exec_loop(t_data *data, int count)
 		index++;
 	}
 	wait_end(data, count);
-
 }
 
 void	exec(t_data *data)

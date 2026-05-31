@@ -39,7 +39,6 @@ int	ft_lstsize_t(t_token *lst)
 	return (len_lst);
 }
 
-//on pourrait changer le struct pour avoir seulement un ft_lstsize_general
 int	ft_lstsize_c(t_cmd *lst)
 {
 	size_t	len_lst;

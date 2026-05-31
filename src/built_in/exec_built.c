@@ -36,25 +36,8 @@ void	built_child(t_data *data, t_cmd *cmd)
 		exec_exit(data, cmd, cmd->args);
 }
 
-void	exec_built(t_data *data, t_cmd *cmd)
+static void	close_it(int save_in, int save_out, t_cmd *cmd)
 {
-	int	save_in;
-	int	save_out;
-
-	save_in = -1;
-	save_out = -1;
-	if (cmd->input > -1)
-	{
-		save_in = dup(0);
-		dup2(cmd->input, 0);
-	}
-	if (cmd->output > -1)
-	{
-		save_out = dup(1);
-		dup2(cmd->output, 1);
-	}
-	built_parent(data, cmd);
-	fflush(stdout);
 	if (save_in > -1)
 	{
 		dup2(save_in, 0);
@@ -77,27 +60,24 @@ void	exec_built(t_data *data, t_cmd *cmd)
 	}
 }
 
-
-/* former version
 void	exec_built(t_data *data, t_cmd *cmd)
 {
 	int	save_in;
 	int	save_out;
 
-	save_in = dup(0);
-	save_out = dup(1);
+	save_in = -1;
+	save_out = -1;
 	if (cmd->input > -1)
+	{
+		save_in = dup(0);
 		dup2(cmd->input, 0);
+	}
 	if (cmd->output > -1)
+	{
+		save_out = dup(1);
 		dup2(cmd->output, 1);
+	}
 	built_parent(data, cmd);
 	fflush(stdout);
-	dup2(save_in, 0);
-	dup2(save_out, 1);
-	close(save_in);
-	close(save_out);
-	if (cmd->input > -1)
-		close(cmd->input);
-	if (cmd->output > -1)
-		close(cmd->output);
-} */
+	close_it(save_in, save_out, cmd);
+}
