@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 17:40:15 by apolleux          #+#    #+#             */
-/*   Updated: 2026/06/01 23:19:54 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/02 01:02:23 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,19 +52,20 @@ void	get_path(t_data *data)
 		data->path = NULL;
 }
 
-static char	*find_cmd_in_path(t_data *data, char *cmd)
+static char	*find_cmd_in_path(t_data *data, char *cmd, int i)
 {
 	struct stat	s;
 	char		*tmp;
 	char		*full;
-	int			i;
 	char		*saved_path;
 
 	if (ft_strchr(cmd, '/'))
-		return (ft_strdup(cmd));
+	{
+		tmp = ft_strdup(cmd);
+		return (tmp);
+	}
 	if (!data->path)
 		return (NULL);
-	i = -1;
 	saved_path = NULL;
 	while (data->path[++i])
 	{
@@ -80,25 +81,36 @@ static char	*find_cmd_in_path(t_data *data, char *cmd)
 				return (full);
 			}
 			if (!saved_path)
+			{
 				saved_path = ft_strdup(full);
+				if (!saved_path)
+					data->exit = -2;
+				free(full);
+				return (saved_path);
+			}
 		}
 		free(full);
 	}
 	return (saved_path);
 }
 
-static int	report_err(char *cmd, char *msg, int code, int *status)
+static int	report_err(t_data *data, char *cmd, int code, int *status) //terminer la norme
 {
+	if (data->exit == -2)
+	{
+		
+	}
 	ft_putstr_fd("minichevre: ", 2);
-	if (msg)
+	if (data->exit == -2)
 	{
 		ft_putstr_fd(cmd, 2);
-		ft_putstr_fd(msg, 2);
+		ft_putstr_fd(CMD_NF, 2);
 	}
 	else
 		perror(cmd);
 	*status = code;
-	return (code);
+	data->exit = code;
+	return (0);
 }
 
 int	check_cmd(t_data *data, t_cmd *cmd, int *status)
@@ -110,20 +122,21 @@ int	check_cmd(t_data *data, t_cmd *cmd, int *status)
 	if (is_builtin(data->built_in, cmd->command))
 		return (1);
 	get_path(data);
-	cmd->cmd_path = find_cmd_in_path(data, cmd->command);
+	cmd->cmd_path = find_cmd_in_path(data, cmd->command, -1);
 	if (!cmd->cmd_path)
 	{
-		data->exit = report_err(cmd->command, CMD_NF, 127, status);
-		return (0);
+		return (report_err(data, cmd->command, 127, status));
+		// data->exit = report_err(cmd->command, CMD_NF, 127, status);
+		// return (0);
 	}
 	if (stat(cmd->cmd_path, &s) == 0 && S_ISDIR(s.st_mode))
 	{
-		data->exit = report_err(cmd->command, NOT_DR, 126, status);
+		data->exit = report_err(data, cmd->command, 126, status); // NOT_DR
 		return (0);
 	}
 	if (access(cmd->cmd_path, X_OK) != 0)
 	{
-		data->exit = report_err(cmd->command, NULL, 126, status);
+		data->exit = report_err(data, cmd->command, 126, status); //NULL
 		return (0);
 	}
 	return (1);
