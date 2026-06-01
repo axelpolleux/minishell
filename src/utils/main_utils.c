@@ -6,7 +6,7 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 20:41:20 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/31 21:24:18 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/06/01 18:28:56 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	g_signal_init(void)
 {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, handle_signal);
-	rl_event_hook = rl_event;
 }
 
 void	g_signal_while(t_data *data)
