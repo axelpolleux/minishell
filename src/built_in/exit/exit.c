@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 10:31:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/06/01 17:06:34 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/06/01 17:27:36 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,19 @@ void	exit_arg(t_data *data, char *str, int *out)
 	*(out) = (int)(res % 256);
 }
 
-static long	parse_digits(const char *str)
+static long	parse_digits(const char *str, int sign)
 {
 	long	res;
+	long	limit;
 
 	res = 0;
+	if (sign == -1)
+		limit = -(long)INT_MIN;
+	else
+		limit = INT_MAX;
 	while (ft_isdigit(*str))
 	{
-		if (res > (INT_MAX - (*str - '0')) / 10)
+		if (res > (limit - (*str - '0')) / 10)
 			return (LONG_MAX);
 		res = res * 10 + (*str - '0');
 		str++;
@@ -56,7 +61,7 @@ long	exit_atoi(const char *str, int sign, long res)
 	}
 	if (!ft_isdigit(*str))
 		return (LONG_MAX);
-	res = parse_digits(str);
+	res = parse_digits(str, sign);
 	if (res == LONG_MAX)
 		return (LONG_MAX);
 	return (res * sign);
