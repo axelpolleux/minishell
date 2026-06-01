@@ -6,11 +6,38 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/21 11:52:33 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/06/01 23:35:26 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/02 00:32:20 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+bool 	wait_heredoc(t_data *data, pid_t pid, char *tmp, int *fd) 
+{
+	int		status;
+
+	close(fd[1]);
+	signal(SIGINT, SIG_IGN);
+	waitpid(pid, &status, 0);
+	signal(SIGINT, handle_signal);
+	free(tmp);
+	if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGINT)
+		{
+			data->exit = 130;
+			close(fd[0]);
+			return (true);
+		}
+	}
+	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
+	{
+		data->exit = 130;
+		close(fd[0]);
+		return (true);
+	}
+	return (false);
+}
 
 bool	history_heredoc(t_data *data, char *line, int *fd)
 {

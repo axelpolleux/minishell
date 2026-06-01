@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 11:11:15 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/06/01 23:59:27 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/02 00:32:22 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ bool	read_heredoc(t_data *data, t_redir_her *doc, char *tmp, int *fd)
 	{
 		g_signal = 0;
 		line = readline("> ");
-		//printf("line:{%s}\n", line);
 		if (g_signal == SIGINT)
 		{
 			if (line)
@@ -46,7 +45,7 @@ bool	read_heredoc(t_data *data, t_redir_her *doc, char *tmp, int *fd)
 	return (false);
 }
 
-void	heredoc_child(t_data *data, t_redir_her *doc, char *tmp, int *fd)// ????
+void	heredoc_child(t_data *data, t_redir_her *doc, char *tmp, int *fd)
 {
 	signal(SIGINT, handle_heredoc);
 	signal(SIGQUIT, SIG_IGN);
@@ -70,7 +69,6 @@ int	init_heredoc(t_data *data, t_redir_her *doc)
 {
 	pid_t	pid;
 	int		fd[2];
-	int		status;
 	char	*tmp;
 
 	tmp = ft_strdup(doc->file);
@@ -90,26 +88,8 @@ int	init_heredoc(t_data *data, t_redir_her *doc)
 	}
 	if (pid == 0)
 		heredoc_child(data, doc, tmp, fd);
-	close(fd[1]);
-	signal(SIGINT, SIG_IGN);
-	waitpid(pid, &status, 0);
-	signal(SIGINT, handle_signal);
-	free(tmp);
-	if (WIFSIGNALED(status))
-	{
-		if (WTERMSIG(status) == SIGINT)
-		{
-			data->exit = 130;
-			close(fd[0]);
-			return (-2);
-		}
-	}
-	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
-	{
-		data->exit = 130;
-		close(fd[0]);
+	if (wait_heredoc(data, pid, tmp, fd))
 		return (-2);
-	}
 	return (fd[0]);
 }
 
