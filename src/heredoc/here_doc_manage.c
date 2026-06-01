@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 11:11:15 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/06/01 12:15:48 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/01 16:12:10 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,6 @@ bool	heredoc_manage(t_data *data, t_cmd *cmd)
 		doc = cmd->redir;
 		while (doc)
 		{
-			// if (check_redir_open(data, doc, expand_redir(data, doc)))
 			if (expand_redir(data, doc))
 				return (true);
 			if (doc->type == HEREDOC)

@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/06/01 13:33:00 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/01 16:49:51 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,13 @@ int	main_parser(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-void	main_reading(t_data *data)
+static void	exit_properly(t_data *data, int *exit)
+{
+	*exit = data->exit;
+	free_data(data);
+}
+
+void	main_reading(t_data *data, int *exit)
 {
 	g_signal_init();
 	while (1)
@@ -69,19 +75,20 @@ void	main_reading(t_data *data)
 		exec(data);
 		reset_read(data);
 	}
-	free_data(data);
+	exit_properly(data, exit);
 }
 
 int	main(int ac, char **av, char **env)
 {
-	t_data	*data;
+	int			final_exit;
+	t_data		*data;
 
 	data = init_data(ac, av);
 	data->built_in = init_built();
 	if (!data->built_in)
 		data_malloc_error(data);
 	init_env(data, env, -1);
-	main_reading(data);
-	return (EXIT_SUCCESS);
+	main_reading(data, &final_exit);
+	return (final_exit);
 }
 // gestion des signaux avec rl_done interdite

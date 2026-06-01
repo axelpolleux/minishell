@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 17:40:15 by apolleux          #+#    #+#             */
-/*   Updated: 2026/06/01 13:06:23 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/01 17:01:21 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,26 +39,31 @@ void	exec_command(t_data *data, t_cmd *cmd, char **env)
 	exit(exit_status);
 }
 
-void	get_path(t_data *data)
+static char	*try_path_entry(char *dir, char *cmd, char **saved)
 {
-	char	*path_env;
+	char	*tmp;
+	char	*full;
 
-	path_env = get_arg_env(data, "PATH");
-	if (data->path)
-		free_arr(data->path);
-	if (path_env)
-		data->path = ft_split(path_env, ':');
-	else
-		data->path = NULL;
+	tmp = ft_strjoin(dir, "/");
+	full = ft_strjoin(tmp, cmd);
+	free(tmp);
+	if (access(full, X_OK) == 0)
+	{
+		if (*saved)
+			free(*saved);
+		return (full);
+	}
+	if (!*saved && access(full, F_OK) == 0)
+		*saved = ft_strdup(full);
+	free(full);
+	return (NULL);
 }
 
 static char	*find_cmd_in_path(t_data *data, char *cmd)
 {
-	char		*tmp;
-	char		*full;
-	int			i;
-	struct stat	s;
-	char		*saved_path;
+	char	*result;
+	char	*saved_path;
+	int		i;
 
 	if (ft_strchr(cmd, '/'))
 		return (ft_strdup(cmd));
@@ -68,21 +73,9 @@ static char	*find_cmd_in_path(t_data *data, char *cmd)
 	saved_path = NULL;
 	while (data->path[++i])
 	{
-		tmp = ft_strjoin(data->path[i], "/");
-		full = ft_strjoin(tmp, cmd);
-		free(tmp);
-		if (stat(full, &s) == 0 && !S_ISDIR(s.st_mode))
-		{
-			if (access(full, X_OK) == 0)
-			{
-				if (saved_path)
-					free(saved_path);
-				return (full);
-			}
-			if (!saved_path)
-				saved_path = ft_strdup(full);
-		}
-		free(full);
+		result = try_path_entry(data->path[i], cmd, &saved_path);
+		if (result)
+			return (result);
 	}
 	return (saved_path);
 }

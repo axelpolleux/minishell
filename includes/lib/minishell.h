@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/06/01 13:03:35 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/01 16:41:37 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -334,7 +334,7 @@ void			add_in(char *input, int *i, int *len, int *type);
 void			add_out(char *input, int *i, int *len, int *type);
 void			new_state(t_data *data, char *input, int *index);
 void			reset_read(t_data *data);
-void			main_reading(t_data *data);
+void			main_reading(t_data *data, int *exit);
 void			ft_token_add_back(t_token **lst, t_token *new);
 void			add_cmd_back(t_cmd **lst, t_cmd *new);
 void			g_signal_init(void);
