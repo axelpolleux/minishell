@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/06/01 20:14:09 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/01 22:38:18 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ extern volatile int	g_signal;
 # define QUOT_ER	"minichevre: every quotes must be closed\n"
 # define SYNT_UT	"minichevre: syntax error near unexpected token\n"
 # define DATA_ER	"Error : A malloc has failed\n"
+# define CMD_NF		": command not found\n"
+# define NOT_DR		": Is a directory\n"
 //==============================================//
 
 //====================<for all struct>===================//<<<<
