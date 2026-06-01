@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/06/01 13:03:35 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/01 20:14:09 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -360,8 +360,6 @@ bool			add_word(t_data *data, t_token **tokens, \
 char *input, int *index);
 bool			quote_state(t_data *data, char *input, int *i, bool *quoted);
 bool			write_here(t_redir_her *doc, char *line, int *fd);
-bool			new_delimiter(t_data *data, t_redir_her *doc);
-char			*define_line(t_data *data, int *index);
 bool			read_heredoc(t_data *data, t_redir_her *doc, \
 char *tmp, int *fd);
 void			heredoc_eof_error(t_redir_her *doc, int *fd);

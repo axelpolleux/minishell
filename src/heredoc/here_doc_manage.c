@@ -6,40 +6,11 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 11:11:15 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/06/01 19:27:29 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/01 20:17:07 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// bool	new_delimiter(t_data *data, t_redir_her *doc)
-// {
-// 	char	*n_line;
-// 	int		i;
-
-// 	n_line = define_line(data, &i);
-// 	if (!n_line)
-// 		return (true);
-// 	while (doc->file[i])
-// 	{
-// 		if (quote_expand(data, doc->file, &i))
-// 			continue ;
-// 		if (doc->file[i] == '$' && data->quote == NQUOT)
-// 		{
-// 			n_line = get_dollar(data, doc->file, &i, n_line);
-// 			if (!n_line)
-// 				return (true);
-// 			continue ;
-// 		}
-// 		n_line = ft_charjoin(n_line, doc->file[i]);
-// 		if (!n_line)
-// 			return (true);
-// 		i++;
-// 	}
-// 	free(doc->file);
-// 	doc->file = n_line;
-// 	return (false);
-// }
 
 bool	read_heredoc(t_data *data, t_redir_her *doc, char *tmp, int *fd)
 {
@@ -49,6 +20,7 @@ bool	read_heredoc(t_data *data, t_redir_her *doc, char *tmp, int *fd)
 	{
 		g_signal = 0;
 		line = readline("> ");
+		printf("line:{%s}\n", line);
 		if (g_signal == SIGINT)
 		{
 			if (line)
@@ -79,14 +51,14 @@ void	heredoc_child(t_data *data, t_redir_her *doc, char *tmp, int *fd)
 	signal(SIGINT, handle_heredoc);
 	signal(SIGQUIT, SIG_IGN);
 	close(fd[0]);
-	printf("old %s\n", doc->file);
-	// if (new_delimiter(data, doc))
+	printf("old:{%s}\n", doc->file);
+	
+	// if (doc->file == NULL)
 	// {
-	// 	free(tmp);
-	// 	free_data(data);
-	// 	exit(1);
+	// 	printf("merde\n");
+	// 	doc->file = ft_strdup("\0");
 	// }
-	printf("new %s\n", doc->file);
+	printf("new:{%s}\n", doc->file);
 	if (read_heredoc(data, doc, tmp, fd))
 	{
 		free(tmp);
@@ -113,7 +85,10 @@ int	init_heredoc(t_data *data, t_redir_her *doc)
 	if (!tmp)
 		return (-2);
 	if (pipe(fd) == -1)
-		return (free(tmp), -1);
+		{
+			free(tmp);
+			return (-1);
+		}
 	pid = fork();
 	if (pid == -1)
 	{

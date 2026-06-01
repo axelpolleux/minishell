@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 16:44:26 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/06/01 13:05:06 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/01 22:05:29 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ int	new_redirection(t_data *data, t_cmd *cmd, int type, char *file)
 		data->exit = -2;
 		return (EXIT_FAILURE);
 	}
-	tmp = ft_strdup(file);
+	(void) file;
+	tmp = ft_strdup("");
 	if (!tmp)
 	{
 		data->exit = -2;
