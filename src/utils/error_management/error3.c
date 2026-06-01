@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 10:52:20 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/26 17:27:00 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/01 22:55:28 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,10 @@
 
 void	parser_error(t_data *data, int output)
 {
-	int	tmp;
 
 	if (output == -2)
 		data_malloc_error(data);
-	tmp = output;
-	free_data(data);
-	exit(tmp);
+	data->exit = output;
 }
 
 void	init_env_fail(t_data *data, char *new_env, char *new_arg, char *new_key)

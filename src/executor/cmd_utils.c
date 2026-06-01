@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 17:40:15 by apolleux          #+#    #+#             */
-/*   Updated: 2026/06/01 13:06:23 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/01 22:48:35 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ void	get_path(t_data *data)
 
 static char	*find_cmd_in_path(t_data *data, char *cmd)
 {
+	struct stat	s;
 	char		*tmp;
 	char		*full;
 	int			i;
-	struct stat	s;
 	char		*saved_path;
 
 	if (ft_strchr(cmd, '/'))
@@ -106,21 +106,22 @@ int	check_cmd(t_data *data, t_cmd *cmd, int *status)
 	struct stat	s;
 
 	if (!cmd || !cmd->command || !cmd->command[0])
+	{
+		printf("ces la merde\n");
 		return (EXIT_FAILURE);
+	}
 	if (is_builtin(data->built_in, cmd->command))
 		return (1);
 	get_path(data);
 	cmd->cmd_path = find_cmd_in_path(data, cmd->command);
 	if (!cmd->cmd_path)
 	{
-		data->exit = report_err(cmd->command,
-				": command not found\n", 127, status);
+		data->exit = report_err(cmd->command, CMD_NF, 127, status);
 		return (0);
 	}
 	if (stat(cmd->cmd_path, &s) == 0 && S_ISDIR(s.st_mode))
 	{
-		data->exit = report_err(cmd->command,
-				": Is a directory\n", 126, status);
+		data->exit = report_err(cmd->command, NOT_DR, 126, status);
 		return (0);
 	}
 	if (access(cmd->cmd_path, X_OK) != 0)
