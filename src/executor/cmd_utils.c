@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 17:40:15 by apolleux          #+#    #+#             */
-/*   Updated: 2026/06/01 22:48:35 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/01 23:00:48 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	check_cmd(t_data *data, t_cmd *cmd, int *status)
 {
 	struct stat	s;
 
-	if (!cmd || !cmd->command || !cmd->command[0])
+	if (!cmd || !cmd->command)
 	{
 		printf("ces la merde\n");
 		return (EXIT_FAILURE);
