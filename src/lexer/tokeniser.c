@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 11:06:42 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/28 10:47:14 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/01 19:52:41 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,14 @@ bool	add_word(t_data *data, t_token **tokens, char *input, int *index)
 		(*index)++;
 	}
 	if (data->quote != NQUOT)
+	{
+		free_token(*tokens);
 		return (error_pars(0));
+	}
 	new = token_new(input + start, *index - start, WORD, quoted);
 	if (!new)
 	{
+		free_token(*tokens);
 		data->exit = -2;
 		return (true);
 	}
@@ -83,6 +87,7 @@ bool	add_all(t_data *data, t_token **tokens, char *input, int *i)
 	new = token_new(input + *i, len, type, false);
 	if (!new)
 	{
+		free_token(*tokens);
 		data->exit = -2;
 		return (false);
 	}
