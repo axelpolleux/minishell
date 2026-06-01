@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 12:36:45 by apolleux          #+#    #+#             */
-/*   Updated: 2026/06/02 11:21:10 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/01 13:26:25 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,13 @@ int	manage_redir(t_data *data, t_cmd *cmd)
 	{
 		if (curr->type == RED_IN || curr->type == HEREDOC)
 			state = handle_in(cmd, curr);
-		if (!state)
-		{
-			ft_putstr_fd("minichevre: ", 2);
-			perror(curr->file);
-			data->exit = 1;
-			return (1);
-		}
+		// if (!state)
+		// {
+		// 	ft_putstr_fd("minichevre: ", 2);
+		// 	perror(curr->file);
+		// 	data->exit = 1;
+		// 	return (1);
+		// }
 		else if (curr->type == RED_OUT || curr->type == APPEND)
 			state = handle_out(cmd, curr);
 		if (!state)
@@ -76,27 +76,18 @@ int	manage_redir(t_data *data, t_cmd *cmd)
 	return (0);
 }
 
-void	apply_redir(t_data *data, t_cmd *cmd)// non conforme
+void	apply_redir(t_data *data, t_cmd *cmd)
 {
-	printf("apply_redir_input %d\n", cmd->input);
-	printf("apply_redir_output %d\n", cmd->output);
 	if (cmd->input > -1)
 	{
-		if (dup2(cmd->input, 0) == -1)//lui
-		{
-			printf("dup2_redir_input\n");
+		if (dup2(cmd->input, 0) == -1)
 			dup_error(data);
-		}
 		close(cmd->input);
 	}
 	if (cmd->output > -1)
 	{
 		if (dup2(cmd->output, 1) == -1)
-		{
-			printf("dup2_redir_output\n");
 			dup_error(data);
-		}
 		close(cmd->output);
 	}
 }
-
