@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/06/01 22:05:47 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/01 23:20:00 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	main_parser(t_data *data)
 	data->token = tokeniser(data, data->line);
 	if (!data->token)
 		return (EXIT_FAILURE);
-	display_tokens(data->token);
 	if (data->cmd)
 	{
 		free_cmd(data->cmd);

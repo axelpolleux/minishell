@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/21 11:52:33 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/06/01 22:21:54 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/01 23:35:26 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ bool	write_here(t_redir_her *doc, char *line, int *fd)
 	if (!ft_strcmp(line, doc->file)
 	|| (ft_strcmp(line, doc->file) == -2))
 	{
-		printf ("verif de write here\n");
 		free(line);
 		return (true);
 	}
