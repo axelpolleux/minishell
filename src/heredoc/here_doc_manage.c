@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 11:11:15 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/06/01 22:30:06 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/01 23:59:27 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ bool	read_heredoc(t_data *data, t_redir_her *doc, char *tmp, int *fd)
 	{
 		g_signal = 0;
 		line = readline("> ");
-		printf("line:{%s}\n", line);
+		//printf("line:{%s}\n", line);
 		if (g_signal == SIGINT)
 		{
 			if (line)
@@ -46,7 +46,7 @@ bool	read_heredoc(t_data *data, t_redir_her *doc, char *tmp, int *fd)
 	return (false);
 }
 
-void	heredoc_child(t_data *data, t_redir_her *doc, char *tmp, int *fd)
+void	heredoc_child(t_data *data, t_redir_her *doc, char *tmp, int *fd)// ????
 {
 	signal(SIGINT, handle_heredoc);
 	signal(SIGQUIT, SIG_IGN);
