@@ -75,18 +75,20 @@ void	free_cmd(t_cmd *node)
 	while (node)
 	{
 		tmp = node->next;
+		if (node->command)
+			free(node->command);
 		if (node->args)
 			free_arr(node->args);
 		if (node->cmd_path)
 			free(node->cmd_path);
 		if (node->full_cmd)
 			free(node->full_cmd);
-		if (node->redir)
-			free_redir(node->redir);
 		if (node->input > -1)
 			close(node->input);
 		if (node->output > -1)
 			close(node->output);
+		if (node->redir)
+			free_redir(node->redir);
 		free(node);
 		node = tmp;
 	}

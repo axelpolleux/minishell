@@ -6,12 +6,11 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 21:11:46 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/31 21:22:20 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/06/01 15:41:40 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "../../includes/libft/libft.h"
 
 int	make_pwd(t_data *data, t_env *new)
 {

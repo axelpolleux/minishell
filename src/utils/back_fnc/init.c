@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 11:20:04 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/28 10:47:18 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/01 15:48:37 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ t_data	*init_data(int ac, char **av)
 	data = ft_calloc(sizeof(t_data), 1);
 	if (!data)
 		data_malloc_error(data);
+	data->line = NULL;
 	data->fd_storage[0] = -1;
 	data->fd_storage[1] = -1;
 	data->t_env = NULL;

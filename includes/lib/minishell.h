@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/06/02 00:32:37 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/01 16:41:37 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,6 @@ extern volatile int	g_signal;
 # define QUOT_ER	"minichevre: every quotes must be closed\n"
 # define SYNT_UT	"minichevre: syntax error near unexpected token\n"
 # define DATA_ER	"Error : A malloc has failed\n"
-# define CMD_NF		": command not found\n"
-# define NOT_DR		": Is a directory\n"
 //==============================================//
 
 //====================<for all struct>===================//<<<<
@@ -323,7 +321,6 @@ int				init_heredoc(t_data *data, t_redir_her *doc);
 
 bool			fcext(t_data *data, t_cmd *cmd, char *path, char *command);
 bool			heredoc_manage(t_data *data, t_cmd *cmd);
-bool			wait_heredoc(t_data *data, pid_t pid, char *tmp, int *fd) ;
 //===========================================================//
 
 //========================<lexer and parsing>=========================//
@@ -337,7 +334,7 @@ void			add_in(char *input, int *i, int *len, int *type);
 void			add_out(char *input, int *i, int *len, int *type);
 void			new_state(t_data *data, char *input, int *index);
 void			reset_read(t_data *data);
-void			main_reading(t_data *data);
+void			main_reading(t_data *data, int *exit);
 void			ft_token_add_back(t_token **lst, t_token *new);
 void			add_cmd_back(t_cmd **lst, t_cmd *new);
 void			g_signal_init(void);
@@ -363,6 +360,8 @@ bool			add_word(t_data *data, t_token **tokens, \
 char *input, int *index);
 bool			quote_state(t_data *data, char *input, int *i, bool *quoted);
 bool			write_here(t_redir_her *doc, char *line, int *fd);
+bool			new_delimiter(t_data *data, t_redir_her *doc);
+char			*define_line(t_data *data, int *index);
 bool			read_heredoc(t_data *data, t_redir_her *doc, \
 char *tmp, int *fd);
 void			heredoc_eof_error(t_redir_her *doc, int *fd);
