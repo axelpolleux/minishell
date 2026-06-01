@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 17:40:15 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/31 20:22:27 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/06/01 13:06:23 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,21 @@ void	exec_command(t_data *data, t_cmd *cmd, char **env)
 	int	exit_status;
 
 	apply_redir(data, cmd);
-	if (is_builtin(data->built_in, cmd->command))
+	if (cmd->executable)
 	{
-		built_child(data, cmd);
-		exit_status = data->exit;
-		free_data(data);
-		free_arr(env);
-		exit(exit_status);
-	}
-	if (cmd->cmd_path)
-	{
-		execve(cmd->cmd_path, cmd->args, env);
-		perror("minishell: execve");
+		if (is_builtin(data->built_in, cmd->command))
+		{
+			built_child(data, cmd);
+			exit_status = data->exit;
+			free_data(data);
+			free_arr(env);
+			exit(exit_status);
+		}
+		if (cmd->cmd_path)
+		{
+			execve(cmd->cmd_path, cmd->args, env);
+			perror("minishell: execve");
+		}
 	}
 	exit_status = data->exit;
 	free_data(data);

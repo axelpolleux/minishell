@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/21 11:52:33 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/31 22:27:32 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/06/01 10:22:25 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,10 @@ char	*define_line(t_data *data, int *index)
 	return (res);
 }
 
-void	heredoc_eof_error(t_redir_her *doc, int fd)
+void	heredoc_eof_error(t_redir_her *doc, int *fd)
 {
 	ft_putstr_fd("minichevre: warning: wrong EOF (wanted `", 2);
 	ft_putstr_fd(doc->file, 2);
 	ft_putstr_fd("`)\n", 2);
-	close(*fd[1]);
+	close(fd[1]);
 }

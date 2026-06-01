@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/31 20:41:55 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/06/01 10:26:54 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,3 +106,4 @@ int	main(int ac, char **av, char **env)
 	main_reading(data);
 	return (EXIT_SUCCESS);
 }
+// gestion des signaux avec rl_done interdite

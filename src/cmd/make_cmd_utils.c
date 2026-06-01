@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 16:44:26 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/26 15:29:03 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/01 13:05:06 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ t_cmd	*new_cmd_node(t_data *data)
 	}
 	new->input = -1;
 	new->output = -1;
+	new->executable = 1;
 	return (new);
 }
 
