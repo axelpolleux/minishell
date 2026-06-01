@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 11:53:00 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/06/01 10:26:54 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/01 19:24:30 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	main_parser(t_data *data)
 	data->token = tokeniser(data, data->line);
 	if (!data->token)
 		return (EXIT_FAILURE);
+	display_tokens(data->token);
 	if (data->cmd)
 	{
 		free_cmd(data->cmd);
@@ -42,28 +43,6 @@ int	main_parser(t_data *data)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
-
-// void	g_signal_init(void)
-// {
-// 	signal(SIGQUIT, SIG_IGN);
-// 	signal(SIGINT, handle_signal);
-// 	rl_event_hook = rl_event;
-// }
-//
-// void	g_signal_while(t_data *data)
-// {
-// 	g_signal = 0;
-// 	data->line = readline(TITLE);
-// 	if (g_signal == SIGINT)
-// 		data->exit = 130;
-// }
-//
-// void	check_exit(t_data *data)
-// {
-// 	if (data->exit != 0)
-// 		parser_error(data, data->exit);
-// 	reset_read(data);
-// }
 
 void	main_reading(t_data *data)
 {
