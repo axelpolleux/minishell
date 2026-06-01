@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 14:01:58 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/19 15:54:49 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/01 19:24:41 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,3 +131,23 @@ int	quote_expand(t_data *data, char *line, int *i)
 	}
 	return (0);
 }
+
+
+// static void	handle_quotes(char *cmd, int *i)
+// {
+// 	int	d_quotes;
+// 	int	s_quotes;
+
+// 	d_quotes = 0;
+// 	s_quotes = 0;
+// 	while (cmd[(*i)])
+// 	{
+// 		if (!s_quotes && cmd[(*i)] == '"')
+// 			d_quotes = !d_quotes;
+// 		if (!d_quotes && cmd[(*i)] == '\'')
+// 			s_quotes = !s_quotes;
+// 		if (!d_quotes && !s_quotes && is_end_word(cmd[(*i)]))
+// 			break ;
+// 		(*i)++;
+// 	}
+// }
