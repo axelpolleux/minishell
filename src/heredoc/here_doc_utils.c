@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/21 11:52:33 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/06/01 22:07:02 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/01 22:21:54 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ bool	history_heredoc(t_data *data, char *line, int *fd)
 
 bool	write_here(t_redir_her *doc, char *line, int *fd)
 {
-	printf ("line in write_here: {%s}\n", line);
-	if (!ft_strcmp(line, doc->file) || line == NULL) //ici
+	if (!ft_strcmp(line, doc->file)
+	|| (ft_strcmp(line, doc->file) == -2))
 	{
 		printf ("verif de write here\n");
 		free(line);
