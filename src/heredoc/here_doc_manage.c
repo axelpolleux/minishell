@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 11:11:15 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/06/01 20:17:07 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/01 22:30:06 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,6 @@ void	heredoc_child(t_data *data, t_redir_her *doc, char *tmp, int *fd)
 	signal(SIGINT, handle_heredoc);
 	signal(SIGQUIT, SIG_IGN);
 	close(fd[0]);
-	printf("old:{%s}\n", doc->file);
-	
-	// if (doc->file == NULL)
-	// {
-	// 	printf("merde\n");
-	// 	doc->file = ft_strdup("\0");
-	// }
-	printf("new:{%s}\n", doc->file);
 	if (read_heredoc(data, doc, tmp, fd))
 	{
 		free(tmp);
