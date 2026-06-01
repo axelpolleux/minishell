@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 12:36:45 by apolleux          #+#    #+#             */
-/*   Updated: 2026/06/01 13:04:13 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/01 13:26:25 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,13 @@ int	manage_redir(t_data *data, t_cmd *cmd)
 	{
 		if (curr->type == RED_IN || curr->type == HEREDOC)
 			state = handle_in(cmd, curr);
-		if (!state)
-		{
-			ft_putstr_fd("minichevre: ", 2);
-			perror(curr->file);
-			data->exit = 1;
-			return (1);
-		}
+		// if (!state)
+		// {
+		// 	ft_putstr_fd("minichevre: ", 2);
+		// 	perror(curr->file);
+		// 	data->exit = 1;
+		// 	return (1);
+		// }
 		else if (curr->type == RED_OUT || curr->type == APPEND)
 			state = handle_out(cmd, curr);
 		if (!state)
