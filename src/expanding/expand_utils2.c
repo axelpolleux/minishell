@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 14:51:32 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/31 20:51:19 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/06/01 11:59:07 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,19 @@ int	exec_line_expand(t_data *data, char *line, char **n_line, int **args)
 	if (!(*n_line))
 		return (0);
 	return (2);
+}
+
+bool	expand_redir(t_data *data, t_redir_her *doc)
+{
+	char		*new_line;
+
+	if (!doc || !doc->file)
+		return (false);
+	data->quote = NQUOT;
+	new_line = line_expand(data, doc->file, 0);
+	if (!new_line)
+		return (true);
+	free (doc->file);
+	doc->file = new_line;
+	return (false);
 }

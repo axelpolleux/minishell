@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/31 22:21:22 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/06/01 13:03:35 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,13 +99,6 @@ typedef struct s_redir_her
 	struct s_redir_her	*next;
 }	t_redir_her;
 
-typedef struct s_expand_ctx
-{
-	char	**n_line;
-	int		*i;
-	int		*empty;
-}	t_expand_ctx;
-
 typedef struct s_cmd
 {
 	// command management
@@ -118,6 +111,7 @@ typedef struct s_cmd
 	int				input;
 	int				output;
 
+	bool			executable;
 	// heredoc
 	t_redir_her		*redir;
 
@@ -252,6 +246,7 @@ int				exec_line_expand(t_data *data, char *line,	\
 	char **n_line, int **args);
 
 bool			in_quote(char *line);
+bool			expand_redir(t_data *data, t_redir_her *redir);
 //=====================================//
 
 //========================<for build in>=========================//
@@ -369,7 +364,7 @@ bool			new_delimiter(t_data *data, t_redir_her *doc);
 char			*define_line(t_data *data, int *index);
 bool			read_heredoc(t_data *data, t_redir_her *doc, \
 char *tmp, int *fd);
-void			heredoc_eof_error(t_redir_her *doc, int fd);
+void			heredoc_eof_error(t_redir_her *doc, int *fd);
 bool			history_heredoc(t_data *data, char *line, int *fd);
 
 t_cmd			*new_cmd_node(t_data *data);
