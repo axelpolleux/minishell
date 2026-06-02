@@ -85,6 +85,8 @@ extern volatile int	g_signal;
 # define QUOT_ER	"minichevre: every quotes must be closed\n"
 # define SYNT_UT	"minichevre: syntax error near unexpected token\n"
 # define DATA_ER	"Error : A malloc has failed\n"
+# define CMD_NF		": command not found\n"
+# define NOT_DR		": Is a directory\n"
 //==============================================//
 
 //====================<for all struct>===================//<<<<
@@ -321,6 +323,7 @@ int				init_heredoc(t_data *data, t_redir_her *doc);
 
 bool			fcext(t_data *data, t_cmd *cmd, char *path, char *command);
 bool			heredoc_manage(t_data *data, t_cmd *cmd);
+bool			wait_heredoc(t_data *data, pid_t pid, char *tmp, int *fd);
 //===========================================================//
 
 //========================<lexer and parsing>=========================//
@@ -360,8 +363,6 @@ bool			add_word(t_data *data, t_token **tokens, \
 char *input, int *index);
 bool			quote_state(t_data *data, char *input, int *i, bool *quoted);
 bool			write_here(t_redir_her *doc, char *line, int *fd);
-bool			new_delimiter(t_data *data, t_redir_her *doc);
-char			*define_line(t_data *data, int *index);
 bool			read_heredoc(t_data *data, t_redir_her *doc, \
 char *tmp, int *fd);
 void			heredoc_eof_error(t_redir_her *doc, int *fd);
