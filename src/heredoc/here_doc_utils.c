@@ -6,13 +6,13 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/21 11:52:33 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/06/02 11:25:48 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/02 13:42:14 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool 	wait_heredoc(t_data *data, pid_t pid, char *tmp, int *fd) 
+bool	wait_heredoc(t_data *data, pid_t pid, char *tmp, int *fd)
 {
 	int		status;
 
@@ -66,7 +66,7 @@ bool	history_heredoc(t_data *data, char *line, int *fd)
 bool	write_here(t_redir_her *doc, char *line, int *fd)
 {
 	if (!ft_strcmp(line, doc->file)
-	|| (ft_strcmp(line, doc->file) == -2))
+		|| (ft_strcmp(line, doc->file) == -2))
 	{
 		free(line);
 		return (true);

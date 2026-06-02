@@ -6,31 +6,43 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 11:11:15 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/06/02 11:20:24 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/02 13:46:01 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static int	check_readline(t_redir_her *doc, char **line, int *fd)
+{
+	g_signal = 0;
+	*line = readline("> ");
+	if (g_signal == SIGINT)
+	{
+		if (*line)
+			free(*line);
+		*line = NULL;
+		return (-1);
+	}
+	if (!*line)
+	{
+		heredoc_eof_error(doc, fd);
+		return (1);
+	}
+	return (0);
+}
+
 bool	read_heredoc(t_data *data, t_redir_her *doc, char *tmp, int *fd)
 {
 	char	*line;
+	int		state;
 
 	while (1)
 	{
-		g_signal = 0;
-		line = readline("> ");
-		if (g_signal == SIGINT)
-		{
-			if (line)
-				free(line);
+		state = check_readline(doc, &line, fd);
+		if (state == -1)
 			return (true);
-		}
-		if (!line)
-		{
-			heredoc_eof_error(doc, fd);
+		if (state == 1)
 			break ;
-		}
 		if (history_heredoc(data, line, fd))
 			return (true);
 		line = expand_here_doc(data, doc, line, tmp);
@@ -75,10 +87,10 @@ int	init_heredoc(t_data *data, t_redir_her *doc)
 	if (!tmp)
 		return (-2);
 	if (pipe(fd) == -1)
-		{
-			free(tmp);
-			return (-1);
-		}
+	{
+		free(tmp);
+		return (-1);
+	}
 	pid = fork();
 	if (pid == -1)
 	{

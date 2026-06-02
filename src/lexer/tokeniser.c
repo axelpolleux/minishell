@@ -6,17 +6,11 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 11:06:42 by apolleux          #+#    #+#             */
-/*   Updated: 2026/06/01 19:52:41 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/02 13:47:50 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	skip_spaces(char *input, int *index)
-{
-	while (is_space(input[*index]))
-		(*index)++;
-}
 
 bool	quote_state(t_data *data, char *input, int *index, bool *quoted)
 {
@@ -40,22 +34,29 @@ bool	quote_state(t_data *data, char *input, int *index, bool *quoted)
 	return (false);
 }
 
-bool	add_word(t_data *data, t_token **tokens, char *input, int *index)
+static bool	scan_word(t_data *data, char *input, int *index, bool *quoted)
 {
-	t_token		*new;
-	int			start;
-	bool		quoted;
-
-	start = *index;
 	data->quote = NQUOT;
-	quoted = false;
+	*quoted = false;
 	while (input[*index])
 	{
-		if (quote_state(data, input, index, &quoted))
+		if (quote_state(data, input, index, quoted))
 			break ;
 		(*index)++;
 	}
 	if (data->quote != NQUOT)
+		return (true);
+	return (false);
+}
+
+bool	add_word(t_data *data, t_token **tokens, char *input, int *index)
+{
+	t_token	*new;
+	int		start;
+	bool	quoted;
+
+	start = *index;
+	if (scan_word(data, input, index, &quoted))
 	{
 		free_token(*tokens);
 		return (error_pars(0));
