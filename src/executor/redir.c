@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 12:36:45 by apolleux          #+#    #+#             */
-/*   Updated: 2026/06/02 01:04:19 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/02 10:29:30 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,13 @@ int	manage_redir(t_data *data, t_cmd *cmd)
 
 void	apply_redir(t_data *data, t_cmd *cmd)// non conforme
 {
-	printf("input %d\n", cmd->input);
-	cmd->input = -1;// pour teste
+	printf("apply_redir_input %d\n", cmd->input);
+	printf("apply_redir_output %d\n", cmd->output);
 	if (cmd->input > -1)
 	{
 		if (dup2(cmd->input, 0) == -1)//lui
 		{
+			printf("dup2_redir_input\n");
 			dup_error(data);
 		}
 		close(cmd->input);
@@ -92,8 +93,10 @@ void	apply_redir(t_data *data, t_cmd *cmd)// non conforme
 	{
 		if (dup2(cmd->output, 1) == -1)
 		{
+			printf("dup2_redir_input\n");
 			dup_error(data);
 		}
 		close(cmd->output);
 	}
 }
+
