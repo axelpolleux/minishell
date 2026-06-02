@@ -11,77 +11,84 @@
 
 # Errors
 
-- rajouter export+= (check si le contenu est NULL, ne pas segfault)
 ```
-  minichevre$ << EOF
-  > $VAR
-  > EOF
-  dup: Bad file descriptor
+minichevre$ cat < out | cat -e
+==864047== Memcheck, a memory error detector
+==864047== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==864047== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==864047== Command: /usr/bin/cat
+==864047== 
+==864048== Memcheck, a memory error detector
+==864048== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==864048== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==864048== Command: /usr/bin/cat -e
+==864048== 
+echo coucou$
+echo coucou$$
+==864047== 
+==864047== FILE DESCRIPTORS: 0 open (0 std) at exit.
+==864047== 
+==864047== HEAP SUMMARY:
+==864047==     in use at exit: 0 bytes in 0 blocks
+==864047==   total heap usage: 31 allocs, 31 frees, 139,232 bytes allocated
+==864047== 
+==864047== All heap blocks were freed -- no leaks are possible
+==864047== 
+==864047== For lists of detected and suppressed errors, rerun with: -s
+==864047== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==864048== 
+==864048== FILE DESCRIPTORS: 1 open (0 std) at exit.
+==864048== Open file descriptor 3: /home/apolleux/CLionProjects/minishell/out
+==864048==    <inherited from parent>
+==864048== 
+==864048== 
+==864048== HEAP SUMMARY:
+==864048==     in use at exit: 0 bytes in 0 blocks
+==864048==   total heap usage: 32 allocs, 32 frees, 798,707 bytes allocated
+==864048== 
+==864048== All heap blocks were freed -- no leaks are possible
+==864048== 
+==864048== For lists of detected and suppressed errors, rerun with: -s
+==864048== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 ```
-  
-``` 
-  minichevre$ << EOF
-  > fdsdjfdsf
-  > sdfds
-  > fds
-  > fds
-  > dsf
-  >
-  dup: Bad file descriptor
+
+# Exit
+
+si overflow des longs, alors
+=> ```return (2)```
+
+```
+return ((unsigned char)*value*)
 ```
 
 ```
-  minichevre$ << $VAR
-  > ls
-  > ls
-  > s;ls\\fds
-  > \dsf
-  > fsd
-  >
-  > fds
-  > Test
-  > $VAR
-  > $VAR
-```
-
-
-```
-minichevre$ cat < e
-============================
-cmd => {cat}
-cmd_path => (null)
-full_cmd => (null)
-input => -1
-output => -1
-minichevre: e : is a directory
+minichevre: exit: too many arguments
+minichevre$ echo $?
+2
 ```
 
 ```
-❯ ./minishell
-minichevre$ '
-minichevre: every quotes must be closed
-minichevre$ export a='
-minichevre: every quotes must be closed
-minichevre$ export a='$b
-minichevre: every quotes must be closed
-minichevre$ export a=$b
-minichevre$ export b=coucou
-minichevre$ $a coucou
-minishell: coucou: command not found
-minichevre$ export a='$b
-minichevre: every quotes must be closed
-```
+void	exec_built(t_data *data, t_cmd *cmd)
+{
+	int	save_in;
+	int	save_out;
 
-```
-minichevre$ 
-exit
-```
-
-```
-minichevre$ cat << EOF > coucou 
-> coucou
-> EOF
-dup: Bad file descriptor
+	save_in = -1;
+	save_out = -1;
+	if (cmd->input > -1)
+	{
+		save_in = dup(0);
+		dup2(cmd->input, 0);
+	}
+	if (cmd->output > -1)
+	{
+		save_out = dup(1);
+		dup2(cmd->output, 1);
+	}
+	built_parent(data, cmd);
+	fflush(stdout);
+	close_it(save_in, save_out, cmd);
+}
 ```
 
 ```

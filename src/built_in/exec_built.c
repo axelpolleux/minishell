@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 14:53:34 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/06/02 13:56:45 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/06/02 15:27:54 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,5 @@ void	exec_built(t_data *data, t_cmd *cmd)
 		dup2(cmd->output, 1);
 	}
 	built_parent(data, cmd);
-	fflush(stdout);
 	close_it(save_in, save_out, cmd);
 }
