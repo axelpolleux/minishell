@@ -6,17 +6,15 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/06/02 13:48:14 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/06/02 16:21:01 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-// our include
 # include "libft.h"
 
-// basics
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
@@ -27,12 +25,10 @@
 # include <fcntl.h>
 # include <errno.h>
 
-// system includes
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <sys/stat.h>
 
-// readline
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -40,27 +36,15 @@
 # include <term.h>
 # include <dirent.h>
 
-/* respecter l'ordre
-	char
-	void
-	double
-	unsign
-	int
-	bool
-	long
-	size_t
-	strcut
-*/
-
 //=============<for general utility>=============//
 extern volatile int	g_signal;
 
 # define WORD		1
-# define PIPE		2 // |
-# define RED_IN		3 // <
-# define RED_OUT	4 // >
-# define APPEND		5 // >>
-# define HEREDOC	6 // <<
+# define PIPE		2
+# define RED_IN		3
+# define RED_OUT	4
+# define APPEND		5 
+# define HEREDOC	6
 
 # define P_ERROR	0
 # define C_ERROR	1
@@ -70,7 +54,6 @@ extern volatile int	g_signal;
 # define SQUOT		1
 # define DQUOT		2
 
-# define PATH		"PATH"
 # define PWD		"PWD"
 # define OLDPWD		"OLDPWD"
 # define HOME		"HOME"
@@ -89,8 +72,7 @@ extern volatile int	g_signal;
 # define NOT_DR		": Is a directory\n"
 //==============================================//
 
-//====================<for all struct>===================//<<<<
-
+//====================<for all struct>===================//
 typedef struct s_redir_her
 {
 	char				*file;
@@ -103,21 +85,18 @@ typedef struct s_redir_her
 
 typedef struct s_cmd
 {
-	// command management
 	char			*command;
 	char			**args;
 	char			*cmd_path;
 	char			*full_cmd;
 
-	// redir management
 	int				input;
 	int				output;
 
 	bool			executable;
-	// heredoc
+
 	t_redir_her		*redir;
 
-	// link nodes
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 }	t_cmd;
@@ -129,6 +108,7 @@ typedef struct s_token
 	int				type;
 
 	bool			quot;
+
 	struct s_token	*next;
 	struct s_token	*prev;
 }	t_token;
@@ -179,7 +159,6 @@ void			error_exit(t_data *data, char *error);
 void			init_env_fail(t_data *data, char *new_env, \
 char *new_arg, char *new_key);
 void			init_env_fail_n(char *new_env, char *new_arg, char *new_key);
-void			opendir_error(t_data *data, char *error);
 void			error_cnf(t_data *data, char *error);
 void			parser_error(t_data *data, int output);
 
@@ -226,7 +205,6 @@ t_env			*make_new_env_name(char *line, int export);
 //======================================================//
 
 //============for the the expand========//
-char			**get_expand_t(t_data *data, char **cmd);
 char			*dollar_expand(t_data *data, char *line, int *i);
 char			*line_expand(t_data *data, char *line, int i);
 char			*get_dollar(t_data *data, char *line, int *i, char *n_line);
@@ -256,9 +234,9 @@ char			**tri_alpha(t_env *env);
 char			**init_built(void);
 char			*get_arg_env(t_data *data, char *motif);
 char			*path_env(t_data *data, char **cmd);
+char			*get_oldpwd(t_data *data, char **env);
 
 void			print_flag(char **cmd, int start);
-void			print_words(char **args, int *i, int *first_word);
 void			built_child(t_data *data, t_cmd *cmd);
 void			built_parent(t_data *data, t_cmd *cmd);
 void			unset_place(t_data *data, char *motif);
@@ -269,15 +247,15 @@ void			manage_export(t_data *data, char *line);
 void			make_export(t_data *data, char *key);
 void			change_arg(t_data *data, char *line, char *name, int start);
 
+long			exit_atoi(const char *str, int sign, long res);
+
 int				make_built_env(t_data *data, t_env *new, char **env);
 int				is_builtin(char **built_in, char *cmd);
-long			exit_atoi(const char *str, int sign, long res);
 int				exec_echo(char **cmd);
 int				exec_cd(t_data *data, char **cmd);
 int				exec_chdir(char *path, char *new_pwd, size_t size);
 int				not_in_original_en(char **env, char *name);
 int				make_oldpwd(t_data *data, t_env *new, char **env);
-char			*get_oldpwd(t_data *data, char **env);
 int				exec_pwd(t_data *data);
 int				exec_export(t_data *data, char **cmd);
 int				central_export(t_data *data, char **cmd);
@@ -299,40 +277,31 @@ bool			flag_identification(char *str);
 //========================<for exec>=========================//
 void			get_path(t_data *data);
 void			children(t_data *data, t_cmd *cmd);
-void			cmd_with_path(t_data *data, t_cmd *cmd, char *command);
-void			full_cmd(t_data *data, t_cmd *cmd, char *command, int i);
 void			exec_command(t_data *data, t_cmd *cmd, char **env);
 void			parent(t_data *data, t_cmd *cmd);
 void			handle_exec_loop(t_data *data, int count);
 void			manage_process(t_data *data, t_cmd *cmd, int index);
 void			wait_end(t_data *data, int count);
 void			apply_redir(t_data *data, t_cmd *cmd);
-void			redir_heredoc(t_redir_her *redir);
 void			exec(t_data *data);
 void			init_data_for_exec(t_data *data);
 
 int				manage_redir(t_data *data, t_cmd *cmd);
-int				check_directory(t_data *data, char *path);
 int				check_cmd(t_data *data, t_cmd *cmd, int *status);
-int				verif_file(char *line, int doc);
 int				handle_out(t_cmd *cmd, t_redir_her *curr);
 int				handle_in(t_cmd *cmd, t_redir_her *curr);
 int				only_quote(char *line);
 int				full_void(char *line);
 int				init_heredoc(t_data *data, t_redir_her *doc);
 
-bool			fcext(t_data *data, t_cmd *cmd, char *path, char *command);
 bool			heredoc_manage(t_data *data, t_cmd *cmd);
 bool			wait_heredoc(t_data *data, pid_t pid, char *tmp, int *fd);
 //===========================================================//
 
 //========================<lexer and parsing>=========================//
-void			add_in(char *input, int *i, int *len, int *type);
-void			add_out(char *input, int *i, int *len, int *type);
-void			new_state(t_data *data, char *input, int *index);
-//========================<lexer and parsing>=========================//
 char			**tokens_to_argv(t_token *start, t_token *end, int i);
 
+void			heredoc_eof_error(t_redir_her *doc, int *fd);
 void			add_in(char *input, int *i, int *len, int *type);
 void			add_out(char *input, int *i, int *len, int *type);
 void			new_state(t_data *data, char *input, int *index);
@@ -343,6 +312,7 @@ void			add_cmd_back(t_cmd **lst, t_cmd *new);
 void			g_signal_init(void);
 void			g_signal_while(t_data *data);
 void			check_exit(t_data *data);
+void			skip_spaces(char *input, int *index);
 
 int				new_redirection(t_data *data, t_cmd *cmd, int type, char *file);
 int				tok_to_cmd(t_data *data, t_cmd *cmd, char *str, int i);
@@ -358,7 +328,6 @@ bool			new_cmd(t_data *data, t_cmd **cmd, t_token *token);
 bool			is_redir(int type);
 bool			is_space(int c);
 bool			skip_quote(char *input, int *i);
-void			skip_spaces(char *input, int *index);
 bool			add_all(t_data *data, t_token **tokens, char *input, int *i);
 bool			add_word(t_data *data, t_token **tokens, \
 char *input, int *index);
@@ -366,7 +335,6 @@ bool			quote_state(t_data *data, char *input, int *i, bool *quoted);
 bool			write_here(t_redir_her *doc, char *line, int *fd);
 bool			read_heredoc(t_data *data, t_redir_her *doc, \
 char *tmp, int *fd);
-void			heredoc_eof_error(t_redir_her *doc, int *fd);
 bool			history_heredoc(t_data *data, char *line, int *fd);
 
 t_cmd			*new_cmd_node(t_data *data);
@@ -378,12 +346,6 @@ t_token			*token_new(char *input, int len, int type, bool quot);
 //===================<for sig usage>===============//
 void			handle_signal(int signal);
 void			handle_heredoc(int signal);
-int				rl_event(void);
 //===============================================//
 
-//===================a degager=====================//
-void			display_env(t_env *view);// a degager a la fin
-void			display_tokens(t_token *token);//
-void			display_cmd(t_cmd *view);//
-//===============================================//
 #endif
