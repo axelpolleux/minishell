@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 17:40:15 by apolleux          #+#    #+#             */
-/*   Updated: 2026/06/02 01:02:23 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/02 11:26:23 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,10 +96,10 @@ static char	*find_cmd_in_path(t_data *data, char *cmd, int i)
 
 static int	report_err(t_data *data, char *cmd, int code, int *status) //terminer la norme
 {
-	if (data->exit == -2)
-	{
+	// if (data->exit == -2)
+	// {
 		
-	}
+	// }
 	ft_putstr_fd("minichevre: ", 2);
 	if (data->exit == -2)
 	{
@@ -124,11 +124,7 @@ int	check_cmd(t_data *data, t_cmd *cmd, int *status)
 	get_path(data);
 	cmd->cmd_path = find_cmd_in_path(data, cmd->command, -1);
 	if (!cmd->cmd_path)
-	{
 		return (report_err(data, cmd->command, 127, status));
-		// data->exit = report_err(cmd->command, CMD_NF, 127, status);
-		// return (0);
-	}
 	if (stat(cmd->cmd_path, &s) == 0 && S_ISDIR(s.st_mode))
 	{
 		data->exit = report_err(data, cmd->command, 126, status); // NOT_DR

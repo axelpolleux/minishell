@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 17:40:15 by apolleux          #+#    #+#             */
-/*   Updated: 2026/06/02 10:22:19 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/02 11:57:09 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void	children(t_data *data, t_cmd *cmd)
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	exit_status = 0;
-	printf("children_fd_storage[1] %d\n", data->fd_storage[1]);
 	printf("children_fd_storage[0] %d\n", data->fd_storage[0]);
+	printf("children_fd_storage[1] %d\n", data->fd_storage[1]);
 	if (cmd->next)
 		dup2(data->fd_storage[1], 1);
 	if (cmd->prev)
@@ -49,20 +49,25 @@ void	parent(t_data *data, t_cmd *cmd)
 	}
 }
 
-void	manage_process(t_data *data, t_cmd *cmd, int index)
+void manage_process(t_data *data, t_cmd *cmd, int index)
 {
-	if (cmd->next)
-	{
-		if (pipe(data->fd_storage) == -1)
-			pipe_error(data);
-	}
-	data->pid[index] = fork();
-	if (data->pid[index] == -1)
-		fork_error(data);
-	if (data->pid[index] == 0)
-		children(data, cmd);
-	else
-		parent(data, cmd);
+    if (cmd->next)
+    {
+        if (pipe(data->fd_storage) == -1)
+            pipe_error(data);
+    }
+    else
+    {
+        data->fd_storage[0] = -1;  // ← empêche closes() de fermer
+        data->fd_storage[1] = -1;  //   un fd qui ne lui appartient pas
+    }
+    data->pid[index] = fork();
+    if (data->pid[index] == -1)
+        fork_error(data);
+    if (data->pid[index] == 0)
+        children(data, cmd);
+    else
+        parent(data, cmd);
 }
 
 void	handle_exec_loop(t_data *data, int count)
@@ -108,3 +113,5 @@ void	exec(t_data *data)
 	}
 	init_data_for_exec(data);
 }
+
+
