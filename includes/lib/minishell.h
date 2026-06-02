@@ -323,7 +323,7 @@ int				init_heredoc(t_data *data, t_redir_her *doc);
 
 bool			fcext(t_data *data, t_cmd *cmd, char *path, char *command);
 bool			heredoc_manage(t_data *data, t_cmd *cmd);
-bool			wait_heredoc(t_data *data, pid_t pid, char *tmp, int *fd) ;
+bool			wait_heredoc(t_data *data, pid_t pid, char *tmp, int *fd);
 //===========================================================//
 
 //========================<lexer and parsing>=========================//
