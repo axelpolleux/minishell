@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 11:36:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/06/01 16:41:37 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/06/02 13:48:14 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -358,6 +358,7 @@ bool			new_cmd(t_data *data, t_cmd **cmd, t_token *token);
 bool			is_redir(int type);
 bool			is_space(int c);
 bool			skip_quote(char *input, int *i);
+void			skip_spaces(char *input, int *index);
 bool			add_all(t_data *data, t_token **tokens, char *input, int *i);
 bool			add_word(t_data *data, t_token **tokens, \
 char *input, int *index);

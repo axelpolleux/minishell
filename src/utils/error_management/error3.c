@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/20 10:52:20 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/06/01 22:55:28 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/02 13:41:43 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	parser_error(t_data *data, int output)
 {
-
 	if (output == -2)
 		data_malloc_error(data);
 	data->exit = output;

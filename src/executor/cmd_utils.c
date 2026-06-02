@@ -6,38 +6,11 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 17:40:15 by apolleux          #+#    #+#             */
-/*   Updated: 2026/06/01 17:01:21 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/06/02 13:49:12 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	exec_command(t_data *data, t_cmd *cmd, char **env)
-{
-	int	exit_status;
-
-	apply_redir(data, cmd);
-	if (cmd->executable)
-	{
-		if (is_builtin(data->built_in, cmd->command))
-		{
-			built_child(data, cmd);
-			exit_status = data->exit;
-			free_data(data);
-			free_arr(env);
-			exit(exit_status);
-		}
-		if (cmd->cmd_path)
-		{
-			execve(cmd->cmd_path, cmd->args, env);
-			perror("minishell: execve");
-		}
-	}
-	exit_status = data->exit;
-	free_data(data);
-	free_arr(env);
-	exit(exit_status);
-}
 
 static char	*try_path_entry(char *dir, char *cmd, char **saved)
 {
@@ -94,22 +67,10 @@ static int	report_err(char *cmd, char *msg, int code, int *status)
 	return (code);
 }
 
-int	check_cmd(t_data *data, t_cmd *cmd, int *status)
+static int	check_exec(t_data *data, t_cmd *cmd, int *status)
 {
 	struct stat	s;
 
-	if (!cmd || !cmd->command || !cmd->command[0])
-		return (EXIT_FAILURE);
-	if (is_builtin(data->built_in, cmd->command))
-		return (1);
-	get_path(data);
-	cmd->cmd_path = find_cmd_in_path(data, cmd->command);
-	if (!cmd->cmd_path)
-	{
-		data->exit = report_err(cmd->command,
-				": command not found\n", 127, status);
-		return (0);
-	}
 	if (stat(cmd->cmd_path, &s) == 0 && S_ISDIR(s.st_mode))
 	{
 		data->exit = report_err(cmd->command,
@@ -122,4 +83,21 @@ int	check_cmd(t_data *data, t_cmd *cmd, int *status)
 		return (0);
 	}
 	return (1);
+}
+
+int	check_cmd(t_data *data, t_cmd *cmd, int *status)
+{
+	if (!cmd || !cmd->command || !cmd->command[0])
+		return (EXIT_FAILURE);
+	if (is_builtin(data->built_in, cmd->command))
+		return (1);
+	get_path(data);
+	cmd->cmd_path = find_cmd_in_path(data, cmd->command);
+	if (!cmd->cmd_path)
+	{
+		data->exit = report_err(cmd->command,
+				": command not found\n", 127, status);
+		return (0);
+	}
+	return (check_exec(data, cmd, status));
 }

@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 12:36:45 by apolleux          #+#    #+#             */
-/*   Updated: 2026/06/01 16:11:57 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/06/02 13:44:58 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,14 @@ int	handle_out(t_cmd *cmd, t_redir_her *curr)
 	return (1);
 }
 
+static int	redir_error(t_data *data, char *file)
+{
+	ft_putstr_fd("minichevre: ", 2);
+	perror(file);
+	data->exit = 1;
+	return (1);
+}
+
 int	manage_redir(t_data *data, t_cmd *cmd)
 {
 	int			state;
@@ -55,13 +63,13 @@ int	manage_redir(t_data *data, t_cmd *cmd)
 	{
 		if (curr->type == RED_IN || curr->type == HEREDOC)
 			state = handle_in(cmd, curr);
+		if (!state)
+			return (redir_error(data, curr->file));
 		else if (curr->type == RED_OUT || curr->type == APPEND)
 			state = handle_out(cmd, curr);
 		if (!state)
 		{
-			ft_putstr_fd("minichevre: ", 2);
-			perror(curr->file);
-			data->exit = 1;
+			redir_error(data, curr->file);
 			cmd->executable = false;
 		}
 		curr = curr->next;
@@ -69,18 +77,26 @@ int	manage_redir(t_data *data, t_cmd *cmd)
 	return (0);
 }
 
-void	apply_redir(t_data *data, t_cmd *cmd)
+void	apply_redir(t_data *data, t_cmd *cmd)// non conforme
 {
+	printf("apply_redir_input %d\n", cmd->input);
+	printf("apply_redir_output %d\n", cmd->output);
 	if (cmd->input > -1)
 	{
 		if (dup2(cmd->input, 0) == -1)
+		{
+			printf("dup2_redir_input\n");
 			dup_error(data);
+		}
 		close(cmd->input);
 	}
 	if (cmd->output > -1)
 	{
 		if (dup2(cmd->output, 1) == -1)
+		{
+			printf("dup2_redir_output\n");
 			dup_error(data);
+		}
 		close(cmd->output);
 	}
 }

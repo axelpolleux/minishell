@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 14:51:32 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/06/02 10:48:45 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/02 13:41:10 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ bool	expand_redir(t_data *data, t_redir_her *doc)
 {
 	char		*new_line;
 
-	
 	if (!doc || !doc->file)
 		return (false);
 	data->quote = NQUOT;

@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/03 16:30:22 by apolleux          #+#    #+#             */
-/*   Updated: 2026/05/27 16:16:33 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/02 13:47:58 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,10 @@ t_token	*token_new(char *input, int len, int type, bool quot)
 	new->quot = quot;
 	new->next = NULL;
 	return (new);
+}
+
+void	skip_spaces(char *input, int *index)
+{
+	while (is_space(input[*index]))
+		(*index)++;
 }

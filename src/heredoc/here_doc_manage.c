@@ -6,60 +6,43 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/12 11:11:15 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/06/01 16:12:10 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/06/02 13:46:01 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	new_delimiter(t_data *data, t_redir_her *doc)
+static int	check_readline(t_redir_her *doc, char **line, int *fd)
 {
-	char	*n_line;
-	int		i;
-
-	n_line = define_line(data, &i);
-	if (!n_line)
-		return (true);
-	while (doc->file[i])
+	g_signal = 0;
+	*line = readline("> ");
+	if (g_signal == SIGINT)
 	{
-		if (quote_expand(data, doc->file, &i))
-			continue ;
-		if (doc->file[i] == '$' && data->quote == NQUOT)
-		{
-			n_line = get_dollar(data, doc->file, &i, n_line);
-			if (!n_line)
-				return (true);
-			continue ;
-		}
-		n_line = ft_charjoin(n_line, doc->file[i]);
-		if (!n_line)
-			return (true);
-		i++;
+		if (*line)
+			free(*line);
+		*line = NULL;
+		return (-1);
 	}
-	free(doc->file);
-	doc->file = n_line;
-	return (false);
+	if (!*line)
+	{
+		heredoc_eof_error(doc, fd);
+		return (1);
+	}
+	return (0);
 }
 
 bool	read_heredoc(t_data *data, t_redir_her *doc, char *tmp, int *fd)
 {
 	char	*line;
+	int		state;
 
 	while (1)
 	{
-		g_signal = 0;
-		line = readline("> ");
-		if (g_signal == SIGINT)
-		{
-			if (line)
-				free(line);
+		state = check_readline(doc, &line, fd);
+		if (state == -1)
 			return (true);
-		}
-		if (!line)
-		{
-			heredoc_eof_error(doc, fd);
+		if (state == 1)
 			break ;
-		}
 		if (history_heredoc(data, line, fd))
 			return (true);
 		line = expand_here_doc(data, doc, line, tmp);
@@ -78,14 +61,7 @@ void	heredoc_child(t_data *data, t_redir_her *doc, char *tmp, int *fd)
 {
 	signal(SIGINT, handle_heredoc);
 	signal(SIGQUIT, SIG_IGN);
-	rl_event_hook = rl_event;
 	close(fd[0]);
-	if (new_delimiter(data, doc))
-	{
-		free(tmp);
-		free_data(data);
-		exit(1);
-	}
 	if (read_heredoc(data, doc, tmp, fd))
 	{
 		free(tmp);
@@ -105,14 +81,16 @@ int	init_heredoc(t_data *data, t_redir_her *doc)
 {
 	pid_t	pid;
 	int		fd[2];
-	int		status;
 	char	*tmp;
 
 	tmp = ft_strdup(doc->file);
 	if (!tmp)
 		return (-2);
 	if (pipe(fd) == -1)
-		return (free(tmp), -1);
+	{
+		free(tmp);
+		return (-1);
+	}
 	pid = fork();
 	if (pid == -1)
 	{
@@ -122,26 +100,8 @@ int	init_heredoc(t_data *data, t_redir_her *doc)
 	}
 	if (pid == 0)
 		heredoc_child(data, doc, tmp, fd);
-	close(fd[1]);
-	signal(SIGINT, SIG_IGN);
-	waitpid(pid, &status, 0);
-	signal(SIGINT, handle_signal);
-	free(tmp);
-	if (WIFSIGNALED(status))
-	{
-		if (WTERMSIG(status) == SIGINT)
-		{
-			data->exit = 130;
-			close(fd[0]);
-			return (-2);
-		}
-	}
-	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
-	{
-		data->exit = 130;
-		close(fd[0]);
+	if (wait_heredoc(data, pid, tmp, fd))
 		return (-2);
-	}
 	return (fd[0]);
 }
 
