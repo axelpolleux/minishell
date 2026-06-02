@@ -6,7 +6,7 @@
 /*   By: apolleux <apolleux@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/31 21:38:06 by apolleux          #+#    #+#             */
-/*   Updated: 2026/06/02 13:49:16 by apolleux         ###   ########.fr       */
+/*   Updated: 2026/06/02 16:02:57 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,27 @@ void	get_path(t_data *data)
 		data->path = NULL;
 }
 
+void	clear_close(t_data *data)
+{
+	t_cmd	*curr;
+
+	curr = data->cmd;
+	while (curr)
+	{
+		if (curr->input != -1)
+			close(curr->input);
+		if (curr->output != -1)
+			close(curr->output);
+		curr = curr->next;
+	}
+}
+
 void	exec_command(t_data *data, t_cmd *cmd, char **env)
 {
 	int	exit_status;
 
 	apply_redir(data, cmd);
+	clear_close(data);
 	if (cmd->executable)
 	{
 		if (is_builtin(data->built_in, cmd->command))
