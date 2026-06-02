@@ -99,4 +99,3 @@ void	apply_redir(t_data *data, t_cmd *cmd)// non conforme
 		close(cmd->output);
 	}
 }
-

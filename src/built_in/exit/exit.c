@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 10:31:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/06/02 10:20:32 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/01 17:27:36 by apolleux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,33 @@ void	exit_arg(t_data *data, char *str, int *out)
 	*(out) = (int)(res % 256);
 }
 
+static long	parse_digits(const char *str, int sign)
+{
+	long	res;
+	long	limit;
+
+	res = 0;
+	if (sign == -1)
+		limit = -(long)INT_MIN;
+	else
+		limit = INT_MAX;
+	while (ft_isdigit(*str))
+	{
+		if (res > (limit - (*str - '0')) / 10)
+			return (LONG_MAX);
+		res = res * 10 + (*str - '0');
+		str++;
+	}
+	while (*str == ' ' || (9 <= *str && *str <= 13))
+		str++;
+	if (*str)
+		return (LONG_MAX);
+	return (res);
+}
+
 long	exit_atoi(const char *str, int sign, long res)
 {
 	sign = 1;
-	res = 0;
 	if (!str)
 		return (LONG_MAX);
 	while (*str == ' ' || (9 <= *str && *str <= 13))
@@ -38,14 +61,8 @@ long	exit_atoi(const char *str, int sign, long res)
 	}
 	if (!ft_isdigit(*str))
 		return (LONG_MAX);
-	while (ft_isdigit(*str))
-	{
-		res = res * 10 + (*str - '0');
-		str++;
-	}
-	while (*str == ' ' || (9 <= *str && *str <= 13))
-		str++;
-	if (*str)
+	res = parse_digits(str, sign);
+	if (res == LONG_MAX)
 		return (LONG_MAX);
 	return (res * sign);
 }
@@ -55,7 +72,6 @@ void	exec_exit(t_data *data, t_cmd *cmd, char **args)
 	int	out;
 	int	arg;
 
-	printf("exec_exit_output %d\n", cmd->output);
 	if (cmd->output >= 0)
 	{
 		dup2(data->last_fd, 1);
