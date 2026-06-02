@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 14:53:34 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/28 10:03:50 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/02 10:19:11 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,10 @@ void	built_child(t_data *data, t_cmd *cmd)
 
 static void	close_it(int save_in, int save_out, t_cmd *cmd)
 {
+	printf("close_it_input %d\n", cmd->input);
+	printf("close_it_output %d\n", cmd->output);
+	printf("close_it_save_out %d\n", save_out);
+	printf("close_it_save_in %d\n", save_in);
 	if (save_in > -1)
 	{
 		dup2(save_in, 0);
@@ -67,6 +71,8 @@ void	exec_built(t_data *data, t_cmd *cmd)
 
 	save_in = -1;
 	save_out = -1;
+	printf("exec_built_input %d\n", cmd->input);
+	printf("exec_built_output %d\n", cmd->output);
 	if (cmd->input > -1)
 	{
 		save_in = dup(0);

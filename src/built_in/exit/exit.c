@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/15 10:31:02 by ethutin-          #+#    #+#             */
-/*   Updated: 2026/05/28 17:37:56 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/02 10:20:32 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	exec_exit(t_data *data, t_cmd *cmd, char **args)
 	int	out;
 	int	arg;
 
+	printf("exec_exit_output %d\n", cmd->output);
 	if (cmd->output >= 0)
 	{
 		dup2(data->last_fd, 1);

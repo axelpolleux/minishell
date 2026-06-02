@@ -6,7 +6,7 @@
 /*   By: ethutin- <ethutin-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/29 17:40:15 by apolleux          #+#    #+#             */
-/*   Updated: 2026/06/01 10:42:59 by ethutin-         ###   ########.fr       */
+/*   Updated: 2026/06/02 10:22:19 by ethutin-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	children(t_data *data, t_cmd *cmd)
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	exit_status = 0;
+	printf("children_fd_storage[1] %d\n", data->fd_storage[1]);
+	printf("children_fd_storage[0] %d\n", data->fd_storage[0]);
 	if (cmd->next)
 		dup2(data->fd_storage[1], 1);
 	if (cmd->prev)
